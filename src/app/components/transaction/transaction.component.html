@@ -1,0 +1,33 @@
+<mat-card class="mb-2">
+  <mat-card-title class="d-flex justify-content-between">
+    <p>{{ transaction.title }}</p>
+    <button mat-icon-button color="red" (click)="onClickDelete()"><mat-icon>delete</mat-icon></button>
+  </mat-card-title>
+  <mat-card-content class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-4">
+        <mat-form-field appearance="standard" floatLabel="always">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="transaction.title">
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12 col-4">
+        <mat-form-field appearance="standard" floatLabel="always">
+          <mat-label>Amount</mat-label>
+          <input type="number" class="text-right" matInput [(ngModel)]="transaction.amount">
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12 col-4">
+        <mat-form-field appearance="standard" floatLabel="always">
+          <mat-label>Frequency</mat-label>
+          <mat-select [(ngModel)]="transaction.recurrence.frequency">
+            <mat-option *ngFor="let frequency of frequencies" [value]="frequency.value">
+              {{ frequency.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
