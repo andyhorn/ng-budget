@@ -4,7 +4,12 @@ export class Recurrence {
   interval: number;
 
   constructor() {
-    this.startDate = new Date();
+    const now: Date = new Date();
+    this.startDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
     this.frequency = Frequency.Once;
     this.interval = 1;
   }

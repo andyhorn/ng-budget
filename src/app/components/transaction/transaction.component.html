@@ -1,6 +1,5 @@
 <mat-expansion-panel class="mb-2 p-0"
-  [class.is-expense]="transaction.isExpense"
-  [class.is-income]="!transaction.isExpense">
+  [class]="transaction.isExpense ? 'is-expense' : 'is-income'">
   <mat-expansion-panel-header>
     <mat-panel-title>
       {{ transaction.title }}

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable } from 'rxjs';
-import { Recurrence } from '../models/recurrence';
 import { Transaction } from '../models/transaction';
 
 @Injectable({
@@ -12,39 +11,10 @@ export class TransactionService {
     new BehaviorSubject<Transaction[]>(this._transactions);
 
   constructor() {
-    this._transactions.push({
-      id: 1,
-      title: 'Expense 1',
-      amount: 100.00,
-      isExpense: true,
-      recurrence: new Recurrence(),
-    });
-
-    this._transactions.push({
-      id: 2,
-      title: 'Paycheck',
-      amount: 1200.00,
-      isExpense: false,
-      recurrence: new Recurrence(),
-    });
-
-    this._transactions.push({
-      id: 3,
-      title: 'Expense 2',
-      amount: 50,
-      isExpense: true,
-      recurrence: new Recurrence(),
-    });
-
-    this._transactions.push({
-      id: 4,
-      title: 'Expense 3',
-      amount: 125,
-      isExpense: true,
-      recurrence: new Recurrence(),
-    });
-
-    this._trigger();
+    this.add(new Transaction('Expense 1', 100.0));
+    this.add(new Transaction('Paycheck 1', 1200.0, false));
+    this.add(new Transaction('Expense 2', 50.0));
+    this.add(new Transaction('Expense 3', 125.00));
   }
 
   get(): Observable<Transaction[]> {

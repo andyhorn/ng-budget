@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between mb-2">
     <div>
       <h2>Income</h2>
-      <h6 class="text-success">({{ totalIncomeAmount | currency }})</h6>
+      <h6 class="text-success-light">({{ totalIncomeAmount | currency }})</h6>
     </div>
     <button mat-icon-button class="text-success" (click)="onNewIncomeClick()"><mat-icon>add_circle_outline</mat-icon></button>
   </div>
@@ -15,7 +15,7 @@
   <div class="d-flex justify-content-between mb-2">
     <div>
       <h2>Expenses</h2>
-      <h6 class="text-danger">({{ totalExpenseAmount | currency }})</h6>
+      <h6 class="text-danger-light">({{ totalExpenseAmount | currency }})</h6>
     </div>
     <button mat-icon-button class="text-success" (click)="onNewExpenseClick()"><mat-icon color="green">add_circle_outline</mat-icon></button>
   </div>

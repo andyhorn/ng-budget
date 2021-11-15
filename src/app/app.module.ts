@@ -19,12 +19,17 @@ import { FormsModule } from "@angular/forms";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from "@angular/material/core";
 import {MatExpansionModule} from '@angular/material/expansion';
+import { CalendarComponent } from './calendar/calendar.component';
+import {MatTableModule} from '@angular/material/table';
+import { NetFlowIconComponent } from './components/net-flow-icon/net-flow-icon.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
     TransactionComponent,
+    CalendarComponent,
+    NetFlowIconComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +47,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
