@@ -1,7 +1,7 @@
 <div class="container-fluid pb-3">
   <div class="d-flex justify-content-between mb-2">
     <h2>Income</h2>
-    <button mat-icon-button color="primary"><mat-icon>add</mat-icon></button>
+    <button mat-icon-button color="primary" (click)="onNewIncomeClick()"><mat-icon>add</mat-icon></button>
   </div>
   <app-transaction *ngFor="let transaction of getIncomeTransactions() | async"
     [transaction]="transaction"
@@ -11,7 +11,7 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between mb-2">
     <h2>Expenses</h2>
-    <button mat-icon-button><mat-icon color="green">add</mat-icon></button>
+    <button mat-icon-button (click)="onNewExpenseClick()"><mat-icon color="green">add</mat-icon></button>
   </div>
   <app-transaction *ngFor="let transaction of getExpenseTransactions() | async"
     [transaction]="transaction"

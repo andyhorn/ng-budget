@@ -52,6 +52,8 @@ export class TransactionService {
   }
 
   add(transaction: Transaction): void {
+    transaction.id = this._findNextId();
+
     this._transactions.push(transaction);
   }
 
@@ -61,5 +63,19 @@ export class TransactionService {
     if (index > -1) {
       this._transactions.splice(index, 1);
     }
+  }
+
+  private _findNextId(): number {
+    let id: number = 1;
+
+    if (!this._transactions.length) {
+      return id;
+    }
+
+    while (this._transactions.some((t: Transaction) => t.id == id)) {
+      id++;
+    }
+
+    return id;
   }
 }

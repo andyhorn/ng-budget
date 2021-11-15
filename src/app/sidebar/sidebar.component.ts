@@ -13,7 +13,9 @@ export class SidebarComponent implements OnInit {
   public incomeTransactions: Transaction[] = [];
   public expenseTransactions: Transaction[] = [];
 
-  constructor(private _transactionService: TransactionService) { }
+  constructor(
+    private _transactionService: TransactionService,
+    ) { }
 
   getIncomeTransactions(): Observable<Transaction[]> {
     return this._transactionService.get().pipe(
@@ -31,6 +33,20 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  onNewIncomeClick(): void {
+    const newTransaction: Transaction = new Transaction();
+    newTransaction.isExpense = false;
+
+    this._transactionService.add(newTransaction);
+  }
+
+  onNewExpenseClick(): void {
+    const newTransaction: Transaction = new Transaction();
+    newTransaction.isExpense = true;
+
+    this._transactionService.add(newTransaction);
   }
 
   onDelete(id: number): void {
