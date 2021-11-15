@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { Recurrence } from '../models/recurrence';
 import { Transaction } from '../models/transaction';
 
@@ -8,6 +8,8 @@ import { Transaction } from '../models/transaction';
 })
 export class TransactionService {
   private _transactions: Transaction[] = [];
+  private _transactionSubject: BehaviorSubject<Transaction[]> =
+    new BehaviorSubject<Transaction[]>(this._transactions);
 
   constructor() {
     this._transactions.push({
@@ -41,10 +43,12 @@ export class TransactionService {
       isExpense: true,
       recurrence: new Recurrence(),
     });
+
+    this._trigger();
   }
 
   get(): Observable<Transaction[]> {
-    return from([this._transactions]);
+    return this._transactionSubject.asObservable();
   }
 
   find(id: number): Observable<Transaction | null> {
@@ -53,8 +57,8 @@ export class TransactionService {
 
   add(transaction: Transaction): void {
     transaction.id = this._findNextId();
-
     this._transactions.push(transaction);
+    this._trigger();
   }
 
   delete(id: number): void {
@@ -62,6 +66,7 @@ export class TransactionService {
 
     if (index > -1) {
       this._transactions.splice(index, 1);
+      this._trigger();
     }
   }
 
@@ -77,5 +82,9 @@ export class TransactionService {
     }
 
     return id;
+  }
+
+  private _trigger(): void {
+    this._transactionSubject.next(this._transactions);
   }
 }

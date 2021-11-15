@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from "rxjs/operators";
 import { Transaction } from '../models/transaction';
 import { TransactionService } from '../services/transaction.service';
 
@@ -14,25 +12,25 @@ export class SidebarComponent implements OnInit {
   public expenseTransactions: Transaction[] = [];
 
   constructor(
-    private _transactionService: TransactionService,
-    ) { }
+    private _transactionService: TransactionService) { }
 
-  getIncomeTransactions(): Observable<Transaction[]> {
-    return this._transactionService.get().pipe(
-      map((transactions: Transaction[]) =>
-        transactions.filter((t: Transaction) => !t.isExpense))
-    );
+  get totalIncomeAmount(): number {
+    return this.getTransactionSum(this.incomeTransactions);
   }
 
-  getExpenseTransactions(): Observable<Transaction[]> {
-    return this._transactionService.get().pipe(
-      map((transactions: Transaction[]) =>
-        transactions.filter((t: Transaction) => t.isExpense))
-    );
+  get totalExpenseAmount(): number {
+    return this.getTransactionSum(this.expenseTransactions);
+  }
+
+  getTransactionSum(list: Transaction[]): number {
+    return list.reduce((sum: number, current: Transaction) => sum + current.amount, 0);
   }
 
   ngOnInit(): void {
-
+    this._transactionService.get().subscribe((transactions: Transaction[]) => {
+      this.incomeTransactions = transactions.filter((t: Transaction) => !t.isExpense);
+      this.expenseTransactions = transactions.filter((t: Transaction) => t.isExpense);
+    });
   }
 
   onNewIncomeClick(): void {
