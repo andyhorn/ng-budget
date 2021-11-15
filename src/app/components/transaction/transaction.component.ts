@@ -21,6 +21,21 @@ export class TransactionComponent implements OnInit {
     this.delete = new EventEmitter<void>();
   }
 
+  get frequencyDisplay(): string {
+    switch (this.transaction.recurrence.frequency) {
+      case Frequency.Daily:
+        return "days";
+      case Frequency.Weekly:
+        return "weeks";
+      case Frequency.Monthly:
+        return "months";
+      case Frequency.Yearly:
+        return "years";
+      default:
+        return "";
+    }
+  }
+
   ngOnInit() {
     this.frequencies = Object.values(Frequency)
       .map((val: any) => Number(val))

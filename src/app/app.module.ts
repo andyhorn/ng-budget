@@ -18,6 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { FormsModule } from "@angular/forms";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from "@angular/material/core";
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MatNativeDateModule } from "@angular/material/core";
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
