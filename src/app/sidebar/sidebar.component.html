@@ -1,25 +1,26 @@
-<div class="container-fluid pb-3">
-  <div class="d-flex justify-content-between mb-2">
-    <div>
-      <h2>Income</h2>
-      <h6 class="text-success-light">({{ totalIncomeAmount | currency }})</h6>
+<div class="sidebar-container pt-3 container">
+    <div class="d-flex justify-content-between mb-2">
+      <div>
+        <h2>Income</h2>
+        <h6 class="text-success-light">({{ totalIncomeAmount | currency }})</h6>
+      </div>
+      <button mat-icon-button class="text-success" (click)="onNewIncomeClick()"><mat-icon>add_circle_outline</mat-icon></button>
     </div>
-    <button mat-icon-button class="text-success" (click)="onNewIncomeClick()"><mat-icon>add_circle_outline</mat-icon></button>
-  </div>
-  <app-transaction *ngFor="let transaction of incomeTransactions"
-    [transaction]="transaction"
-    (delete)="onDelete(transaction.id)"></app-transaction>
-</div>
-<mat-divider class="my-3"></mat-divider>
-<div class="container-fluid">
-  <div class="d-flex justify-content-between mb-2">
-    <div>
-      <h2>Expenses</h2>
-      <h6 class="text-danger-light">({{ totalExpenseAmount | currency }})</h6>
+    <app-transaction *ngFor="let transaction of incomeTransactions"
+      [transaction]="transaction"
+      (delete)="onDelete(transaction.id)"></app-transaction>
+
+  <mat-divider class="my-3"></mat-divider>
+
+    <div class="d-flex justify-content-between mb-2">
+      <div>
+        <h2>Expenses</h2>
+        <h6 class="text-danger-light">({{ totalExpenseAmount | currency }})</h6>
+      </div>
+      <button mat-icon-button class="text-success" (click)="onNewExpenseClick()"><mat-icon color="green">add_circle_outline</mat-icon></button>
     </div>
-    <button mat-icon-button class="text-success" (click)="onNewExpenseClick()"><mat-icon color="green">add_circle_outline</mat-icon></button>
-  </div>
-  <app-transaction *ngFor="let transaction of expenseTransactions"
-    [transaction]="transaction"
-    (delete)="onDelete(transaction.id)"></app-transaction>
+    <app-transaction *ngFor="let transaction of expenseTransactions"
+      [transaction]="transaction"
+      (delete)="onDelete(transaction.id)"></app-transaction>
+
 </div>

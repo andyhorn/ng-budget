@@ -1,11 +1,15 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-4 d-flex justify-content-between">
-      <app-sidebar class="w-100 p-2"></app-sidebar>
-      <mat-divider [vertical]="true"></mat-divider>
-    </div>
-    <div class="col vh-100">
-      <app-calendar></app-calendar>
-    </div>
+<div class="app-container d-flex">
+  <div class="toolbar-container">
+    <mat-toolbar>
+      <span>Ng Budget</span>
+    </mat-toolbar>
+  </div>
+
+  <div class="sidebar-container">
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <div class="calendar-container">
+    <app-calendar></app-calendar>
   </div>
 </div>

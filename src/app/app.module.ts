@@ -22,6 +22,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { CalendarComponent } from './calendar/calendar.component';
 import {MatTableModule} from '@angular/material/table';
 import { NetFlowIconComponent } from './components/net-flow-icon/net-flow-icon.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { NetFlowIconComponent } from './components/net-flow-icon/net-flow-icon.c
     MatNativeDateModule,
     MatExpansionModule,
     MatTableModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

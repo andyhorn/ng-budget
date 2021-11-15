@@ -1,7 +1,28 @@
 @import "./_variables.sass"
 
-.container-fluid
-  min-width: 428px
-  background-color: $primary
-  font-size: 18px
-  color: $light
+$toolbar-offset: 65px
+$sidebar-width: 33%
+
+.app-container
+  height: 100vh
+  width: 100vw
+
+.sidebar-container
+  height: 100%
+  width: $sidebar-width
+  padding-top: $toolbar-offset
+  padding-bottom: $toolbar-offset
+  overflow-y: scroll
+
+.calendar-container
+  height: 100%
+  width: 100% - $sidebar-width
+  padding-top: $toolbar-offset
+  padding-bottom: $toolbar-offset
+  overflow-y: scroll
+
+.toolbar-container
+  position: fixed
+  left: 0
+  right: 0
+  z-index: 1
