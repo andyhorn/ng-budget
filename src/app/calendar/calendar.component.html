@@ -1,35 +1,38 @@
 <div class="container">
-  <div class="d-flex flex-column py-3">
+  <div class="py-3">
     <h2 class="text-center">{{ firstDay | date }} <small>through</small> {{ lastDay | date }}</h2>
-    <div class="row text-center">
-      <div class="col">
-        Total income<br/><span class="text-success">{{ totalIncome | currency }}</span>
-      </div>
-      <div class="col">
-        Total expenses<br/><span class="text-danger">{{ totalExpenses | currency }}</span>
-      </div>
-      <div class="col d-flex flex-column align-items-center justify-content-center">
-        Net flow
-        <span [class]="netFlow < 0 ? 'text-danger' : 'text-success'">
-          {{ netFlow | currency }}
-        </span>
-      </div>
-      <div class="col d-flex flex-column align-items-center justify-content-center">
-        Starting amount
-        <span [class]="startingAmount < 0 ? 'text-danger' : 'text-success'">
-          {{ startingAmount | currency }}
-        </span>
-      </div>
-      <div class="col d-flex flex-column align-items-center justify-content-center">
-        Final amount
-        <span [class]="finalAmount < 0 ? 'text-danger': 'text-success'">
-          {{ finalAmount | currency }}
-        </span>
-      </div>
-    </div>
-    <div>
   </div>
-</div>
+
+  <mat-card class="mat-elevation-z5 mb-3">
+    <mat-card-content>
+      <div class="row text-center">
+        <div class="col">
+          Total income<br/><span class="text-success">{{ totalIncome | currency }}</span>
+        </div>
+        <div class="col">
+          Total expenses<br/><span class="text-danger">{{ totalExpenses | currency }}</span>
+        </div>
+        <div class="col d-flex flex-column align-items-center justify-content-center">
+          Net flow
+          <span [class]="netFlow < 0 ? 'text-danger' : 'text-success'">
+            {{ netFlow | currency }}
+          </span>
+        </div>
+        <div class="col d-flex flex-column align-items-center justify-content-center">
+          Starting amount
+          <span [class]="startingAmount < 0 ? 'text-danger' : 'text-success'">
+            {{ startingAmount | currency }}
+          </span>
+        </div>
+        <div class="col d-flex flex-column align-items-center justify-content-center">
+          Final amount
+          <span [class]="finalAmount < 0 ? 'text-danger': 'text-success'">
+            {{ finalAmount | currency }}
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
 <div *ngIf="!occurrences.length" class="d-flex align-items-center justify-content-center">
   <p>No data.</p>
@@ -37,7 +40,7 @@
 
 <mat-card *ngFor="let occurrence of occurrences; let i = index" class="mb-3 mat-elevation-z5">
   <mat-card-header>
-    <mat-card-title>{{ occurrence.date | date }}</mat-card-title>
+    <mat-card-title>{{ occurrence.date | date:'fullDate' }}</mat-card-title>
     <mat-card-subtitle
       [class]="occurrence.total < 0 ? 'text-danger' : 'text-success'"
       class="d-flex align-items-center"
