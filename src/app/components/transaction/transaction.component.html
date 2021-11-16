@@ -1,65 +1,73 @@
-<mat-expansion-panel class="mb-2 p-0"
-  [class]="transaction.isExpense ? 'is-expense' : 'is-income'">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
+<mat-card [class]="transaction.isExpense ? 'is-expense' : 'is-income'" class="mb-2 pb-0">
+  <mat-card-header (click)="isExpanded = !isExpanded" class="w-100">
+    <mat-card-title class="d-flex justify-content-between w-100">
       {{ transaction.title }}
-    </mat-panel-title>
-    <mat-panel-description>
-      {{ transaction.amount | currency }}
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <!-- Name Input -->
-  <mat-form-field appearance="standard" floatLabel="always">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="transaction.title">
-  </mat-form-field>
-
-  <!-- Amount Input -->
-  <mat-form-field appearance="standard" floatLabel="always">
-    <mat-label>Amount</mat-label>
-    <input type="number" class="text-right" matInput [(ngModel)]="transaction.amount">
-    <span matPrefix>$&nbsp;</span>
-  </mat-form-field>
-
-  <!-- Frequency Input -->
-  <mat-form-field appearance="standard" floatLabel="always">
-    <mat-label>Frequency</mat-label>
-    <mat-select [(ngModel)]="transaction.recurrence.frequency">
-      <mat-option *ngFor="let frequency of frequencies" [value]="frequency.value">
-        {{ frequency.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <!-- Frequency Interval Input -->
-  <div class="d-flex justify-content-between align-items-center"
-    *ngIf="transaction.recurrence.frequency != 0">
-    <div class="col">
-      <p class="p-0 m-0">Every</p>
-    </div>
-    <div class="col-10 col-lg-5">
+      <mat-icon>{{ isExpanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+    </mat-card-title>
+    <mat-card-subtitle>{{ transaction.amount | currency }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="p-0">
+    <mat-expansion-panel
+      [expanded]="isExpanded"
+      hideToggle
+      class="mat-elevation-z0"
+      [class]="transaction.isExpense ? 'is-expense' : 'is-income'">
+      <mat-divider></mat-divider>
+      <!-- Name Input -->
       <mat-form-field appearance="standard" floatLabel="always">
-        <input matInput class="text-right"
-          type="number"
-          [(ngModel)]="transaction.recurrence.interval">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="transaction.title">
       </mat-form-field>
-    </div>
-    <div class="col text-right">
-      <p class="p-0 m-0">{{ frequencyDisplay }}</p>
-    </div>
-  </div>
 
-  <!-- Starts On DatePicker -->
-  <mat-form-field appearance="standard" floatLabel="always">
-    <mat-label>On</mat-label>
-    <input matInput
-      [matDatepicker]="picker"
-      [(ngModel)]="transaction.recurrence.startDate">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+      <!-- Amount Input -->
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Amount</mat-label>
+        <input type="number" class="text-right" matInput [(ngModel)]="transaction.amount">
+        <span matPrefix>$&nbsp;</span>
+      </mat-form-field>
 
-  <mat-action-row>
-    <button mat-icon-button (click)="onClickDelete()" class="text-danger"><mat-icon>delete</mat-icon></button>
-  </mat-action-row>
-</mat-expansion-panel>
+      <!-- Frequency Input -->
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Frequency</mat-label>
+        <mat-select [(ngModel)]="transaction.recurrence.frequency">
+          <mat-option *ngFor="let frequency of frequencies" [value]="frequency.value">
+            {{ frequency.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Frequency Interval Input -->
+      <div class="d-flex justify-content-between align-items-center"
+        *ngIf="transaction.recurrence.frequency != 0">
+        <div class="col">
+          <p class="p-0 m-0">Every</p>
+        </div>
+        <div class="col-10 col-lg-5">
+          <mat-form-field appearance="standard" floatLabel="always">
+            <input matInput class="text-right"
+              type="number"
+              [(ngModel)]="transaction.recurrence.interval">
+          </mat-form-field>
+        </div>
+        <div class="col text-right">
+          <p class="p-0 m-0">{{ frequencyDisplay }}</p>
+        </div>
+      </div>
+
+      <!-- Starts On DatePicker -->
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>On</mat-label>
+        <input matInput
+          [matDatepicker]="picker"
+          [(ngModel)]="transaction.recurrence.startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-action-row>
+        <button mat-icon-button (click)="onClickDelete()" class="text-danger"><mat-icon>delete</mat-icon></button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-card-content>
+</mat-card>
+

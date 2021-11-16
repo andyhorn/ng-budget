@@ -16,6 +16,7 @@ export class TransactionComponent implements OnInit {
   @Input() transaction!: Transaction;
   @Output() delete: EventEmitter<void>;
   public frequencies!: FrequencyDisplay[];
+  public isExpanded: boolean = false;
 
   constructor() {
     this.delete = new EventEmitter<void>();
