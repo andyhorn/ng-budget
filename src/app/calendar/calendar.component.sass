@@ -1,5 +1,7 @@
+@use "sass:math"
+
 $name-width: 50%
-$other-width: (100% - $name-width) / 2
+$other-width: math.div(100% - $name-width, 2)
 
 .col-name
   width: $name-width
