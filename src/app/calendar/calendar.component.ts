@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Occurence } from '../models/occurence';
 import { Transaction } from '../models/transaction';
 import { TransactionService } from '../services/transaction.service';
@@ -9,17 +9,8 @@ import { TransactionService } from '../services/transaction.service';
   styleUrls: ['./calendar.component.sass']
 })
 export class CalendarComponent implements OnInit {
-  public today: Date = new Date();
-  public firstDay: Date = new Date(
-    this.today.getFullYear(),
-    this.today.getMonth(),
-    1,
-    0, 0, 0, 0);
-  public lastDay: Date = new Date(
-    this.today.getFullYear(),
-    this.today.getMonth() + 1,
-    0,
-    0, 0, 0, 0);
+  @Input() firstDay!: Date;
+  @Input() lastDay!: Date;
   private _transactions: Transaction[] = [];
 
   constructor(private _transactionService: TransactionService) { }

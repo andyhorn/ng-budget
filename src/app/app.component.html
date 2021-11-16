@@ -1,7 +1,22 @@
 <div class="app-container d-flex">
   <div class="toolbar-container">
-    <mat-toolbar>
-      <span>Ng Budget</span>
+    <mat-toolbar class="d-flex justify-content-end" color="primary">
+      <div>
+        <button mat-icon-button (click)="onSaveClick()"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button (click)="onLoadClick()"><mat-icon>folder</mat-icon></button>
+        <button mat-icon-button [matMenuTriggerFor]="dateMenu"><mat-icon>calendar_today</mat-icon></button>
+      </div>
+      <mat-menu #dateMenu class="px-3">
+        <mat-form-field appearance="standard">
+          <mat-label>Select a date range</mat-label>
+          <mat-date-range-input class="text-dark" [rangePicker]="dateRangePicker">
+            <input matStartDate [(ngModel)]="firstDay">
+            <input matEndDate [(ngModel)]="lastDay">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-menu>
     </mat-toolbar>
   </div>
 
@@ -10,6 +25,9 @@
   </div>
 
   <div class="calendar-container">
-    <app-calendar></app-calendar>
+    <app-calendar
+      [firstDay]="firstDay"
+      [lastDay]="lastDay"
+    ></app-calendar>
   </div>
 </div>
