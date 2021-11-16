@@ -1,10 +1,14 @@
 <div class="app-container d-flex">
   <div class="toolbar-container">
-    <mat-toolbar class="d-flex justify-content-end" color="primary">
-      <div>
-        <button mat-icon-button (click)="onSaveClick()"><mat-icon>save</mat-icon></button>
-        <button mat-icon-button (click)="onLoadClick()"><mat-icon>folder</mat-icon></button>
-        <button mat-icon-button [matMenuTriggerFor]="dateMenu"><mat-icon>calendar_today</mat-icon></button>
+    <mat-toolbar class="d-flex justify-content-between" color="primary">
+      <span>Budget Calendar</span>
+      <div class="buttons">
+        <button mat-flat-button color="primary"
+          (click)="onSaveClick()"><mat-icon>save</mat-icon>&nbsp;Save</button>
+        <button mat-flat-button color="primary"
+          (click)="onLoadClick()"><mat-icon>folder</mat-icon>&nbsp;Load</button>
+        <button mat-flat-button color="primary"
+          [matMenuTriggerFor]="dateMenu"><mat-icon>calendar_today</mat-icon>&nbsp;Change dates</button>
       </div>
       <mat-menu #dateMenu class="px-3">
         <mat-form-field appearance="standard">
