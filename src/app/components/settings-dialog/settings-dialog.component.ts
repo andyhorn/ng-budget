@@ -23,10 +23,6 @@ export class SettingsDialogComponent implements OnInit {
     this.startingAmount = this._data.startingAmount;
   }
 
-  public onCancelClick(): void {
-    this._dialogReference.close();
-  }
-
   public onSaveClick(): void {
     this._dialogReference.close(<SettingsDialogData>{
       startDate: this.startDate,
