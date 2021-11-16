@@ -9,6 +9,7 @@ import { TransactionService } from './services/transaction.service';
 })
 export class AppComponent implements OnInit {
   private _transactions: Transaction[] = [];
+  public startingAmount: number = 0;
   public today: Date = new Date();
   public firstDay: Date = new Date(
     this.today.getFullYear(),

@@ -8,19 +8,24 @@
         <button mat-flat-button color="primary"
           (click)="onLoadClick()"><mat-icon>folder</mat-icon>&nbsp;Load</button>
         <button mat-flat-button color="primary"
-          [matMenuTriggerFor]="dateMenu"><mat-icon>calendar_today</mat-icon>&nbsp;Change dates</button>
+          [matMenuTriggerFor]="settingsMenu"><mat-icon>settings</mat-icon>&nbsp;Settings</button>
+        <mat-menu #settingsMenu class="px-3 py-2">
+          <mat-form-field appearance="standard" (click)="$event.stopPropagation()">
+            <mat-label>Select a date range</mat-label>
+            <mat-date-range-input class="text-dark" [rangePicker]="dateRangePicker">
+              <input matStartDate [(ngModel)]="firstDay">
+              <input matEndDate [(ngModel)]="lastDay">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+          </mat-form-field>
+          <mat-form-field appearance="standard" class="w-100" (click)="$event.stopPropagation()">
+            <mat-label>Starting amount</mat-label>
+            <input matInput type="number" [(ngModel)]="startingAmount">
+            <span matPrefix>$&nbsp;</span>
+          </mat-form-field>
+        </mat-menu>
       </div>
-      <mat-menu #dateMenu class="px-3">
-        <mat-form-field appearance="standard">
-          <mat-label>Select a date range</mat-label>
-          <mat-date-range-input class="text-dark" [rangePicker]="dateRangePicker">
-            <input matStartDate [(ngModel)]="firstDay">
-            <input matEndDate [(ngModel)]="lastDay">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
-          <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
-        </mat-form-field>
-      </mat-menu>
     </mat-toolbar>
   </div>
 
@@ -34,6 +39,7 @@
     <app-calendar
       [firstDay]="firstDay"
       [lastDay]="lastDay"
+      [startingAmount]="startingAmount"
     ></app-calendar>
   </div>
 </div>
