@@ -15,6 +15,22 @@ export class Transaction {
     this.recurrence = new Recurrence();
   }
 
+  public static fromJson(json: any): Transaction {
+    const transaction: Transaction = new Transaction();
+
+    transaction.amount = json.amount;
+    transaction.id = json.id;
+    transaction.isExpense = json.isExpense;
+    transaction.title = json.title;
+    transaction.recurrence = {
+      frequency: json.recurrence.frequency,
+      interval: json.recurrence.interval,
+      startDate: new Date(json.recurrence.startDate),
+    };
+
+    return transaction;
+  }
+
   public occursOn(date: Date): boolean {
     date = new Date(
       date.getFullYear(),

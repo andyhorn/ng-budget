@@ -34,15 +34,13 @@ export class SidebarComponent implements OnInit {
   }
 
   onNewIncomeClick(): void {
-    const newTransaction: Transaction = new Transaction();
-    newTransaction.isExpense = false;
+    const newTransaction: Transaction = new Transaction('New income', 0, false);
 
     this._transactionService.add(newTransaction);
   }
 
   onNewExpenseClick(): void {
-    const newTransaction: Transaction = new Transaction();
-    newTransaction.isExpense = true;
+    const newTransaction: Transaction = new Transaction('New expense', 0, true);
 
     this._transactionService.add(newTransaction);
   }
