@@ -10,7 +10,7 @@ import { TransactionService } from './services/transaction.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  private _transactions: Transaction[] = [];
+  public transactions: Transaction[] = [];
   public startingAmount: number = 0;
   public today: Date = new Date();
   public firstDay: Date = new Date(
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this._transactionService.get().subscribe((transactions: Transaction[]) => this._transactions = transactions);
+    this._transactionService.get().subscribe((transactions: Transaction[]) => this.transactions = transactions);
   }
 
   public async onSaveClick(): Promise<void> {
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    const json: string = JSON.stringify(this._transactions);
+    const json: string = JSON.stringify(this.transactions);
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
       type: 'application/json',
