@@ -10,13 +10,6 @@ export class TransactionService {
   private _transactionSubject: BehaviorSubject<Transaction[]> =
     new BehaviorSubject<Transaction[]>(this._transactions);
 
-  constructor() {
-    this.add(new Transaction('Expense 1', 100.0));
-    this.add(new Transaction('Paycheck 1', 1200.0, false));
-    this.add(new Transaction('Expense 2', 50.0));
-    this.add(new Transaction('Expense 3', 125.00));
-  }
-
   get(): Observable<Transaction[]> {
     return this._transactionSubject.asObservable();
   }
@@ -38,6 +31,11 @@ export class TransactionService {
       this._transactions.splice(index, 1);
       this._trigger();
     }
+  }
+
+  load(transactions: Transaction[]): void {
+    this._transactions = transactions;
+    this._trigger();
   }
 
   private _findNextId(): number {
