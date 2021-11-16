@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { Transaction } from './models/transaction';
 import { TransactionService } from './services/transaction.service';
 
@@ -22,20 +24,29 @@ export class AppComponent implements OnInit {
     0,
     0, 0, 0, 0);
 
-  constructor(private _transactionService: TransactionService) {}
+  constructor(
+    private _transactionService: TransactionService,
+    private _dialog: MatDialog
+    ) {}
 
   ngOnInit(): void {
     this._transactionService.get().subscribe((transactions: Transaction[]) => this._transactions = transactions);
   }
 
-  public onSaveClick(): void {
+  public async onSaveClick(): Promise<void> {
+    const filename: string = await this._getSavePath();
+
+    if (!filename) {
+      return;
+    }
+
     const json: string = JSON.stringify(this._transactions);
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
       type: 'application/json',
     });
 
-    anchor.download = 'budget_data.json';
+    anchor.download = `${filename}.json`;
     anchor.href = window.URL.createObjectURL(blob);
 
     anchor.click();
@@ -70,5 +81,14 @@ export class AppComponent implements OnInit {
     }
 
     input.click();
+  }
+
+  private async _getSavePath(): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const dialog: MatDialogRef<FileSaveDialogComponent> = this._dialog.open(FileSaveDialogComponent);
+      dialog.afterClosed().subscribe((path) => {
+        resolve(path);
+      });
+    });
   }
 }
