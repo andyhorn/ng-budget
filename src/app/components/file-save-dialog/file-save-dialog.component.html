@@ -7,11 +7,11 @@
   </mat-form-field>
 </mat-dialog-content>
 
-<mat-dialog-actions>
+<mat-dialog-actions class="d-flex justify-content-end">
+  <button mat-flat-button color="warn" [mat-dialog-close]="false">
+    <mat-icon>cancel</mat-icon>&nbsp;Cancel
+  </button>
   <button mat-flat-button color="primary" (click)="onSaveClick()">
     <mat-icon>save</mat-icon>&nbsp;Save
-  </button>
-  <button mat-flat-button color="warn" (click)="onCancelClick()">
-    <mat-icon>cancel</mat-icon>&nbsp;Cancel
   </button>
 </mat-dialog-actions>
