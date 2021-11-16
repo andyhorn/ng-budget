@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center"
   [class]="colorClass">
-  <mat-icon>{{ netFlow < 0 ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
-  {{ netFlow | currency }}
+  <mat-icon *ngIf="netFlow != 0">{{ netFlow < 0 ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+  <span>{{ netFlow | currency }}</span>
 </div>
