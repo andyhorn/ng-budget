@@ -25,6 +25,7 @@ import { NetFlowIconComponent } from './components/net-flow-icon/net-flow-icon.c
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
+import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { FileSaveDialogComponent } from './components/file-save-dialog/file-save
     CalendarComponent,
     NetFlowIconComponent,
     FileSaveDialogComponent,
+    SettingsDialogComponent,
   ],
   imports: [
     BrowserModule,

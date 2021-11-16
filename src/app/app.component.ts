@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
+import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
+import { SettingsDialogData } from './models/settings-dialog-data';
 import { Transaction } from './models/transaction';
 import { TransactionService } from './services/transaction.service';
 
@@ -81,6 +83,28 @@ export class AppComponent implements OnInit {
     }
 
     input.click();
+  }
+
+  public openSettingsDialog(): void {
+    const originalData: SettingsDialogData = {
+      startDate: this.firstDay,
+      endDate: this.lastDay,
+      startingAmount: this.startingAmount,
+    };
+
+    const dialog: MatDialogRef<SettingsDialogComponent> = this._dialog.open(SettingsDialogComponent, {
+      data: originalData,
+    });
+
+    dialog.afterClosed().subscribe((data: SettingsDialogData | null) => {
+      if (!data) {
+        return;
+      }
+
+      this.firstDay = data.startDate;
+      this.lastDay = data.endDate;
+      this.startingAmount = data.startingAmount;
+    })
   }
 
   private async _getSavePath(): Promise<string> {
