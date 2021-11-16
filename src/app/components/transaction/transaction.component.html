@@ -4,7 +4,10 @@
       {{ transaction.title }}
       <mat-icon>{{ isExpanded ? 'expand_less' : 'expand_more'}}</mat-icon>
     </mat-card-title>
-    <mat-card-subtitle>{{ transaction.amount | currency }}</mat-card-subtitle>
+    <mat-card-subtitle class="d-flex align-items-center">
+      <span *ngIf="transaction.recurrence.frequency != 0"><mat-icon>repeat</mat-icon>&nbsp;</span>
+      {{ transaction.amount | currency }}
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="p-0">
     <mat-expansion-panel
