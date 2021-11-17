@@ -7,13 +7,13 @@
         <button mat-icon-button color="warn" (click)="onDeleteClick()"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-title>
-    <mat-card-subtitle>{{ amount | currency }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      {{ amount | currency }}
+      <p>
+        Occurs
+        <app-frequency-display [frequency]="frequency" [interval]="interval"></app-frequency-display>
+        <span *ngIf="frequency !== 0">&nbsp;beginning</span>&nbsp;on {{ startDate | date }}.
+      </p>
+    </mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <p>
-      Occurs
-      <app-frequency-display [frequency]="frequency" [interval]="interval"></app-frequency-display>
-      <span *ngIf="frequency !== 0">&nbsp;beginning</span>&nbsp;on {{ startDate | date }}.
-    </p>
-  </mat-card-content>
 </mat-card>
