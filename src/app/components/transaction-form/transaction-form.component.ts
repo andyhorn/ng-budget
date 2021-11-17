@@ -34,8 +34,6 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
-  constructor() { }
-
   ngOnInit(): void {
     this.frequencies = Object.values(Frequency)
       .map((val: any) => Number(val))
@@ -46,26 +44,6 @@ export class TransactionFormComponent implements OnInit {
           value: val,
         };
       });
-  }
-
-  public updateTitle(): void {
-    this.titleChange.emit(this.title);
-  }
-
-  public updateAmount(): void {
-    this.amountChange.emit(this.amount);
-  }
-
-  public updateFrequency(): void {
-    this.frequencyChange.emit(this.frequency);
-  }
-
-  public updateInterval(): void {
-    this.intervalChange.emit(this.interval);
-  }
-
-  public updateStartDate(): void {
-    this.startDateChange.emit(this.startDate);
   }
 }
 

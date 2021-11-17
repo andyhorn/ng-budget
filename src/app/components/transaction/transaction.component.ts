@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { EditTransactionDialogData } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
 import { Transaction } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
@@ -48,7 +49,7 @@ export class TransactionComponent implements OnInit {
   public onEditClick(): void {
     this._dialog.open(EditTransactionDialogComponent, {
       width: '480px',
-      data: this._id,
+      data: new EditTransactionDialogData(this._id, false, this.isExpense),
     });
   }
 }

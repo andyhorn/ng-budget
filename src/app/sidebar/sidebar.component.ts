@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { NewTransactionDialogComponent } from '../components/new-transaction-dialog/new-transaction-dialog.component';
+import { EditTransactionDialogComponent } from '../components/edit-transaction-dialog/edit-transaction-dialog.component';
+import { EditTransactionDialogData } from '../models/edit-transaction-dialog-data';
 import { Transaction } from '../models/transaction';
 import { AppStateService } from '../services/state/app-state.service';
 
@@ -38,16 +39,16 @@ export class SidebarComponent implements OnInit {
   }
 
   onNewIncomeClick(): void {
-    this._dialog.open(NewTransactionDialogComponent, {
+    this._dialog.open(EditTransactionDialogComponent, {
       width: '480px',
-      data: false,
+      data: new EditTransactionDialogData(0, true, false),
     });
   }
 
   onNewExpenseClick(): void {
-    this._dialog.open(NewTransactionDialogComponent, {
+    this._dialog.open(EditTransactionDialogComponent, {
       width: '480px',
-      data: true,
+      data: new EditTransactionDialogData(0, true, true),
     });
   }
 
