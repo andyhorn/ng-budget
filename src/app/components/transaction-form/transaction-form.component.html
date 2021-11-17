@@ -29,7 +29,7 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Starts on</mat-label>
-    <input matInput (input)="startDateChange.emit(startDate)"
+    <input matInput (dateChange)="startDateChange.emit(startDate)"
       [matDatepicker]="picker"
       [(ngModel)]="startDate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
