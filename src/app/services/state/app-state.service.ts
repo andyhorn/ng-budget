@@ -206,25 +206,27 @@ export class AppStateService {
    }
 
    private _addTransactionOccurrences(transaction: Transaction): void {
-     console.log(this._startDate, this._endDate)
-     console.log('adding occurrences for transaction:', transaction)
     const transactionOccurrences: Occurrence[] =
       OccurrenceFinder.findOccurrences([transaction], this._startDate, this._endDate);
-    console.log('occurrences:', transactionOccurrences)
 
     for (const occurrence of transactionOccurrences) {
       const index: number =
-        this._occurrences.findIndex((o: Occurrence) => o.date == occurrence.date);
+        this._occurrences.findIndex((o: Occurrence) => this._areSameDate(o.date, occurrence.date));
 
       if (index === -1) {
-        console.log('pushing new occurrence')
         this._occurrences.push(occurrence);
       } else {
-        console.log('adding transaction to existing occurrence', this._occurrences[index])
-        this._occurrences[index].transactions.push(transaction);
-        console.log(this._occurrences[index])
+        const existing: Occurrence = this._occurrences[index];
+        existing.transactions = [...existing.transactions, transaction];
+        this._occurrences[index] = existing;
       }
     }
+   }
+
+   private _areSameDate(a: Date, b: Date): boolean {
+     return a.getFullYear() == b.getFullYear() &&
+      a.getMonth() == b.getMonth() &&
+      a.getDate() == b.getDate();
    }
 
    private _findTransactionIndex(id: number): number {
