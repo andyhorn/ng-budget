@@ -201,7 +201,9 @@ export class AppStateService {
         continue;
       }
 
-      occurrence.transactions.splice(index, 1);
+      const transactions: Transaction[] = [...occurrence.transactions];
+      transactions.splice(index, 1);
+      occurrence.transactions = transactions;
     }
    }
 
