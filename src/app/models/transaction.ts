@@ -32,12 +32,7 @@ export class Transaction {
   }
 
   public occursOn(date: Date): boolean {
-    date = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      0, 0, 0, 0
-    );
+    date.setHours(0, 0, 0, 0);
 
     if (date < this.recurrence.startDate) {
       return false;
@@ -49,13 +44,13 @@ export class Transaction {
       case Frequency.Daily:
         const daysApart: number = this._getDaysApart(this.recurrence.startDate, date);
         return daysApart % this.recurrence.interval == 0;
-        case Frequency.Weekly:
-          if (this.recurrence.startDate.getDay() != date.getDay()) {
-            return false;
-          }
+      case Frequency.Weekly:
+        if (this.recurrence.startDate.getDay() != date.getDay()) {
+          return false;
+        }
 
-          const weeksApart: number = this._getWeeksApart(this.recurrence.startDate, date);
-          return weeksApart % this.recurrence.interval == 0;
+        const weeksApart: number = this._getWeeksApart(this.recurrence.startDate, date);
+        return weeksApart % this.recurrence.interval == 0;
       case Frequency.Monthly:
         if (this.recurrence.startDate.getDate() != date.getDate()) {
           return false;
@@ -80,57 +75,44 @@ export class Transaction {
   }
 
   private _getWeeksApart(a: Date, b: Date): number {
-    let count: number = 0;
-    let first: Date = a < b ? a : b;
-    let last: Date = a < b ? b : a;
-
-    while (first < last) {
-      count++;
-      first = new Date(
-        first.getFullYear(),
-        first.getMonth(),
-        first.getDate() + 7,
-        0, 0, 0, 0
-      );
-    }
-
-    return count;
+    return this._getDaysApart(a, b) / 7;
   }
 
   private _getMonthsApart(a: Date, b: Date): number {
-    let count: number = 0;
-    let first: Date = a < b ? a : b;
-    let last: Date = a < b ? b : a;
+    const first: Date = a < b ? a : b;
+    const last: Date = a < b ? b : a;
 
-    while (first < last) {
-      count ++;
-      first = new Date(
-        first.getFullYear(),
-        first.getMonth() + 1,
-        first.getDate(),
-        0, 0, 0, 0
-      );
+    const fromMonth: number = first.getMonth();
+    const fromYear: number = first.getFullYear();
+    const toMonth: number = last.getMonth();
+    const toYear: number = last.getFullYear();
+    const yearDiff: number = toYear - fromYear;
+
+    if (yearDiff === 0) {
+      return toMonth - fromMonth;
     }
 
-    return count;
+    const monthsToEndOfFromYear: number = 12 - fromMonth;
+    const monthsToEndMonth: number = toMonth + monthsToEndOfFromYear;
+
+    if (yearDiff === 1) {
+      return monthsToEndMonth;
+    }
+
+    return monthsToEndMonth + (yearDiff - 1) * 12
   }
 
   private _getDaysApart(a: Date, b: Date): number {
-    let count: number = 0;
-    let first: Date = a < b ? a : b;
-    let last: Date = a < b ? b : a;
+    const first: Date = a < b ? a : b;
+    const last: Date = a < b ? b : a;
 
-    while (first < last) {
-      count++;
-      first = new Date(
-        first.getFullYear(),
-        first.getMonth(),
-        first.getDate() + 1,
-        0, 0, 0, 0
-      );
-    }
+    first.setHours(0, 0, 0, 0);
+    last.setHours(0, 0, 0, 0);
 
-    return count;
+    const msApart: number = last.getTime() - first.getTime();
+    const daysApart: number = Math.floor(msApart / 1000 / 60 / 60 / 24);
+
+    return daysApart;
   }
 
   private _isSameDay(a: Date, b: Date): boolean {
