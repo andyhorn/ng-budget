@@ -1,16 +1,19 @@
 export class Recurrence {
-  startDate: Date;
+  private _startDate!: Date;
   frequency: Frequency;
   interval: number;
 
+  public get startDate(): Date {
+    return this._startDate;
+  }
+
+  public set startDate(date: Date) {
+    date.setHours(0, 0, 0, 0);
+    this._startDate = date;
+  }
+
   constructor() {
-    const now: Date = new Date();
-    this.startDate = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      0, 0, 0, 0
-    );
+    this.startDate = new Date();
     this.frequency = Frequency.Once;
     this.interval = 1;
   }

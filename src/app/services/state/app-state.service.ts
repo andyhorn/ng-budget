@@ -206,17 +206,23 @@ export class AppStateService {
    }
 
    private _addTransactionOccurrences(transaction: Transaction): void {
+     console.log(this._startDate, this._endDate)
+     console.log('adding occurrences for transaction:', transaction)
     const transactionOccurrences: Occurrence[] =
       OccurrenceFinder.findOccurrences([transaction], this._startDate, this._endDate);
+    console.log('occurrences:', transactionOccurrences)
 
     for (const occurrence of transactionOccurrences) {
       const index: number =
         this._occurrences.findIndex((o: Occurrence) => o.date == occurrence.date);
 
       if (index === -1) {
+        console.log('pushing new occurrence')
         this._occurrences.push(occurrence);
       } else {
+        console.log('adding transaction to existing occurrence', this._occurrences[index])
         this._occurrences[index].transactions.push(transaction);
+        console.log(this._occurrences[index])
       }
     }
    }
