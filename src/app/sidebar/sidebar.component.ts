@@ -41,18 +41,12 @@ export class SidebarComponent implements OnInit {
     this._dialog.open(NewTransactionDialogComponent, {
       data: false,
     });
-    // const newTransaction: Transaction = new Transaction('New income', 0, false);
-
-    // this._state.addTransaction(newTransaction);
   }
 
   onNewExpenseClick(): void {
     this._dialog.open(NewTransactionDialogComponent, {
       data: true,
-    })
-    // const newTransaction: Transaction = new Transaction('New expense', 0, true);
-
-    // this._state.addTransaction(newTransaction);
+    });
   }
 
   onDelete(id: number): void {

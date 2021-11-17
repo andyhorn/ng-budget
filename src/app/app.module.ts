@@ -28,6 +28,7 @@ import { FileSaveDialogComponent } from './components/file-save-dialog/file-save
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
 import { NewTransactionDialogComponent } from './components/new-transaction-dialog/new-transaction-dialog.component';
 import { FrequencyDisplayComponent } from './components/frequency-display/frequency-display.component';
+import { EditTransactionDialogComponent } from './components/edit-transaction-dialog/edit-transaction-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { FrequencyDisplayComponent } from './components/frequency-display/freque
     SettingsDialogComponent,
     NewTransactionDialogComponent,
     FrequencyDisplayComponent,
+    EditTransactionDialogComponent,
   ],
   imports: [
     BrowserModule,

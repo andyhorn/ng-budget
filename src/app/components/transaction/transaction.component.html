@@ -3,16 +3,17 @@
     <mat-card-title class="d-flex justify-content-between">
       {{ title }}
       <div class="buttons">
-        <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
+        <button mat-icon-button color="primary" (click)="onEditClick()"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="onDeleteClick()"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-title>
+    <mat-card-subtitle>{{ amount | currency }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <p>
       Occurs
       <app-frequency-display [frequency]="frequency" [interval]="interval"></app-frequency-display>
-      beginning on {{ startDate | date }} for {{ amount | currency }}
+      <span *ngIf="frequency !== 0">beginning</span> on {{ startDate | date }}.
     </p>
   </mat-card-content>
 </mat-card>
