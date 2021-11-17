@@ -2,40 +2,13 @@
 
 <mat-dialog-content class="d-flex flex-column">
 
-  <mat-form-field appearance="outline">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="title" required>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Amount</mat-label>
-    <input type="number" matInput [(ngModel)]="amount">
-    <span matPrefix>$&nbsp;</span>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Frequency</mat-label>
-    <mat-select [(ngModel)]="frequency">
-      <mat-option *ngFor="let f of frequencies" [value]="f.value">
-        {{ f.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" *ngIf="frequency !== 0">
-    <mat-label>Interval</mat-label>
-    <input type="number" matInput [(ngModel)]="interval">
-    <mat-hint>Occurrs every {{ interval }} {{ frequencyDisplay }}</mat-hint>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Starts on</mat-label>
-    <input matInput
-      [matDatepicker]="picker"
-      [(ngModel)]="startDate">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  <app-transaction-form
+    [(amount)]="amount"
+    [(title)]="title"
+    [(frequency)]="frequency"
+    [(interval)]="interval"
+    [(startDate)]="startDate"
+  ></app-transaction-form>
 
 </mat-dialog-content>
 
@@ -43,7 +16,9 @@
   <button mat-flat-button color="warn" [mat-dialog-close]="null">
     <mat-icon>close</mat-icon>&nbsp;Discard
   </button>
-  <button mat-flat-button class="text-success" [disabled]="!canSave"
+  <button mat-flat-button [disabled]="!canSave"
+    [class.bg-success]="canSave"
+    [class.text-light]="canSave"
     (click)="onSaveClick()">
     <mat-icon>save</mat-icon>&nbsp;Save
   </button>

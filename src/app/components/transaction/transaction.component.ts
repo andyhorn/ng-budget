@@ -47,6 +47,7 @@ export class TransactionComponent implements OnInit {
 
   public onEditClick(): void {
     this._dialog.open(EditTransactionDialogComponent, {
+      width: '480px',
       data: this._id,
     });
   }

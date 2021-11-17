@@ -1,0 +1,37 @@
+<div class="d-flex flex-column">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="title" (input)="updateTitle()" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Amount</mat-label>
+    <span matPrefix>$&nbsp;</span>
+    <input type="number" matInput (input)="updateAmount()" [(ngModel)]="amount">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Frequency</mat-label>
+    <mat-select [(ngModel)]="frequency" (input)="updateFrequency()">
+      <mat-option *ngFor="let f of frequencies" [value]="f.value">
+        {{ f.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" *ngIf="frequency !== 0">
+    <mat-label>Interval</mat-label>
+    <input type="number" matInput [(ngModel)]="interval" (input)="updateInterval()">
+    <mat-hint>Occurrs every {{ interval }} {{ frequencyDisplay }}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Starts on</mat-label>
+    <input matInput (input)="updateStartDate()"
+      [matDatepicker]="picker"
+      [(ngModel)]="startDate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+

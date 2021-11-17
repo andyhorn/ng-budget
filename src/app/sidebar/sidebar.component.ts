@@ -39,12 +39,14 @@ export class SidebarComponent implements OnInit {
 
   onNewIncomeClick(): void {
     this._dialog.open(NewTransactionDialogComponent, {
+      width: '480px',
       data: false,
     });
   }
 
   onNewExpenseClick(): void {
     this._dialog.open(NewTransactionDialogComponent, {
+      width: '480px',
       data: true,
     });
   }
