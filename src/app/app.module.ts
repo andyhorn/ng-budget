@@ -26,6 +26,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
+import { NewTransactionDialogComponent } from './components/new-transaction-dialog/new-transaction-dialog.component';
+import { FrequencyDisplayComponent } from './components/frequency-display/frequency-display.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { SettingsDialogComponent } from './components/settings-dialog/settings-d
     NetFlowIconComponent,
     FileSaveDialogComponent,
     SettingsDialogComponent,
+    NewTransactionDialogComponent,
+    FrequencyDisplayComponent,
   ],
   imports: [
     BrowserModule,

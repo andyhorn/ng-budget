@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { NewTransactionDialogComponent } from '../components/new-transaction-dialog/new-transaction-dialog.component';
 import { Transaction } from '../models/transaction';
 import { AppStateService } from '../services/state/app-state.service';
 
@@ -12,7 +14,8 @@ export class SidebarComponent implements OnInit {
   public expenseTransactions: Transaction[] = [];
 
   constructor(
-    private _state: AppStateService
+    private _state: AppStateService,
+    private _dialog: MatDialog
     ) { }
 
   get totalIncomeAmount(): number {
@@ -35,15 +38,21 @@ export class SidebarComponent implements OnInit {
   }
 
   onNewIncomeClick(): void {
-    const newTransaction: Transaction = new Transaction('New income', 0, false);
+    this._dialog.open(NewTransactionDialogComponent, {
+      data: false,
+    });
+    // const newTransaction: Transaction = new Transaction('New income', 0, false);
 
-    this._state.addTransaction(newTransaction);
+    // this._state.addTransaction(newTransaction);
   }
 
   onNewExpenseClick(): void {
-    const newTransaction: Transaction = new Transaction('New expense', 0, true);
+    this._dialog.open(NewTransactionDialogComponent, {
+      data: true,
+    })
+    // const newTransaction: Transaction = new Transaction('New expense', 0, true);
 
-    this._state.addTransaction(newTransaction);
+    // this._state.addTransaction(newTransaction);
   }
 
   onDelete(id: number): void {

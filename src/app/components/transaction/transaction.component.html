@@ -1,77 +1,18 @@
-<mat-card [class]="isExpense ? 'is-expense' : 'is-income'" class="mb-2 pb-0">
-  <mat-card-header (click)="isExpanded = !isExpanded" class="w-100">
-    <mat-card-title class="d-flex justify-content-between w-100">
+<mat-card [class]="isExpense ? 'is-expense' : 'is-income'" class="mb-3">
+  <mat-card-header>
+    <mat-card-title class="d-flex justify-content-between">
       {{ title }}
-      <mat-icon>{{ isExpanded ? 'expand_less' : 'expand_more'}}</mat-icon>
-    </mat-card-title>
-    <mat-card-subtitle class="d-flex align-items-center">
-      <span *ngIf="frequency != 0"><mat-icon>repeat</mat-icon>&nbsp;</span>
-      {{ transaction.amount | currency }}
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content class="p-0">
-    <mat-expansion-panel
-      [expanded]="isExpanded"
-      hideToggle
-      class="mat-elevation-z0"
-      [class]="isExpense ? 'is-expense' : 'is-income'">
-      <mat-divider></mat-divider>
-      <!-- Name Input -->
-      <mat-form-field appearance="standard" floatLabel="always">
-        <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="title">
-      </mat-form-field>
-
-      <!-- Amount Input -->
-      <mat-form-field appearance="standard" floatLabel="always">
-        <mat-label>Amount</mat-label>
-        <input type="number" class="text-right" matInput [(ngModel)]="amount">
-        <span matPrefix>$&nbsp;</span>
-      </mat-form-field>
-
-      <!-- Frequency Input -->
-      <mat-form-field appearance="standard" floatLabel="always">
-        <mat-label>Frequency</mat-label>
-        <mat-select [(ngModel)]="frequency">
-          <mat-option *ngFor="let freq of frequencies" [value]="freq.value">
-            {{ freq.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Frequency Interval Input -->
-      <div class="d-flex justify-content-between align-items-center"
-        *ngIf="frequency != 0">
-        <div class="col">
-          <p class="p-0 m-0">Every</p>
-        </div>
-        <div class="col-10 col-lg-5">
-          <mat-form-field appearance="standard" floatLabel="always">
-            <input matInput class="text-right"
-              type="number"
-              [(ngModel)]="interval">
-          </mat-form-field>
-        </div>
-        <div class="col text-right">
-          <p class="p-0 m-0">{{ frequencyDisplay }}</p>
-        </div>
+      <div class="buttons">
+        <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
       </div>
-
-      <!-- Starts On DatePicker -->
-      <mat-form-field appearance="standard" floatLabel="always">
-        <mat-label>On</mat-label>
-        <input matInput
-          [matDatepicker]="picker"
-          [(ngModel)]="startDate">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-action-row>
-        <button mat-icon-button (click)="onClickDelete()" class="text-danger"><mat-icon>delete</mat-icon></button>
-        <button mat-icon-button (click)="onSaveClick()" class="text-success"><mat-icon>save</mat-icon></button>
-      </mat-action-row>
-    </mat-expansion-panel>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      Occurs
+      <app-frequency-display [frequency]="frequency" [interval]="interval"></app-frequency-display>
+      beginning on {{ startDate | date }} for {{ amount | currency }}
+    </p>
   </mat-card-content>
 </mat-card>
-
