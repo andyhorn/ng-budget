@@ -22,9 +22,9 @@
 
   <div class="calendar-container">
     <app-calendar
-      [firstDay]="firstDay"
-      [lastDay]="lastDay"
-      [startingAmount]="startingAmount"
+      [firstDay]="state.startDate"
+      [lastDay]="state.endDate"
+      [startingAmount]="state.startingAmount"
     ></app-calendar>
   </div>
 </div>

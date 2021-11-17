@@ -26,11 +26,11 @@ export class AppComponent {
     0, 0, 0, 0);
 
   public get canSave(): boolean {
-    return this._state.transactions.length > 0;
+    return this.state.transactions.length > 0;
   }
 
   constructor(
-    private _state: AppStateService,
+    public state: AppStateService,
     private _dialog: MatDialog
     ) {}
 
@@ -41,7 +41,7 @@ export class AppComponent {
       return;
     }
 
-    const transactions: readonly Transaction[] = this._state.transactions;
+    const transactions: readonly Transaction[] = this.state.transactions;
     const json: string = JSON.stringify(transactions);
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
@@ -76,7 +76,7 @@ export class AppComponent {
           transactions.push(transaction);
         }
 
-        this._state.setTransactions(transactions);
+        this.state.setTransactions(transactions);
       }
 
       reader.readAsText(input.files[0]);
@@ -101,9 +101,9 @@ export class AppComponent {
         return;
       }
 
-      this._state.startDate = data.startDate;
-      this._state.endDate = data.endDate;
-      this._state.startingAmount = data.startingAmount;
+      this.state.startDate = data.startDate;
+      this.state.endDate = data.endDate;
+      this.state.startingAmount = data.startingAmount;
     })
   }
 
