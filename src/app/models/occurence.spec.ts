@@ -1,7 +1,7 @@
-import { Occurence } from './occurence';
+import { Occurrence } from './occurernce';
 
 describe('Occurence', () => {
   it('should create an instance', () => {
-    expect(new Occurence()).toBeTruthy();
+    expect(new Occurrence(new Date(), [])).toBeTruthy();
   });
 });

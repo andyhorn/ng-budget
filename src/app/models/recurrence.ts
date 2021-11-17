@@ -8,7 +8,8 @@ export class Recurrence {
     this.startDate = new Date(
       now.getFullYear(),
       now.getMonth(),
-      now.getDate()
+      now.getDate(),
+      0, 0, 0, 0
     );
     this.frequency = Frequency.Once;
     this.interval = 1;

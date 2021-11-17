@@ -1,6 +1,6 @@
 import { Transaction } from "./transaction";
 
-export class Occurence {
+export class Occurrence {
   date: Date;
   transactions: Transaction[];
 

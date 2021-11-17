@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Occurence } from '../models/occurence';
+import { Occurrence } from '../models/occurernce';
+import { RunningTotal } from '../models/running-total';
 import { Transaction } from '../models/transaction';
 import { TransactionService } from '../services/transaction.service';
+import { OccurrenceFinder } from '../utilities/occurrence-finder';
 
 @Component({
   selector: 'app-calendar',
@@ -12,33 +14,12 @@ export class CalendarComponent implements OnInit {
   @Input() firstDay!: Date;
   @Input() lastDay!: Date;
   @Input() startingAmount!: number;
+  public occurrences: Occurrence[] = [];
   private _transactions: Transaction[] = [];
+  private _runningTotal!: RunningTotal;
+
 
   constructor(private _transactionService: TransactionService) { }
-
-  get occurrences(): Occurence[] {
-    const occurences: Occurence[] = [];
-    let current: Date = new Date(this.firstDay);
-
-    while (current <= this.lastDay) {
-      const transactions: Transaction[] = this._transactions
-        .filter((t: Transaction) => t.occursOn(current));
-
-      if (transactions.length) {
-        const occurence: Occurence = new Occurence(current, transactions);
-        occurences.push(occurence);
-      }
-
-      current = new Date(
-        current.getFullYear(),
-        current.getMonth(),
-        current.getDate() + 1,
-        0, 0, 0, 0
-      );
-    }
-
-    return occurences;
-  }
 
   get finalAmount(): number {
     return this.startingAmount - this.totalExpenses + this.totalIncome;
@@ -59,40 +40,22 @@ export class CalendarComponent implements OnInit {
   }
 
   get netFlow(): number {
-    return this.occurrences.reduce((sum: number, current: Occurence) => sum + current.total, 0);
+    return this.occurrences.reduce((sum: number, current: Occurrence) => sum + current.total, 0);
   }
 
   ngOnInit(): void {
     this._transactionService.get().subscribe((transactions: Transaction[]) => {
       this._transactions = transactions;
+      this.occurrences = OccurrenceFinder.findOccurrences(this._transactions, this.firstDay, this.lastDay);
+      this._runningTotal = new RunningTotal(this.occurrences, this.startingAmount);
     });
   }
 
   getRunningTotal(occurenceIndex: number, transactionIndex: number): number {
-    let total: number = this.startingAmount;
-
-    for (let o = 0; o <= occurenceIndex; o++) {
-      const occurrence: Occurence = this.occurrences[o];
-
-      for (let t = 0; t < occurrence.transactions.length; t++) {
-        const transaction: Transaction = occurrence.transactions[t];
-
-        if (transaction.isExpense) {
-          total -= transaction.amount;
-        } else {
-          total += transaction.amount;
-        }
-
-        if (t == transactionIndex && o == occurenceIndex) {
-          break;
-        }
-      }
-    }
-
-    return total;
+    return this._runningTotal.getTotal(occurenceIndex, transactionIndex);
   }
 
-  private _extractTransactions(occurrences: Occurence[]): Transaction[] {
+  private _extractTransactions(occurrences: Occurrence[]): Transaction[] {
     const transactions: Transaction[] = [];
 
     for (const occurrence of occurrences) {
