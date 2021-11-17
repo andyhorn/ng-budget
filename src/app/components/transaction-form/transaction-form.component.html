@@ -19,11 +19,13 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field appearance="fill" *ngIf="frequency !== 0">
-    <mat-label>Interval</mat-label>
-    <input type="number" matInput [(ngModel)]="interval" (input)="updateInterval()">
-    <mat-hint>Occurrs every {{ interval }} {{ frequencyDisplay }}</mat-hint>
-  </mat-form-field>
+  <div class="mb-3 w-100" *ngIf="frequency !== 0">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Interval</mat-label>
+      <input type="number" matInput [(ngModel)]="interval" (input)="updateInterval()">
+      <mat-hint>Occurs every {{ interval }} {{ frequencyDisplay }}</mat-hint>
+    </mat-form-field>
+  </div>
 
   <mat-form-field appearance="fill">
     <mat-label>Starts on</mat-label>
