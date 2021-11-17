@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Transaction } from '../models/transaction';
-import { TransactionService } from '../services/transaction.service';
+import { AppStateService } from '../services/state/app-state.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +12,8 @@ export class SidebarComponent implements OnInit {
   public expenseTransactions: Transaction[] = [];
 
   constructor(
-    private _transactionService: TransactionService) { }
+    private _state: AppStateService
+    ) { }
 
   get totalIncomeAmount(): number {
     return this.getTransactionSum(this.incomeTransactions);
@@ -27,7 +28,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._transactionService.get().subscribe((transactions: Transaction[]) => {
+    this._state.transactions$.subscribe((transactions: Transaction[]) => {
       this.incomeTransactions = transactions.filter((t: Transaction) => !t.isExpense);
       this.expenseTransactions = transactions.filter((t: Transaction) => t.isExpense);
     });
@@ -36,16 +37,16 @@ export class SidebarComponent implements OnInit {
   onNewIncomeClick(): void {
     const newTransaction: Transaction = new Transaction('New income', 0, false);
 
-    this._transactionService.add(newTransaction);
+    this._state.addTransaction(newTransaction);
   }
 
   onNewExpenseClick(): void {
     const newTransaction: Transaction = new Transaction('New expense', 0, true);
 
-    this._transactionService.add(newTransaction);
+    this._state.addTransaction(newTransaction);
   }
 
   onDelete(id: number): void {
-    this._transactionService.delete(id);
+    this._state.removeTransaction(id);
   }
 }

@@ -3,11 +3,11 @@
     <h2 class="text-center">{{ firstDay | date }} <small>through</small> {{ lastDay | date }}</h2>
   </div>
 
-  <div *ngIf="!occurrences.length" class="d-flex align-items-center justify-content-center">
+  <div *ngIf="!state.occurrences.length" class="d-flex align-items-center justify-content-center">
     <p>No data.</p>
   </div>
 
-  <mat-card *ngIf="occurrences.length" class="mat-elevation-z5 mb-3">
+  <mat-card *ngIf="state.occurrences.length" class="mat-elevation-z5 mb-3">
     <mat-card-content>
       <div class="row text-center">
         <div class="col">
@@ -38,7 +38,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card *ngFor="let occurrence of occurrences; let i = index" class="mb-3 mat-elevation-z5">
+  <mat-card *ngFor="let occurrence of state.occurrences; let i = index" class="mb-3 mat-elevation-z5">
     <mat-card-header>
       <mat-card-title>{{ occurrence.date | date:'fullDate' }}</mat-card-title>
       <mat-card-subtitle
@@ -75,8 +75,8 @@
         <ng-container matColumnDef="running-total">
           <th mat-header-cell *matHeaderCellDef class="w-25">Running total</th>
           <td mat-cell *matCellDef="let transaction; let j = index">
-            <span [class]="getRunningTotal(i, j) < 0 ? 'text-danger': 'text-success'">
-              {{ getRunningTotal(i, j) | currency }}
+            <span [class]="state.runningTotal.getTotal(i, j) < 0 ? 'text-danger': 'text-success'">
+              {{ state.runningTotal.getTotal(i, j) | currency }}
             </span>
           </td>
         </ng-container>

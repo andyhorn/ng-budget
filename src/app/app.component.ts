@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
 import { SettingsDialogData } from './models/settings-dialog-data';
 import { Transaction } from './models/transaction';
-import { TransactionService } from './services/transaction.service';
+import { AppStateService } from './services/state/app-state.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent implements OnInit {
-  public transactions: Transaction[] = [];
+export class AppComponent {
   public startingAmount: number = 0;
   public today: Date = new Date();
   public firstDay: Date = new Date(
@@ -26,14 +25,14 @@ export class AppComponent implements OnInit {
     0,
     0, 0, 0, 0);
 
+  public get canSave(): boolean {
+    return this._state.transactions.length > 0;
+  }
+
   constructor(
-    private _transactionService: TransactionService,
+    private _state: AppStateService,
     private _dialog: MatDialog
     ) {}
-
-  ngOnInit(): void {
-    this._transactionService.get().subscribe((transactions: Transaction[]) => this.transactions = transactions);
-  }
 
   public async onSaveClick(): Promise<void> {
     const filename: string = await this._getSavePath();
@@ -42,7 +41,8 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    const json: string = JSON.stringify(this.transactions);
+    const transactions: readonly Transaction[] = this._state.transactions;
+    const json: string = JSON.stringify(transactions);
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
       type: 'application/json',
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
           transactions.push(transaction);
         }
 
-        this._transactionService.load(transactions);
+        this._state.setTransactions(transactions);
       }
 
       reader.readAsText(input.files[0]);
@@ -101,9 +101,9 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      this.firstDay = data.startDate;
-      this.lastDay = data.endDate;
-      this.startingAmount = data.startingAmount;
+      this._state.startDate = data.startDate;
+      this._state.endDate = data.endDate;
+      this._state.startingAmount = data.startingAmount;
     })
   }
 

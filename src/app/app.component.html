@@ -4,7 +4,7 @@
       <span>Budget Calendar</span>
       <div class="buttons">
         <button mat-flat-button color="primary"
-          [disabled]="!transactions.length"
+          *ngIf="canSave"
           (click)="onSaveClick()"><mat-icon>save</mat-icon>&nbsp;Save</button>
         <button mat-flat-button color="primary"
           (click)="onLoadClick()"><mat-icon>folder</mat-icon>&nbsp;Load</button>
