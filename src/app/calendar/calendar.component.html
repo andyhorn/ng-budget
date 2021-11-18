@@ -1,13 +1,13 @@
 <div class="container">
   <div class="py-3">
-    <h2 class="text-center">{{ firstDay | date }} <small>through</small> {{ lastDay | date }}</h2>
+    <h2 class="text-center date-range">{{ firstDay | date }} <small>through</small> {{ lastDay | date }}</h2>
   </div>
 
-  <div *ngIf="!occurrences.length" class="d-flex align-items-center justify-content-center">
+  <div *ngIf="!occurrences.length" class="d-flex align-items-center justify-content-center no-data">
     <p>No data.</p>
   </div>
 
-  <mat-card *ngIf="occurrences.length" class="mat-elevation-z5 mb-3">
+  <mat-card *ngIf="occurrences.length" class="mat-elevation-z5 mb-3 finance-details-card">
     <mat-card-content>
       <div class="row text-center">
         <div class="col">
@@ -38,7 +38,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card *ngFor="let occurrence of occurrences; let i = index" class="mb-3 mat-elevation-z5">
+  <mat-card *ngFor="let occurrence of occurrences; let i = index" class="mb-3 mat-elevation-z5 occurrence-card">
     <mat-card-header>
       <mat-card-title>{{ occurrence.date | date:'fullDate' }}</mat-card-title>
       <mat-card-subtitle
