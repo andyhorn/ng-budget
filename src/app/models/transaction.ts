@@ -24,7 +24,7 @@ export class Transaction {
     transaction.title = json.title;
     transaction.recurrence.frequency = json.recurrence.frequency;
     transaction.recurrence.interval = json.recurrence.interval;
-    transaction.recurrence.startDate = new Date(json.recurrence.startDate);
+    transaction.recurrence.startDate = new Date(json.recurrence._startDate);
 
     return transaction;
   }
