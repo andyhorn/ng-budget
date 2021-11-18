@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditTransactionDialogData } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
@@ -11,7 +11,7 @@ import { TransactionDialogBase } from '../transaction-dialog-base.component';
   templateUrl: './edit-transaction-dialog.component.html',
   styleUrls: ['./edit-transaction-dialog.component.sass']
 })
-export class EditTransactionDialogComponent extends TransactionDialogBase implements OnInit {
+export class EditTransactionDialogComponent extends TransactionDialogBase {
   public title!: string;
   public amount!: number;
   public frequency!: Frequency;
@@ -28,8 +28,6 @@ export class EditTransactionDialogComponent extends TransactionDialogBase implem
   ) {
     super();
 
-    console.log(data)
-
     this._transactionId = data.id;
     this.isExpense = data.isExpense;
 
@@ -44,9 +42,6 @@ export class EditTransactionDialogComponent extends TransactionDialogBase implem
       this.startDate = new Date();
       this.startDate.setHours(0, 0, 0, 0);
     }
-  }
-
-  ngOnInit(): void {
   }
 
   public onSaveClick(): void {

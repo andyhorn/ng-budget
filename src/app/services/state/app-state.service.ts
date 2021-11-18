@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { Occurrence } from 'src/app/models/occurernce';
 import { RunningTotal } from 'src/app/models/running-total';
 import { Transaction } from 'src/app/models/transaction';
@@ -10,11 +9,7 @@ import { OccurrenceFinder } from 'src/app/utilities/occurrence-finder';
 })
 export class AppStateService {
   private _transactions: Transaction[] = [];
-  private _transactionSubject: Subject<Transaction[]>
-    = new Subject<Transaction[]>();
   private _occurrences: Occurrence[] = [];
-  private _occurrenceSubject: Subject<Occurrence[]>
-    = new Subject<Occurrence[]>();
   private _runningTotal: RunningTotal = new RunningTotal([]);
   private _startDate: Date;
   private _endDate: Date;
@@ -38,16 +33,8 @@ export class AppStateService {
      return this._transactions;
    }
 
-   public get transactions$(): Observable<Transaction[]> {
-    return this._transactionSubject;
-   }
-
    public get occurrences(): ReadonlyArray<Occurrence> {
      return this._occurrences;
-   }
-
-   public get occurrences$(): Observable<Occurrence[]> {
-     return this._occurrenceSubject;
    }
 
    public get runningTotal(): RunningTotal {
@@ -67,6 +54,10 @@ export class AppStateService {
    }
 
    public set startingAmount(amount: number) {
+     if (this._startingAmount == amount) {
+       return;
+     }
+
      this._startingAmount = amount;
      this._updateRunningTotal();
    }
@@ -82,7 +73,6 @@ export class AppStateService {
 
     this._recalculateOccurrences();
     this._updateRunningTotal();
-    this._triggerOccurrences();
    }
 
    public set endDate(date: Date) {
@@ -96,15 +86,12 @@ export class AppStateService {
 
     this._recalculateOccurrences();
     this._updateRunningTotal();
-    this._triggerOccurrences();
    }
 
    public setTransactions(transactions: Transaction[]): void {
      this._transactions = transactions;
      this._recalculateOccurrences();
      this._updateRunningTotal();
-     this._triggerTransactions();
-     this._triggerOccurrences();
    }
 
    public addTransaction(transaction: Transaction): void {
@@ -116,8 +103,6 @@ export class AppStateService {
     this._sortOccurrences();
 
     this._updateRunningTotal();
-    this._triggerOccurrences();
-    this._triggerTransactions();
    }
 
    public updateTransaction(transaction: Transaction): void {
@@ -134,13 +119,10 @@ export class AppStateService {
     this._sortOccurrences();
 
     this._updateRunningTotal();
-    this._triggerOccurrences();
-    this._triggerTransactions();
    }
 
    public removeTransaction(id: number): void {
-     const index: number =
-      this._transactions.findIndex((t: Transaction) => t.id == id);
+     const index: number = this._findTransactionIndex(id);
 
       if (index === -1) {
         return;
@@ -151,16 +133,6 @@ export class AppStateService {
       this._pruneEmptyOccurrences();
 
       this._updateRunningTotal();
-      this._triggerOccurrences();
-      this._triggerTransactions();
-   }
-
-   private _triggerOccurrences(): void {
-     this._occurrenceSubject.next(this._occurrences);
-   }
-
-   private _triggerTransactions(): void {
-     this._transactionSubject.next(this._transactions);
    }
 
    private _updateRunningTotal(): void {

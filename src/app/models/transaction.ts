@@ -1,11 +1,11 @@
 import { Frequency, Recurrence } from "./recurrence";
 
 export class Transaction {
-  id: number;
-  title: string;
-  isExpense: boolean;
-  amount: number;
-  recurrence: Recurrence;
+  public id: number;
+  public title: string;
+  public isExpense: boolean;
+  public amount: number;
+  public recurrence: Recurrence;
 
   constructor(title: string = '', amount: number = 0,  isExpense: boolean = true) {
     this.id = 0;

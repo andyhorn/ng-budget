@@ -22,15 +22,15 @@ export class TransactionFormComponent implements OnInit {
   get frequencyDisplay(): string {
     switch (this.frequency) {
       case Frequency.Daily:
-        return "days";
+        return 'days';
       case Frequency.Weekly:
-        return "weeks";
+        return 'weeks';
       case Frequency.Monthly:
-        return "months";
+        return 'months';
       case Frequency.Yearly:
-        return "years";
+        return 'years';
       default:
-        return "";
+        return '';
     }
   }
 

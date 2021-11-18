@@ -1,7 +1,7 @@
 export class Recurrence {
   private _startDate!: Date;
-  frequency: Frequency;
-  interval: number;
+  public frequency: Frequency;
+  public interval: number;
 
   public get startDate(): Date {
     return this._startDate;

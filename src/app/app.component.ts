@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
-import { SettingsDialogData } from './models/settings-dialog-data';
 import { Transaction } from './models/transaction';
 import { AppStateService } from './services/state/app-state.service';
 
@@ -12,19 +11,6 @@ import { AppStateService } from './services/state/app-state.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  public startingAmount: number = 0;
-  public today: Date = new Date();
-  public firstDay: Date = new Date(
-    this.today.getFullYear(),
-    this.today.getMonth(),
-    1,
-    0, 0, 0, 0);
-  public lastDay: Date = new Date(
-    this.today.getFullYear(),
-    this.today.getMonth() + 1,
-    0,
-    0, 0, 0, 0);
-
   public get canSave(): boolean {
     return this.state.transactions.length > 0;
   }
@@ -89,15 +75,7 @@ export class AppComponent {
   }
 
   public openSettingsDialog(): void {
-    const originalData: SettingsDialogData = {
-      startDate: this.firstDay,
-      endDate: this.lastDay,
-      startingAmount: this.startingAmount,
-    };
-
-    const dialog: MatDialogRef<SettingsDialogComponent> = this._dialog.open(SettingsDialogComponent, {
-      data: originalData,
-    });
+    this._dialog.open(SettingsDialogComponent);
   }
 
   private async _getSavePath(): Promise<string> {

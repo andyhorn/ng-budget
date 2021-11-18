@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-net-flow-icon',
   templateUrl: './net-flow-icon.component.html',
   styleUrls: ['./net-flow-icon.component.sass']
 })
-export class NetFlowIconComponent implements OnInit {
+export class NetFlowIconComponent {
   @Input() netFlow!: number;
 
   get colorClass(): string {
@@ -13,10 +13,4 @@ export class NetFlowIconComponent implements OnInit {
       ? 'text-danger'
       : 'text-success';
   }
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

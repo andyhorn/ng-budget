@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -26,7 +25,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
-import { NewTransactionDialogComponent } from './components/new-transaction-dialog/new-transaction-dialog.component';
 import { FrequencyDisplayComponent } from './components/frequency-display/frequency-display.component';
 import { EditTransactionDialogComponent } from './components/edit-transaction-dialog/edit-transaction-dialog.component';
 import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
@@ -40,14 +38,12 @@ import { TransactionFormComponent } from './components/transaction-form/transact
     NetFlowIconComponent,
     FileSaveDialogComponent,
     SettingsDialogComponent,
-    NewTransactionDialogComponent,
     FrequencyDisplayComponent,
     EditTransactionDialogComponent,
     TransactionFormComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatDividerModule,
     MatCardModule,

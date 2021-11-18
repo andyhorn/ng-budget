@@ -9,31 +9,43 @@ import { AppStateService } from '../services/state/app-state.service';
   styleUrls: ['./calendar.component.sass']
 })
 export class CalendarComponent {
-  @Input() firstDay!: Date;
-  @Input() lastDay!: Date;
-  @Input() startingAmount!: number;
+  public get firstDay(): Date {
+    return this.state.startDate;
+  }
 
-  constructor(public state: AppStateService) { }
+  public get lastDay(): Date {
+    return this.state.endDate;
+  }
 
-  get finalAmount(): number {
+  public get startingAmount(): number {
+    return this.state.startingAmount;
+  }
+
+  public get finalAmount(): number {
     return this.startingAmount - this.totalExpenses + this.totalIncome;
   }
 
-  get totalExpenses(): number {
+  public get totalExpenses(): number {
     const transactions: Transaction[] = this._extractTransactions(true);
 
     return this._getTransactionSum(transactions);
   }
 
-  get totalIncome(): number {
+  public get totalIncome(): number {
     const transactions: Transaction[] = this._extractTransactions(false);
 
     return this._getTransactionSum(transactions);
   }
 
-  get netFlow(): number {
+  public get netFlow(): number {
     return this.state.occurrences.reduce((sum: number, current: Occurrence) => sum + current.total, 0);
   }
+
+  public get occurrences(): readonly Occurrence[] {
+    return this.state.occurrences;
+  }
+
+  constructor(public state: AppStateService) { }
 
   private _extractTransactions(isExpense: boolean): Transaction[] {
     return this.state.occurrences

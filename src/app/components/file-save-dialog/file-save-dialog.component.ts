@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -6,15 +6,12 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './file-save-dialog.component.html',
   styleUrls: ['./file-save-dialog.component.sass']
 })
-export class FileSaveDialogComponent implements OnInit {
+export class FileSaveDialogComponent {
   public filename: string = '';
 
   constructor(
     public dialogReference: MatDialogRef<FileSaveDialogComponent>
   ) { }
-
-  ngOnInit(): void {
-  }
 
   public onCancelClick(): void {
     this.dialogReference.close();

@@ -1,8 +1,8 @@
 import { Transaction } from "./transaction";
 
 export class Occurrence {
-  date: Date;
-  transactions: Transaction[];
+  public date: Date;
+  public transactions: Transaction[];
 
   constructor(date: Date, transactions: Transaction[]) {
     this.date = date;

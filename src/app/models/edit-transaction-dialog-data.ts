@@ -1,7 +1,7 @@
 export class EditTransactionDialogData {
-  id: number;
-  isNew: boolean;
-  isExpense: boolean;
+  public id: number;
+  public isNew: boolean;
+  public isExpense: boolean;
 
   constructor(id: number, isNew: boolean, isExpense: boolean) {
     this.id = id;
