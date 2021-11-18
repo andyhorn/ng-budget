@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SettingsDialogData } from 'src/app/models/settings-dialog-data';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AppStateService } from 'src/app/services/state/app-state.service';
 
 @Component({
   selector: 'app-settings-dialog',
@@ -14,20 +14,20 @@ export class SettingsDialogComponent implements OnInit {
 
   constructor(
     private _dialogReference: MatDialogRef<SettingsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private _data: SettingsDialogData
+    private _state: AppStateService
   ) { }
 
   ngOnInit(): void {
-    this.startDate = this._data.startDate;
-    this.endDate = this._data.endDate;
-    this.startingAmount = this._data.startingAmount;
+    this.startDate = this._state.startDate;
+    this.endDate = this._state.endDate;
+    this.startingAmount = this._state.startingAmount;
   }
 
   public onSaveClick(): void {
-    this._dialogReference.close(<SettingsDialogData>{
-      startDate: this.startDate,
-      endDate: this.endDate,
-      startingAmount: this.startingAmount,
-    });
+    this._state.startDate = this.startDate;
+    this._state.endDate = this.endDate;
+    this._state.startingAmount = this.startingAmount;
+
+    this._dialogReference.close();
   }
 }

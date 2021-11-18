@@ -41,8 +41,7 @@ export class AppComponent {
       return;
     }
 
-    const transactions: readonly Transaction[] = this.state.transactions;
-    const json: string = JSON.stringify(transactions);
+    const json: string = JSON.stringify(this.state.transactions);
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
       type: 'application/json',
@@ -71,9 +70,13 @@ export class AppComponent {
         const transactions: Transaction[] = [];
 
         for (const json of data) {
-          const transaction: Transaction = Transaction.fromJson(json);
+          try {
+            const transaction: Transaction = Transaction.fromJson(json);
 
-          transactions.push(transaction);
+            transactions.push(transaction);
+          } catch (e) {
+            console.error(e);
+          }
         }
 
         this.state.setTransactions(transactions);
@@ -95,16 +98,6 @@ export class AppComponent {
     const dialog: MatDialogRef<SettingsDialogComponent> = this._dialog.open(SettingsDialogComponent, {
       data: originalData,
     });
-
-    dialog.afterClosed().subscribe((data: SettingsDialogData | null) => {
-      if (!data) {
-        return;
-      }
-
-      this.state.startDate = data.startDate;
-      this.state.endDate = data.endDate;
-      this.state.startingAmount = data.startingAmount;
-    })
   }
 
   private async _getSavePath(): Promise<string> {
