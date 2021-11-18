@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy": "ng build --base-href 'https://andyhorn.github.io/ng-budget/' && npx angular-cli-ghpages --dir=dist/ng-budget",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
