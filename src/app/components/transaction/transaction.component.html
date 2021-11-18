@@ -11,7 +11,7 @@
       {{ amount | currency }}
       <p>
         Occurs
-        <app-frequency-display [frequency]="frequency" [interval]="interval"></app-frequency-display>
+        <app-frequency-display [frequency]="frequency" [interval]="interval" [date]="transaction.recurrence.startDate"></app-frequency-display>
         <span *ngIf="frequency !== 0">&nbsp;beginning</span>&nbsp;on {{ startDate | date }}.
       </p>
     </mat-card-subtitle>
