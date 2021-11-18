@@ -87,16 +87,6 @@ describe('CalendarComponent', () => {
     expect(cards.length).toEqual(occurrences.length);
   });
 
-  it('should pull the starting amount from the state', () => {
-    const amount = 10000;
-    const state = fixture.debugElement.injector.get(AppStateService);
-    spyOnProperty(state, 'startingAmount').and.returnValue(amount);
-
-    fixture.detectChanges();
-
-    expect(component.startingAmount).toEqual(amount);
-  });
-
   it('should pull the start date from the state', () => {
     const startDate = new Date('January 1, 2020');
     const state = fixture.debugElement.injector.get(AppStateService);

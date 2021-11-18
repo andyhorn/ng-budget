@@ -7,84 +7,11 @@
     <p>No data.</p>
   </div>
 
-  <mat-card *ngIf="occurrences.length" class="mat-elevation-z5 mb-3 finance-details-card">
-    <mat-card-content>
-      <div class="row text-center">
-        <div class="col">
-          Total income<br/><span class="text-success">{{ totalIncome | currency }}</span>
-        </div>
-        <div class="col">
-          Total expenses<br/><span class="text-danger">{{ totalExpenses | currency }}</span>
-        </div>
-        <div class="col d-flex flex-column align-items-center justify-content-center">
-          Net flow
-          <span [class]="netFlow < 0 ? 'text-danger' : 'text-success'">
-            {{ netFlow | currency }}
-          </span>
-        </div>
-        <div class="col d-flex flex-column align-items-center justify-content-center">
-          Starting amount
-          <span [class]="startingAmount < 0 ? 'text-danger' : 'text-success'">
-            {{ startingAmount | currency }}
-          </span>
-        </div>
-        <div class="col d-flex flex-column align-items-center justify-content-center">
-          Final amount
-          <span [class]="finalAmount < 0 ? 'text-danger': 'text-success'">
-            {{ finalAmount | currency }}
-          </span>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <app-finance-details *ngIf="occurrences.length"></app-finance-details>
 
-  <mat-card *ngFor="let occurrence of occurrences; let i = index" class="mb-3 mat-elevation-z5 occurrence-card">
-    <mat-card-header>
-      <mat-card-title>{{ occurrence.date | date:'fullDate' }}</mat-card-title>
-      <mat-card-subtitle
-        [class]="occurrence.total < 0 ? 'text-danger' : 'text-success'"
-        class="d-flex align-items-center"
-      >
-        <app-net-flow-icon [netFlow]="occurrence.total"></app-net-flow-icon>
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-
-      <table mat-table [dataSource]="occurrence.transactions" class="w-100">
-        <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef class="w-50">Name</th>
-          <td mat-cell *matCellDef="let transaction"
-            [class]="transaction.isExpense ? 'text-danger' : 'text-success'">
-            {{ transaction.title }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef class="w-25">Amount</th>
-          <td mat-cell *matCellDef="let transaction"
-            [class]="transaction.isExpense ? 'text-danger' : 'text-success'">
-            <span *ngIf="transaction.isExpense">
-              ({{ transaction.amount | currency }})
-            </span>
-            <span *ngIf="!transaction.isExpense">
-              {{ transaction.amount | currency }}
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="running-total">
-          <th mat-header-cell *matHeaderCellDef class="w-25">Running total</th>
-          <td mat-cell *matCellDef="let transaction; let j = index">
-            <span [class]="state.runningTotal.getTotal(i, j) < 0 ? 'text-danger': 'text-success'">
-              {{ state.runningTotal.getTotal(i, j) | currency }}
-            </span>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="[ 'title', 'amount', 'running-total' ]"></tr>
-        <tr mat-row *matRowDef="let row; columns: [ 'title', 'amount', 'running-total' ]"></tr>
-      </table>
-
-    </mat-card-content>
-  </mat-card>
+  <app-occurrence-card *ngFor="let occurrence of occurrences, i = index"
+    [occurrence]="occurrence"
+    [index]="i"
+  >
+  <app-occurrence-card>
 </div>
