@@ -29,7 +29,7 @@ import { FrequencyDisplayComponent } from './components/frequency-display/freque
 import { EditTransactionDialogComponent } from './components/edit-transaction-dialog/edit-transaction-dialog.component';
 import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
 import { FinanceDetailsComponent } from './components/finance-details/finance-details.component';
-import { OccurenceCardComponent } from './components/occurence-card/occurence-card.component';
+import { OccurrenceCardComponent } from './components/occurrence-card/occurrence-card.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { OccurenceCardComponent } from './components/occurence-card/occurence-ca
     EditTransactionDialogComponent,
     TransactionFormComponent,
     FinanceDetailsComponent,
-    OccurenceCardComponent,
+    OccurrenceCardComponent,
   ],
   imports: [
     BrowserModule,

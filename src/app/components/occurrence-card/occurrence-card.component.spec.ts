@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OccurenceCardComponent } from './occurence-card.component';
+import { OccurrenceCardComponent } from './occurrence-card.component';
 
 describe('OccurenceCardComponent', () => {
-  let component: OccurenceCardComponent;
-  let fixture: ComponentFixture<OccurenceCardComponent>;
+  let component: OccurrenceCardComponent;
+  let fixture: ComponentFixture<OccurrenceCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OccurenceCardComponent ]
+      declarations: [ OccurrenceCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OccurenceCardComponent);
+    fixture = TestBed.createComponent(OccurrenceCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

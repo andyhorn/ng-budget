@@ -9,9 +9,9 @@
 
   <app-finance-details *ngIf="occurrences.length"></app-finance-details>
 
-  <app-occurrence-card *ngFor="let occurrence of occurrences, i = index"
+  <app-occurrence-card *ngFor="let occurrence of occurrences; let i = index"
     [occurrence]="occurrence"
-    [index]="i"
+    [occurrenceIndex]="i"
   >
-  <app-occurrence-card>
+  </app-occurrence-card>
 </div>
