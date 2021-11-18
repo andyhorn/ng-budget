@@ -12,11 +12,15 @@ import { AppStateService } from '../services/state/app-state.service';
 })
 export class SidebarComponent {
   public get incomeTransactions(): readonly Transaction[] {
-    return this._state.transactions.filter((t: Transaction) => !t.isExpense);
+    return this._state.transactions
+      .filter((t: Transaction) => !t.isExpense)
+      .sort((a: Transaction, b: Transaction) => a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
   }
 
   public get expenseTransactions(): readonly Transaction[] {
-    return this._state.transactions.filter((t: Transaction) => t.isExpense);
+    return this._state.transactions
+      .filter((t: Transaction) => t.isExpense)
+      .sort((a: Transaction, b: Transaction) => a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
   }
 
   public get totalIncomeAmount(): number {

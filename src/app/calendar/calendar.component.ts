@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Occurrence } from '../models/occurernce';
+import { Occurrence } from '../models/occurrence';
 import { Transaction } from '../models/transaction';
 import { AppStateService } from '../services/state/app-state.service';
 

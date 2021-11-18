@@ -7,6 +7,7 @@ export class Occurrence {
   constructor(date: Date, transactions: Transaction[]) {
     this.date = date;
     this.transactions = transactions;
+    this.transactions.sort((a: Transaction, b: Transaction) => a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
   }
 
   public get total(): number {

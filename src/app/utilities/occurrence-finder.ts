@@ -1,4 +1,4 @@
-import { Occurrence } from "../models/occurernce";
+import { Occurrence } from "../models/occurrence";
 import { Transaction } from "../models/transaction";
 
 export class OccurrenceFinder {

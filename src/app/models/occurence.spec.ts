@@ -1,4 +1,4 @@
-import { Occurrence } from './occurernce';
+import { Occurrence } from './occurrence';
 
 describe('Occurence', () => {
   it('should create an instance', () => {

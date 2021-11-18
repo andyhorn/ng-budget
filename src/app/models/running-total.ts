@@ -1,4 +1,4 @@
-import { Occurrence } from "./occurernce";
+import { Occurrence } from "./occurrence";
 
 export class RunningTotal {
   private _occurrenceTransactionTotals: number[][] = [];

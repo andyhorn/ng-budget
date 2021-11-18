@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Occurrence } from 'src/app/models/occurernce';
+import { Occurrence } from 'src/app/models/occurrence';
 import { RunningTotal } from 'src/app/models/running-total';
 import { Transaction } from 'src/app/models/transaction';
 import { OccurrenceFinder } from 'src/app/utilities/occurrence-finder';
