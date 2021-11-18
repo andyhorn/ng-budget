@@ -7,11 +7,10 @@
     <p>No data.</p>
   </div>
 
-  <app-finance-details *ngIf="occurrences.length"></app-finance-details>
+  <app-finance-details *ngIf="!!occurrences.length"></app-finance-details>
 
-  <app-occurrence-card *ngFor="let occurrence of occurrences; let i = index"
+  <app-occurrence-card *ngFor="let occurrence of occurrences; let i = index;"
     [occurrence]="occurrence"
     [occurrenceIndex]="i"
-  >
-  </app-occurrence-card>
+  ></app-occurrence-card>
 </div>

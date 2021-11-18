@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FinanceDetailsComponent } from '../components/finance-details/finance-details.component';
+import { OccurrenceCardComponent } from '../components/occurrence-card/occurrence-card.component';
 import { Occurrence } from '../models/occurrence';
 import { AppStateService } from '../services/state/app-state.service';
 import { CalendarComponent } from './calendar.component';
@@ -10,7 +12,11 @@ describe('CalendarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CalendarComponent ],
+      declarations: [
+        CalendarComponent,
+        FinanceDetailsComponent,
+        OccurrenceCardComponent
+      ],
     })
     .compileComponents();
   });
@@ -85,6 +91,45 @@ describe('CalendarComponent', () => {
 
     const cards = fixture.debugElement.queryAll(By.css('.occurrence-card'));
     expect(cards.length).toEqual(occurrences.length);
+  });
+
+  it('should add an occurrence card if a new occurrence is created', () => {
+    const occurrences = [
+      new Occurrence(new Date('January 1, 2020'), []),
+      new Occurrence(new Date('January 2, 2020'), []),
+    ];
+    const state = fixture.debugElement.injector.get(AppStateService);
+    const spy = spyOnProperty(state, 'occurrences').and.returnValue(occurrences);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.occurrence-card')).length).toEqual(occurrences.length);
+
+    occurrences.push(new Occurrence(new Date('January 3, 2020'), []));
+    spy.and.returnValue(occurrences);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.occurrence-card')).length).toEqual(occurrences.length);
+  });
+
+  it('should remove an occurrence card if an existing occurrence is deleted', () => {
+    const occurrences = [
+      new Occurrence(new Date('January 1, 2020'), []),
+      new Occurrence(new Date('January 2, 2020'), []),
+      new Occurrence(new Date('January 3, 2020'), []),
+    ];
+    const state = fixture.debugElement.injector.get(AppStateService);
+    const spy = spyOnProperty(state, 'occurrences').and.returnValue(occurrences);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.occurrence-card')).length).toEqual(occurrences.length);
+
+    occurrences.splice(0, 1);
+    spy.and.returnValue(occurrences);
+
+    expect(fixture.debugElement.queryAll(By.css('.occurrence-card')).length).toEqual(occurrences.length);
   });
 
   it('should pull the start date from the state', () => {
