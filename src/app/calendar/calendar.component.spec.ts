@@ -129,8 +129,24 @@ describe('CalendarComponent', () => {
     occurrences.splice(0, 1);
     spy.and.returnValue(occurrences);
 
+    fixture.detectChanges();
+
     expect(fixture.debugElement.queryAll(By.css('.occurrence-card')).length).toEqual(occurrences.length);
   });
+
+  it('should display the finance details card when the first occurrence is created', () => {
+    expect(fixture.debugElement.query(By.css('.finance-details-card'))).toBeNull();
+
+    const occurrences = [
+      new Occurrence(new Date(), []),
+    ];
+    const state = fixture.debugElement.injector.get(AppStateService);
+    spyOnProperty(state, 'occurrences').and.returnValue(occurrences);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('.finance-details-card'))).toBeTruthy();
+  })
 
   it('should pull the start date from the state', () => {
     const startDate = new Date('January 1, 2020');

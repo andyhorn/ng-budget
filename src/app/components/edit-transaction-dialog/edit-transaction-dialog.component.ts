@@ -4,14 +4,13 @@ import { EditTransactionDialogData } from 'src/app/models/edit-transaction-dialo
 import { Frequency } from 'src/app/models/recurrence';
 import { Transaction } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
-import { TransactionDialogBase } from '../transaction-dialog-base.component';
 
 @Component({
   selector: 'app-edit-transaction-dialog',
   templateUrl: './edit-transaction-dialog.component.html',
   styleUrls: ['./edit-transaction-dialog.component.sass']
 })
-export class EditTransactionDialogComponent extends TransactionDialogBase {
+export class EditTransactionDialogComponent {
   public title!: string;
   public amount!: number;
   public frequency!: Frequency;
@@ -26,8 +25,6 @@ export class EditTransactionDialogComponent extends TransactionDialogBase {
     private _ref: MatDialogRef<EditTransactionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: EditTransactionDialogData
   ) {
-    super();
-
     this._transactionId = data.id;
     this.isExpense = data.isExpense;
 
@@ -37,11 +34,15 @@ export class EditTransactionDialogComponent extends TransactionDialogBase {
     } else {
       this.title = '';
       this.amount = 0;
-      this.frequency = Frequency.Once;
+      this.frequency = Frequency.Monthly;
       this.interval = 1;
       this.startDate = new Date();
       this.startDate.setHours(0, 0, 0, 0);
     }
+  }
+
+  get canSave(): boolean {
+    return this.title.trim()?.length > 0;
   }
 
   public onSaveClick(): void {
