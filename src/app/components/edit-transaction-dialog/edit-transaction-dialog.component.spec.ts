@@ -1,8 +1,6 @@
-import { state } from '@angular/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { copyFile } from 'fs';
 import { Frequency } from 'src/app/models/recurrence';
 import { Transaction } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
@@ -97,9 +95,11 @@ describe('EditTransactionDialogComponent (NEW)', () => {
 
   it('should disable the save button if the title is empty', () => {
     component.title = '';
-    const saveButton = fixture.debugElement
-      .queryAll(By.css('button .mat-flat-button'))
-      .find((e) => e.nativeElement.innerText == 'Save');
+    fixture.detectChanges();
+
+    const buttons = fixture.debugElement
+      .queryAll(By.css('button'));
+    const saveButton = buttons.find(b => b.nativeElement.innerText.includes('Save'));
 
     expect(saveButton).toBeTruthy();
     expect(saveButton?.nativeElement.disabled).toBeTrue();

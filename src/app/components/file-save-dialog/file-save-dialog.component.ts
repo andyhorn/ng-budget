@@ -9,6 +9,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class FileSaveDialogComponent {
   public filename: string = '';
 
+  public get canSave(): boolean {
+    return !!this.filename.trim();
+  }
+
   constructor(
     public dialogReference: MatDialogRef<FileSaveDialogComponent>
   ) { }
