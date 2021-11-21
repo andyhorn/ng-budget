@@ -1,5 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 
 import { NetFlowIconComponent } from './net-flow-icon.component';
@@ -10,7 +11,8 @@ describe('NetFlowIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NetFlowIconComponent ]
+      declarations: [ NetFlowIconComponent ],
+      imports: [ MatIconModule ],
     })
     .compileComponents();
   });
@@ -55,5 +57,21 @@ describe('NetFlowIconComponent', () => {
     const formatted = new CurrencyPipe('en-US').transform(netFlow);
 
     expect(content).toEqual(formatted);
+  });
+
+  it('should display an upward arrow for positive amounts', () => {
+    component.netFlow = 1;
+    fixture.detectChanges();
+
+    const icon = fixture.debugElement.query(By.css('.mat-icon'));
+    expect(icon.nativeElement.innerText).toContain('upward');
+  });
+
+  it('should display a downward arrow for negative amounts', () => {
+    component.netFlow = -1;
+    fixture.detectChanges();
+
+    const icon = fixture.debugElement.query(By.css('.mat-icon'));
+    expect(icon.nativeElement.innerText).toContain('downward');
   });
 });
