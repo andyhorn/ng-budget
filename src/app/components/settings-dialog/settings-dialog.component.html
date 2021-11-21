@@ -4,15 +4,15 @@
   <mat-form-field appearance="standard" class="w-100">
     <mat-label>Select a date range</mat-label>
     <mat-date-range-input class="text-dark" [rangePicker]="dateRangePicker">
-      <input matStartDate [(ngModel)]="startDate">
-      <input matEndDate [(ngModel)]="endDate">
+      <input matStartDate [(ngModel)]="startDate" id="startDateInput">
+      <input matEndDate [(ngModel)]="endDate" id="endDateInput">
     </mat-date-range-input>
     <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
     <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
   </mat-form-field>
-  <mat-form-field appearance="standard" class="w-100" (click)="$event.stopPropagation()">
+  <mat-form-field appearance="standard" class="w-100">
     <mat-label>Starting amount</mat-label>
-    <input matInput type="number" [(ngModel)]="startingAmount">
+    <input matInput type="number" [(ngModel)]="startingAmount" id="startingAmountInput">
     <span matPrefix>$&nbsp;</span>
   </mat-form-field>
 </mat-dialog-content>
