@@ -89,18 +89,40 @@ describe('TransactionComponent', () => {
     expect(element.nativeElement.innerText).toContain(expected);
   });
 
-  it('should remove the transaction from the state when the delete button is clicked', () => {
-    const state = fixture.debugElement.injector.get(AppStateService);
+  it('should trigger the delete method when the delete button is clicked', () => {
+    const spy = spyOn(component, 'onDeleteClick').and.stub();
     const buttons = fixture.debugElement.queryAll(By.css('.mat-card-title button'));
     const button = buttons.find(e => e.nativeElement.innerText.includes('delete'));
-    let removedId: number;
-    const spy = spyOn(state, 'removeTransaction').and.callFake((id) => removedId = id);
+    expect(button).toBeTruthy();
 
-    button?.triggerEventHandler('click', {});
+    button!.triggerEventHandler('click', {});
     fixture.detectChanges();
 
-    expect(spy.calls.count).toEqual(1);
-    expect(removedId!).toEqual(id);
+    expect(spy.calls.count()).toEqual(1);
+  });
+
+  it('should remove the transaction from the state when the dialog is confirmed', () => {
+    let transactionId: number;
+    const state = fixture.debugElement.injector.get(AppStateService);
+    const spy = spyOn(state, 'removeTransaction').and.callFake(id => transactionId = id);
+    spyOn(window, 'alert').and.callFake(_ => true);
+
+    component.onDeleteClick();
+    fixture.detectChanges();
+
+    expect(spy.calls.count()).toEqual(1);
+    expect(transactionId!).toEqual(id);
+  });
+
+  it('should not remove the transaction from the state when the dialog is rejected', () => {
+    const state = fixture.debugElement.injector.get(AppStateService);
+    const spy = spyOn(state, 'removeTransaction');
+    spyOn(window, 'alert').and.callFake(_ => false);
+
+    component.onDeleteClick();
+    fixture.detectChanges();
+
+    expect(spy.calls.count()).toEqual(0);
   });
 
   it('should open a dialog with the transaction data when the edit button is clicked', () => {
@@ -118,8 +140,8 @@ describe('TransactionComponent', () => {
     button?.triggerEventHandler('click', {});
     fixture.detectChanges();
 
-    expect(spy.calls.count).toEqual(1);
+    expect(spy.calls.count()).toEqual(1);
     expect(transactionData).toBeTruthy();
-    expect(transactionData.id).toEqual(id);
+    expect(transactionData.data.id).toEqual(id);
   });
 });
