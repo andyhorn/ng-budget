@@ -38,23 +38,23 @@ export class Transaction {
 
     switch (this.recurrence.frequency) {
       case Frequency.Once:
-        return this._isSameDay(this.recurrence.startDate, date);
+        return this.isSameDay(this.recurrence.startDate, date);
       case Frequency.Daily:
-        const daysApart: number = this._getDaysApart(this.recurrence.startDate, date);
+        const daysApart: number = this.getDaysApart(this.recurrence.startDate, date);
         return daysApart % this.recurrence.interval == 0;
       case Frequency.Weekly:
         if (this.recurrence.startDate.getDay() != date.getDay()) {
           return false;
         }
 
-        const weeksApart: number = this._getWeeksApart(this.recurrence.startDate, date);
+        const weeksApart: number = this.getWeeksApart(this.recurrence.startDate, date);
         return weeksApart % this.recurrence.interval == 0;
       case Frequency.Monthly:
         if (this.recurrence.startDate.getDate() != date.getDate()) {
           return false;
         }
 
-        const monthsApart: number = this._getMonthsApart(this.recurrence.startDate, date);
+        const monthsApart: number = this.getMonthsApart(this.recurrence.startDate, date);
         return monthsApart % this.recurrence.interval == 0;
       case Frequency.Yearly:
         if (this.recurrence.startDate.getMonth() != date.getMonth()) {
@@ -72,11 +72,11 @@ export class Transaction {
     }
   }
 
-  private _getWeeksApart(a: Date, b: Date): number {
-    return this._getDaysApart(a, b) / 7;
+  private getWeeksApart(a: Date, b: Date): number {
+    return this.getDaysApart(a, b) / 7;
   }
 
-  private _getMonthsApart(a: Date, b: Date): number {
+  private getMonthsApart(a: Date, b: Date): number {
     const first: Date = a < b ? a : b;
     const last: Date = a < b ? b : a;
 
@@ -100,7 +100,7 @@ export class Transaction {
     return monthsToEndMonth + (yearDiff - 1) * 12
   }
 
-  private _getDaysApart(a: Date, b: Date): number {
+  private getDaysApart(a: Date, b: Date): number {
     const first: Date = a < b ? a : b;
     const last: Date = a < b ? b : a;
 
@@ -113,7 +113,7 @@ export class Transaction {
     return daysApart;
   }
 
-  private _isSameDay(a: Date, b: Date): boolean {
+  private isSameDay(a: Date, b: Date): boolean {
     return a.getFullYear() == b.getFullYear() &&
       a.getMonth() == b.getMonth() &&
       a.getDate() == b.getDate();
