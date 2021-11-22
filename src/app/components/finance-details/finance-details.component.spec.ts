@@ -59,7 +59,7 @@ describe('FinanceDetailsComponent', () => {
     const occurrences = [
       new Occurrence(new Date('January 1, 2020'), incomes),
     ];
-    const expectedAmount = getTransactionSum(occurrences[0].transactions);
+    const expectedAmount = getTransactionSum(occurrences[0].transactions as Transaction[]);
 
     state.occurrences = occurrences;
     fixture.detectChanges();

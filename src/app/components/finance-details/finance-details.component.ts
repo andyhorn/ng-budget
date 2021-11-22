@@ -43,7 +43,7 @@ export class FinanceDetailsComponent implements OnInit {
   private _extractTransactions(isExpense: boolean): Transaction[] {
     return this.state.occurrences
       .map((o: Occurrence) => o.transactions)
-      .reduce((list: Transaction[], current: Transaction[]) => list.concat(current), [])
+      .reduce((list: Transaction[], current: readonly Transaction[]) => list.concat([...current]), [])
       .filter((t: Transaction) => t.isExpense === isExpense);
   }
 
