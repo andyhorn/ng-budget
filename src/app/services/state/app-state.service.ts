@@ -59,7 +59,7 @@ export class AppStateService {
      }
 
      this._startingAmount = amount;
-     this._updateRunningTotal();
+     this.updateRunningTotal();
    }
 
    public set startDate(date: Date) {
@@ -71,8 +71,8 @@ export class AppStateService {
 
     this._startDate = date;
 
-    this._recalculateOccurrences();
-    this._updateRunningTotal();
+    this.recalculateOccurrences();
+    this.updateRunningTotal();
    }
 
    public set endDate(date: Date) {
@@ -84,130 +84,132 @@ export class AppStateService {
 
     this._endDate = date;
 
-    this._recalculateOccurrences();
-    this._updateRunningTotal();
+    this.recalculateOccurrences();
+    this.updateRunningTotal();
    }
 
    public setTransactions(transactions: Transaction[]): void {
      this._transactions = transactions;
-     this._recalculateOccurrences();
-     this._updateRunningTotal();
+     this.recalculateOccurrences();
+     this.updateRunningTotal();
    }
 
    public addTransaction(transaction: Transaction): void {
-    const id: number = this._findNextId();
+    const id: number = this.findNextId();
     transaction.id = id;
 
     this._transactions.push(transaction);
-    this._addTransactionOccurrences(transaction);
-    this._sortOccurrences();
-
-    this._updateRunningTotal();
+    this.addTransactionToOccurrences(transaction);
+    this.sortOccurrences();
+    this.updateRunningTotal();
    }
 
    public updateTransaction(transaction: Transaction): void {
-    const index: number = this._findTransactionIndex(transaction.id);
+    const index: number = this.findTransactionIndex(transaction.id);
 
     if (index === -1) {
       return;
     }
 
     this._transactions[index] = transaction;
-    this._removeTransactionOccurrences(transaction.id);
-    this._addTransactionOccurrences(transaction);
-    this._pruneEmptyOccurrences();
-    this._sortOccurrences();
-
-    this._updateRunningTotal();
+    this.removeTransactionFromOccurrences(transaction.id);
+    this.addTransactionToOccurrences(transaction);
+    this.pruneEmptyOccurrences();
+    this.sortOccurrences();
+    this.updateRunningTotal();
    }
 
    public removeTransaction(id: number): void {
-     const index: number = this._findTransactionIndex(id);
+     const index: number = this.findTransactionIndex(id);
 
       if (index === -1) {
         return;
       }
 
-      this._transactions.splice(index, 1);
-      this._removeTransactionOccurrences(id);
-      this._pruneEmptyOccurrences();
+      this._transactions = this._transactions.filter((t: Transaction) => t.id !== id);
+      this.removeTransactionFromOccurrences(id);
+      this.pruneEmptyOccurrences();
 
-      this._updateRunningTotal();
+      this.updateRunningTotal();
    }
 
-   private _updateRunningTotal(): void {
+   private updateRunningTotal(): void {
      this._runningTotal = new RunningTotal(this._occurrences, this._startingAmount);
    }
 
-   private _sortOccurrences(): void {
+   private sortOccurrences(): void {
      this._occurrences.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-
-     for (let i = 0; i < this._occurrences.length; i++) {
-       if (this._occurrences[i].transactions.length === 1) {
-         continue;
-       }
-
-       this._occurrences[i].transactions.sort((a, b) => a.id - b.id);
-     }
    }
 
-   private _recalculateOccurrences(): void {
+   private recalculateOccurrences(): void {
      this._occurrences = OccurrenceFinder.findOccurrences(this._transactions, this._startDate, this._endDate);
    }
 
-   private _pruneEmptyOccurrences(): void {
-     for (let i = this._occurrences.length - 1; i >= 0; i--) {
-       if (this._occurrences[i].transactions.length) {
-         continue;
-       }
+   private pruneEmptyOccurrences(): void {
+     const hasAny: boolean = this._occurrences.some((o: Occurrence) => o.transactions.length === 0);
 
-       this._occurrences.splice(i, 1);
+     if (!hasAny) {
+       return;
      }
+
+     this._occurrences = this._occurrences.filter((o: Occurrence) => o.transactions.length);
    }
 
-   private _removeTransactionOccurrences(id: number): void {
-    for (const occurrence of this._occurrences) {
-      const index: number = occurrence.transactions.findIndex((t: Transaction) => t.id === id);
+   private removeTransactionFromOccurrences(id: number): void {
+     for (let i = 0; i < this._occurrences.length; i++) {
+      const transactionIndex: number = this._occurrences[i].transactions.findIndex((t: Transaction) => t.id === id);
 
-      if (index === -1) {
+      if (transactionIndex === -1) {
         continue;
       }
 
-      const transactions: Transaction[] = [...occurrence.transactions];
-      transactions.splice(index, 1);
-      occurrence.transactions = transactions;
-    }
+      const updated: Occurrence = this.makeOccurrenceWithoutTransaction(this._occurrences[i], id);
+      this._occurrences[i] = updated;
+     }
    }
 
-   private _addTransactionOccurrences(transaction: Transaction): void {
+   private addTransactionToOccurrences(transaction: Transaction): void {
     const transactionOccurrences: Occurrence[] =
       OccurrenceFinder.findOccurrences([transaction], this._startDate, this._endDate);
 
     for (const occurrence of transactionOccurrences) {
       const index: number =
-        this._occurrences.findIndex((o: Occurrence) => this._areSameDate(o.date, occurrence.date));
+        this._occurrences.findIndex((o: Occurrence) => this.areSameDate(o.date, occurrence.date));
 
       if (index === -1) {
         this._occurrences.push(occurrence);
       } else {
-        const existing: Occurrence = this._occurrences[index];
-        existing.transactions = [...existing.transactions, transaction];
-        this._occurrences[index] = existing;
+        const updated: Occurrence = this.makeOccurrenceWithTransaction(this._occurrences[index], transaction);
+        this._occurrences[index] = updated;
       }
     }
    }
 
-   private _areSameDate(a: Date, b: Date): boolean {
+   private makeOccurrenceWithoutTransaction(occurrence: Occurrence, id: number): Occurrence {
+    return new Occurrence(
+      occurrence.date,
+      occurrence.transactions.filter((t: Transaction) => t.id !== id)
+    );
+   }
+
+   private makeOccurrenceWithTransaction(occurrence: Occurrence, transaction: Transaction): Occurrence {
+     return new Occurrence(
+       occurrence.date,
+       [...occurrence.transactions, transaction],
+     );
+   }
+
+   private areSameDate(a: Date, b: Date): boolean {
      return a.getFullYear() == b.getFullYear() &&
       a.getMonth() == b.getMonth() &&
       a.getDate() == b.getDate();
    }
 
-   private _findTransactionIndex(id: number): number {
+   private findTransactionIndex(id: number): number {
      return this._transactions.findIndex((t: Transaction) => t.id === id);
    }
 
-   private _findNextId(): number {
+   private findNextId(): number {
     let id: number = 1;
 
     if (!this._transactions.length) {
