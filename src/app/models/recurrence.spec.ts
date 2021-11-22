@@ -36,8 +36,8 @@ describe('Recurrence', () => {
   it('should throw an error for invalid interval values', () => {
     const recurrence = new Recurrence();
 
-    expect(() => recurrence.interval = 0).toThrowError();
-    expect(() => recurrence.interval = -1).toThrowError();
+    expect(() => recurrence.interval = 0).toThrow();
+    expect(() => recurrence.interval = -1).toThrow();
     expect(() => recurrence.interval = 1).not.toThrowError();
   });
 });
