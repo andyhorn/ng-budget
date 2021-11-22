@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { Frequency } from 'src/app/models/recurrence';
 import { Transaction } from 'src/app/models/transaction';
@@ -32,6 +33,7 @@ describe('TransactionComponent', () => {
         MatFormFieldModule,
         FormsModule,
         MatCardModule,
+        MatIconModule,
       ],
       providers: [
         {
@@ -105,7 +107,7 @@ describe('TransactionComponent', () => {
     let transactionId: number;
     const state = fixture.debugElement.injector.get(AppStateService);
     const spy = spyOn(state, 'removeTransaction').and.callFake(id => transactionId = id);
-    spyOn(window, 'alert').and.callFake(_ => true);
+    spyOn(window, 'confirm').and.callFake(_ => true);
 
     component.onDeleteClick();
     fixture.detectChanges();
@@ -117,7 +119,7 @@ describe('TransactionComponent', () => {
   it('should not remove the transaction from the state when the dialog is rejected', () => {
     const state = fixture.debugElement.injector.get(AppStateService);
     const spy = spyOn(state, 'removeTransaction');
-    spyOn(window, 'alert').and.callFake(_ => false);
+    spyOn(window, 'confirm').and.callFake(_ => false);
 
     component.onDeleteClick();
     fixture.detectChanges();
