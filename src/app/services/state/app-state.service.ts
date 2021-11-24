@@ -88,20 +88,33 @@ export class AppStateService {
     this.updateRunningTotal();
    }
 
-   public setTransactions(transactions: Transaction[]): void {
-     this._transactions = transactions;
-     this.recalculateOccurrences();
-     this.updateRunningTotal();
+   public clearTransactions(): void {
+     this._transactions = [];
+     this._occurrences = [];
+     this._runningTotal = new RunningTotal([]);
    }
 
    public addTransaction(transaction: Transaction): void {
-    const id: number = this.findNextId();
-    transaction.id = id;
+    if (transaction.id === 0) {
+      transaction.id = this.findNextId();
+    }
 
     this._transactions.push(transaction);
     this.addTransactionToOccurrences(transaction);
     this.sortOccurrences();
     this.updateRunningTotal();
+   }
+
+   public addTransactions(transactions: Transaction[]): void {
+     transactions.forEach((t: Transaction) => {
+       if (t.id === 0) {
+         t.id = this.findNextId();
+       }
+     });
+
+     this._transactions = this._transactions.concat(transactions);
+     this.recalculateOccurrences();
+     this.updateRunningTotal();
    }
 
    public updateTransaction(transaction: Transaction): void {
