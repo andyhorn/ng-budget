@@ -1,3 +1,4 @@
+import { ErrorType, JsonParseError } from "./json-parse-error";
 import { Frequency, Recurrence } from "./recurrence";
 
 export class Transaction {
@@ -18,15 +19,79 @@ export class Transaction {
   public static fromJson(json: any): Transaction {
     const transaction: Transaction = new Transaction();
 
-    transaction.amount = json.amount;
-    transaction.id = json.id;
-    transaction.isExpense = json.isExpense;
-    transaction.title = json.title;
-    transaction.recurrence.frequency = json.recurrence.frequency;
-    transaction.recurrence.interval = json.recurrence.interval;
-    transaction.recurrence.startDate = new Date(json.recurrence._startDate);
+    if (json.amount === undefined) {
+      throw new JsonParseError('amount', ErrorType.Missing);
+    } else if (isNaN(json.amount)) {
+      throw new JsonParseError('amount', ErrorType.Invalid);
+    } else {
+      transaction.amount = Number(json.amount);
+    }
+
+    if (json.id === undefined) {
+      throw new JsonParseError('id', ErrorType.Missing);
+    } else if (isNaN(json.id)) {
+      throw new JsonParseError('id', ErrorType.Invalid);
+    } else {
+      transaction.id = Number(json.id);
+    }
+
+    if (json.isExpense === undefined) {
+      throw new JsonParseError('isExpense', ErrorType.Missing);
+    } else if (json.isExpense !== true && json.isExpense !== false) {
+      throw new JsonParseError('isExpense', ErrorType.Invalid);
+    } else {
+      transaction.isExpense = json.isExpense;
+    }
+
+    if (json.title === undefined) {
+      throw new JsonParseError('title', ErrorType.Missing);
+    } else {
+      transaction.title = json.title?.toString();
+    }
+
+    if (json.recurrence === undefined || json.recurrence === null) {
+      throw new JsonParseError('recurrence', ErrorType.Missing);
+    } else {
+      if (json.recurrence.frequency === undefined || json.recurrence.frequency === null) {
+        throw new JsonParseError('recurrence.frequency', ErrorType.Missing);
+      } else if (isNaN(json.recurrence.frequency)) {
+        throw new JsonParseError('recurrence.frequency', ErrorType.Invalid);
+      } else {
+        transaction.recurrence.frequency = Number(json.recurrence.frequency);
+      }
+
+      if (json.recurrence.interval === undefined || json.recurrence.interval === null) {
+        throw new JsonParseError('recurrence.interval', ErrorType.Missing);
+      } else if (isNaN(json.recurrence.interval)) {
+        throw new JsonParseError('recurrence.interval', ErrorType.Invalid);
+      } else {
+        transaction.recurrence.interval = Number(json.recurrence.interval);
+      }
+
+      if (json.recurrence.startDate === undefined || json.recurrence.startDate === null) {
+        throw new JsonParseError('recurrence.startDate', ErrorType.Missing);
+      } else if (new Date(json.recurrence.startDate).toString() == 'invalid date') {
+        throw new JsonParseError('recurrence.startDate', ErrorType.Invalid);
+      } else {
+        transaction.recurrence.startDate = new Date(json.recurrence.startDate);
+      }
+    }
 
     return transaction;
+  }
+
+  public toJson(): any {
+    return {
+      title: this.title,
+      amount: this.amount,
+      id: this.id,
+      isExpense: this.isExpense,
+      recurrence: {
+        interval: this.recurrence.interval,
+        frequency: this.recurrence.frequency,
+        startDate: this.recurrence.startDate,
+      },
+    };
   }
 
   public occursOn(date: Date): boolean {
@@ -108,7 +173,7 @@ export class Transaction {
     last.setHours(0, 0, 0, 0);
 
     const msApart: number = last.getTime() - first.getTime();
-    const daysApart: number = Math.floor(msApart / 1000 / 60 / 60 / 24);
+    const daysApart: number = Math.round(msApart / (1000 * 60 * 60 * 24));
 
     return daysApart;
   }
