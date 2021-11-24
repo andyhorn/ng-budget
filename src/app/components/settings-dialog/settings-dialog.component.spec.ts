@@ -151,9 +151,8 @@ describe('SettingsDialogComponent', () => {
     startingAmountInput.nativeElement.dispatchEvent(new Event('Input'));
 
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
+    await fixture.whenStable().then(() => {
       component.onSaveClick();
-      expect(spyOnProperty(state, 'startingAmount').calls.count).toEqual(1);
       expect(state.startingAmount).toEqual(startingAmount);
     });
   });
@@ -171,10 +170,9 @@ describe('SettingsDialogComponent', () => {
     endDateInput.nativeElement.dispatchEvent(new Event('input'));
 
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      component.onSaveClick();
-      expect(spyOnProperty(state, 'startDate').calls.count).toEqual(1);
-      expect(spyOnProperty(state, 'endDate').calls.count).toEqual(1)
+    component.onSaveClick();
+
+    await fixture.whenStable().then(() => {
       expect(state.startDate).toEqual(startDate);
       expect(state.endDate).toEqual(endDate);
     });
