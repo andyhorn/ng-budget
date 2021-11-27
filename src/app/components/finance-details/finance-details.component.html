@@ -1,0 +1,30 @@
+<mat-card class="mat-elevation-z5 mb-3 finance-details-card">
+  <mat-card-content>
+    <div class="row text-center">
+      <div class="col">
+        Total income<br/><span class="text-success">{{ totalIncome | currency }}</span>
+      </div>
+      <div class="col">
+        Total expenses<br/><span class="text-danger">{{ totalExpenses | currency }}</span>
+      </div>
+      <div class="col d-flex flex-column align-items-center justify-content-center">
+        Net flow
+        <span [class]="netFlow < 0 ? 'text-danger' : 'text-success'">
+          {{ netFlow | currency }}
+        </span>
+      </div>
+      <div class="col d-flex flex-column align-items-center justify-content-center">
+        Starting amount
+        <span [class]="startingAmount < 0 ? 'text-danger' : 'text-success'">
+          {{ startingAmount | currency }}
+        </span>
+      </div>
+      <div class="col d-flex flex-column align-items-center justify-content-center">
+        Final amount
+        <span [class]="finalAmount < 0 ? 'text-danger': 'text-success'">
+          {{ finalAmount | currency }}
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

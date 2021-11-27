@@ -1,23 +1,24 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EditTransactionDialogData } from 'src/app/models/edit-transaction-dialog-data';
+import { EditTransactionDialogData, EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
-import { TransactionDialogBase } from '../transaction-dialog-base.component';
 
 @Component({
   selector: 'app-edit-transaction-dialog',
   templateUrl: './edit-transaction-dialog.component.html',
   styleUrls: ['./edit-transaction-dialog.component.sass']
 })
-export class EditTransactionDialogComponent extends TransactionDialogBase {
+export class EditTransactionDialogComponent {
   public title!: string;
   public amount!: number;
   public frequency!: Frequency;
   public interval!: number;
-  public isExpense!: boolean;
+  // public isExpense!: boolean;
+  public type!: TransactionTypes;
   public startDate!: Date;
+  public titleType!: string;
 
   private _transactionId: number = 0;
 
@@ -26,22 +27,26 @@ export class EditTransactionDialogComponent extends TransactionDialogBase {
     private _ref: MatDialogRef<EditTransactionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: EditTransactionDialogData
   ) {
-    super();
-
     this._transactionId = data.id;
-    this.isExpense = data.isExpense;
+    this.type = data.type;
+    this.titleType = this.type == TransactionTypes.Expense
+      ? 'expense' : 'income';
 
-    if (!data.isNew) {
+    if (data.dialogType == EditTransactionDialogTypes.Edit) {
       this._transactionId = data.id;
       this._fetchTransactionData();
     } else {
       this.title = '';
       this.amount = 0;
-      this.frequency = Frequency.Once;
+      this.frequency = Frequency.Monthly;
       this.interval = 1;
       this.startDate = new Date();
       this.startDate.setHours(0, 0, 0, 0);
     }
+  }
+
+  get canSave(): boolean {
+    return this.title.trim()?.length > 0;
   }
 
   public onSaveClick(): void {
@@ -72,14 +77,14 @@ export class EditTransactionDialogComponent extends TransactionDialogBase {
     this._transactionId = transaction.id;
     this.amount = transaction.amount;
     this.title = transaction.title;
-    this.isExpense = transaction.isExpense;
+    this.type = transaction.type;
     this.frequency = transaction.recurrence.frequency;
     this.interval = transaction.recurrence.interval;
     this.startDate = transaction.recurrence.startDate;
   }
 
   private _build(): Transaction {
-    const transaction: Transaction = new Transaction(this.title, this.amount, this.isExpense);
+    const transaction: Transaction = new Transaction(this.title, this.amount, this.type);
 
     transaction.id = this._transactionId;
     transaction.recurrence.frequency = this.frequency;

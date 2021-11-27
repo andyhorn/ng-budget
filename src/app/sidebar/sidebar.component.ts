@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTransactionDialogComponent } from '../components/edit-transaction-dialog/edit-transaction-dialog.component';
-import { EditTransactionDialogData } from '../models/edit-transaction-dialog-data';
-import { Transaction } from '../models/transaction';
+import { EditTransactionDialogData, EditTransactionDialogTypes } from '../models/edit-transaction-dialog-data';
+import { Transaction, TransactionTypes } from '../models/transaction';
 import { AppStateService } from '../services/state/app-state.service';
 
 @Component({
@@ -12,50 +12,53 @@ import { AppStateService } from '../services/state/app-state.service';
 })
 export class SidebarComponent {
   public get incomeTransactions(): readonly Transaction[] {
-    return this._state.transactions
-      .filter((t: Transaction) => !t.isExpense)
+    return this.state.transactions
+      .filter((t: Transaction) => t.type == TransactionTypes.Income)
       .sort((a: Transaction, b: Transaction) => a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
   }
 
   public get expenseTransactions(): readonly Transaction[] {
-    return this._state.transactions
-      .filter((t: Transaction) => t.isExpense)
+    return this.state.transactions
+      .filter((t: Transaction) => t.type == TransactionTypes.Expense)
       .sort((a: Transaction, b: Transaction) => a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
   }
 
   public get totalIncomeAmount(): number {
-    return this._getTransactionSum(this.incomeTransactions);
+    return this.getTransactionSum(this.incomeTransactions);
   }
 
   public get totalExpenseAmount(): number {
-    return this._getTransactionSum(this.expenseTransactions);
+    return this.getTransactionSum(this.expenseTransactions);
   }
 
   constructor(
-    private _state: AppStateService,
-    private _dialog: MatDialog
+    private state: AppStateService,
+    private dialog: MatDialog
     ) { }
 
   public onNewIncomeClick(): void {
-    this._launchNewTransactionDialog(false);
+    this.openTransactionDialog(TransactionTypes.Income);
   }
 
   public onNewExpenseClick(): void {
-    this._launchNewTransactionDialog(true);
+    this.openTransactionDialog(TransactionTypes.Expense);
   }
 
   public onDelete(id: number): void {
-    this._state.removeTransaction(id);
+    this.state.removeTransaction(id);
   }
 
-  private _getTransactionSum(list: readonly Transaction[]): number {
+  private getTransactionSum(list: readonly Transaction[]): number {
     return list.reduce((sum: number, current: Transaction) => sum + current.amount, 0);
   }
 
-  private _launchNewTransactionDialog(isExpense: boolean): void {
-    this._dialog.open(EditTransactionDialogComponent, {
+  private openTransactionDialog(transactionType: TransactionTypes): void {
+    this.dialog.open(EditTransactionDialogComponent, {
       width: '480px',
-      data: new EditTransactionDialogData(0, true, isExpense),
+      data: new EditTransactionDialogData(
+        0,
+        EditTransactionDialogTypes.New,
+        transactionType),
     });
   }
 }

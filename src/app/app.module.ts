@@ -28,6 +28,8 @@ import { SettingsDialogComponent } from './components/settings-dialog/settings-d
 import { FrequencyDisplayComponent } from './components/frequency-display/frequency-display.component';
 import { EditTransactionDialogComponent } from './components/edit-transaction-dialog/edit-transaction-dialog.component';
 import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
+import { FinanceDetailsComponent } from './components/finance-details/finance-details.component';
+import { OccurrenceCardComponent } from './components/occurrence-card/occurrence-card.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { TransactionFormComponent } from './components/transaction-form/transact
     FrequencyDisplayComponent,
     EditTransactionDialogComponent,
     TransactionFormComponent,
+    FinanceDetailsComponent,
+    OccurrenceCardComponent,
   ],
   imports: [
     BrowserModule,

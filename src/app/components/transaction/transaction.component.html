@@ -1,18 +1,24 @@
-<mat-card [class]="isExpense ? 'is-expense' : 'is-income'" class="mb-3">
+<mat-card [class]="cardClass" class="mb-3">
   <mat-card-header>
     <mat-card-title class="d-flex justify-content-between">
-      {{ title }}
+      <span>{{ transaction.title }}</span>
       <div class="buttons">
         <button mat-icon-button color="primary" (click)="onEditClick()"><mat-icon>edit</mat-icon></button>
         <button mat-icon-button color="warn" (click)="onDeleteClick()"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-title>
     <mat-card-subtitle>
-      {{ amount | currency }}
+      <span>{{ transaction.amount | currency }}</span>
       <p>
         Occurs
-        <app-frequency-display [frequency]="frequency" [interval]="interval" [date]="transaction.recurrence.startDate"></app-frequency-display>
-        <span *ngIf="frequency !== 0">&nbsp;beginning</span>&nbsp;on {{ startDate | date }}.
+        <app-frequency-display
+          [frequency]="transaction.recurrence.frequency"
+          [interval]="transaction.recurrence.interval"
+          [date]="transaction.recurrence.startDate"></app-frequency-display>
+        <span *ngIf="transaction.recurrence.frequency !== 0">
+          &nbsp;beginning
+        </span>
+        <span>&nbsp;on {{ transaction.recurrence.startDate | date }}.</span>
       </p>
     </mat-card-subtitle>
   </mat-card-header>

@@ -65,7 +65,8 @@ export class AppComponent {
           }
         }
 
-        this.state.setTransactions(transactions);
+        this.state.clearTransactions();
+        this.state.addTransactions(transactions);
       }
 
       reader.readAsText(input.files[0]);

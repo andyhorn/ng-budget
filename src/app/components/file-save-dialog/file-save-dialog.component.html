@@ -11,7 +11,10 @@
   <button mat-flat-button color="warn" [mat-dialog-close]="false">
     <mat-icon>cancel</mat-icon>&nbsp;Cancel
   </button>
-  <button mat-flat-button color="primary" (click)="onSaveClick()">
+  <button mat-flat-button color="primary"
+    (click)="onSaveClick()"
+    [disabled]="!canSave"
+  >
     <mat-icon>save</mat-icon>&nbsp;Save
   </button>
 </mat-dialog-actions>

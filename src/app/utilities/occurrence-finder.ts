@@ -3,6 +3,10 @@ import { Transaction } from "../models/transaction";
 
 export class OccurrenceFinder {
   public static findOccurrences(transactions: Transaction[], startDate: Date, endDate: Date) {
+    if (transactions.length === 0) {
+      return [];
+    }
+
     const occurrences: Occurrence[] = [];
     let currentDate: Date = new Date(startDate);
     currentDate.setHours(0, 0, 0, 0);

@@ -1,16 +1,23 @@
+import { ErrorType, JsonParseError } from "./json-parse-error";
 import { Frequency, Recurrence } from "./recurrence";
+
+export enum TransactionTypes {
+  Expense,
+  Income,
+};
 
 export class Transaction {
   public id: number;
   public title: string;
-  public isExpense: boolean;
+  public type: TransactionTypes;
   public amount: number;
   public recurrence: Recurrence;
 
-  constructor(title: string = '', amount: number = 0,  isExpense: boolean = true) {
+  constructor(title: string = '', amount: number = 0, type: TransactionTypes = TransactionTypes.Expense) {
     this.id = 0;
     this.title = title;
-    this.isExpense = isExpense;
+    this.type = type;
+
     this.amount = amount;
     this.recurrence = new Recurrence();
   }
@@ -18,15 +25,79 @@ export class Transaction {
   public static fromJson(json: any): Transaction {
     const transaction: Transaction = new Transaction();
 
-    transaction.amount = json.amount;
-    transaction.id = json.id;
-    transaction.isExpense = json.isExpense;
-    transaction.title = json.title;
-    transaction.recurrence.frequency = json.recurrence.frequency;
-    transaction.recurrence.interval = json.recurrence.interval;
-    transaction.recurrence.startDate = new Date(json.recurrence._startDate);
+    if (json.amount === undefined) {
+      throw new JsonParseError('amount', ErrorType.Missing);
+    } else if (isNaN(json.amount)) {
+      throw new JsonParseError('amount', ErrorType.Invalid);
+    } else {
+      transaction.amount = Number(json.amount);
+    }
+
+    if (json.id === undefined) {
+      throw new JsonParseError('id', ErrorType.Missing);
+    } else if (isNaN(json.id)) {
+      throw new JsonParseError('id', ErrorType.Invalid);
+    } else {
+      transaction.id = Number(json.id);
+    }
+
+    if (json.type === undefined) {
+      throw new JsonParseError('type', ErrorType.Missing);
+    } else if (isNaN(Number(json.type))) {
+      throw new JsonParseError('type', ErrorType.Invalid);
+    } else {
+      transaction.type = Number(json.type);
+    }
+
+    if (json.title === undefined) {
+      throw new JsonParseError('title', ErrorType.Missing);
+    } else {
+      transaction.title = json.title?.toString();
+    }
+
+    if (json.recurrence === undefined || json.recurrence === null) {
+      throw new JsonParseError('recurrence', ErrorType.Missing);
+    } else {
+      if (json.recurrence.frequency === undefined || json.recurrence.frequency === null) {
+        throw new JsonParseError('recurrence.frequency', ErrorType.Missing);
+      } else if (isNaN(json.recurrence.frequency)) {
+        throw new JsonParseError('recurrence.frequency', ErrorType.Invalid);
+      } else {
+        transaction.recurrence.frequency = Number(json.recurrence.frequency);
+      }
+
+      if (json.recurrence.interval === undefined || json.recurrence.interval === null) {
+        throw new JsonParseError('recurrence.interval', ErrorType.Missing);
+      } else if (isNaN(json.recurrence.interval)) {
+        throw new JsonParseError('recurrence.interval', ErrorType.Invalid);
+      } else {
+        transaction.recurrence.interval = Number(json.recurrence.interval);
+      }
+
+      if (json.recurrence.startDate === undefined || json.recurrence.startDate === null) {
+        throw new JsonParseError('recurrence.startDate', ErrorType.Missing);
+      } else if (new Date(json.recurrence.startDate).toString() == 'invalid date') {
+        throw new JsonParseError('recurrence.startDate', ErrorType.Invalid);
+      } else {
+        transaction.recurrence.startDate = new Date(json.recurrence.startDate);
+      }
+    }
 
     return transaction;
+  }
+
+  public toJson(): any {
+    return {
+      title: this.title,
+      amount: this.amount,
+      id: this.id,
+      type: this.type,
+      recurrence: {
+        interval: this.recurrence.interval,
+        frequency: this.recurrence.frequency,
+        startDate: this.recurrence.startDate,
+      },
+    };
   }
 
   public occursOn(date: Date): boolean {
@@ -38,23 +109,23 @@ export class Transaction {
 
     switch (this.recurrence.frequency) {
       case Frequency.Once:
-        return this._isSameDay(this.recurrence.startDate, date);
+        return this.isSameDay(this.recurrence.startDate, date);
       case Frequency.Daily:
-        const daysApart: number = this._getDaysApart(this.recurrence.startDate, date);
+        const daysApart: number = this.getDaysApart(this.recurrence.startDate, date);
         return daysApart % this.recurrence.interval == 0;
       case Frequency.Weekly:
         if (this.recurrence.startDate.getDay() != date.getDay()) {
           return false;
         }
 
-        const weeksApart: number = this._getWeeksApart(this.recurrence.startDate, date);
+        const weeksApart: number = this.getWeeksApart(this.recurrence.startDate, date);
         return weeksApart % this.recurrence.interval == 0;
       case Frequency.Monthly:
         if (this.recurrence.startDate.getDate() != date.getDate()) {
           return false;
         }
 
-        const monthsApart: number = this._getMonthsApart(this.recurrence.startDate, date);
+        const monthsApart: number = this.getMonthsApart(this.recurrence.startDate, date);
         return monthsApart % this.recurrence.interval == 0;
       case Frequency.Yearly:
         if (this.recurrence.startDate.getMonth() != date.getMonth()) {
@@ -72,11 +143,11 @@ export class Transaction {
     }
   }
 
-  private _getWeeksApart(a: Date, b: Date): number {
-    return this._getDaysApart(a, b) / 7;
+  private getWeeksApart(a: Date, b: Date): number {
+    return this.getDaysApart(a, b) / 7;
   }
 
-  private _getMonthsApart(a: Date, b: Date): number {
+  private getMonthsApart(a: Date, b: Date): number {
     const first: Date = a < b ? a : b;
     const last: Date = a < b ? b : a;
 
@@ -100,7 +171,7 @@ export class Transaction {
     return monthsToEndMonth + (yearDiff - 1) * 12
   }
 
-  private _getDaysApart(a: Date, b: Date): number {
+  private getDaysApart(a: Date, b: Date): number {
     const first: Date = a < b ? a : b;
     const last: Date = a < b ? b : a;
 
@@ -108,12 +179,12 @@ export class Transaction {
     last.setHours(0, 0, 0, 0);
 
     const msApart: number = last.getTime() - first.getTime();
-    const daysApart: number = Math.floor(msApart / 1000 / 60 / 60 / 24);
+    const daysApart: number = Math.round(msApart / (1000 * 60 * 60 * 24));
 
     return daysApart;
   }
 
-  private _isSameDay(a: Date, b: Date): boolean {
+  private isSameDay(a: Date, b: Date): boolean {
     return a.getFullYear() == b.getFullYear() &&
       a.getMonth() == b.getMonth() &&
       a.getDate() == b.getDate();
