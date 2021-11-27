@@ -7,7 +7,9 @@
     "build": "ng build",
     "deploy": "ng build --base-href 'https://andyhorn.github.io/ng-budget/' && npx angular-cli-ghpages --dir=dist/ng-budget",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:ci": "ng build --prod --sourceMap=false --base-href /ng-budget/",
+    "test:ci": "ng test --watch=false --code-coverage --source-map true"
   },
   "private": true,
   "dependencies": {
