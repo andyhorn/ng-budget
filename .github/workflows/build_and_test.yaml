@@ -37,6 +37,12 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: deploy_dist
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm ci
       - name: Test
         run : npm run test:ci
       - name: Archive code coverage
