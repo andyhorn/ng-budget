@@ -38,7 +38,7 @@ jobs:
         with:
           name: deploy_dist
       - name: Test
-        run : npm test:ci
+        run : npm run test:ci
       - name: Archive code coverage
         if: success()
         uses: actions/upload-artifact@v1
