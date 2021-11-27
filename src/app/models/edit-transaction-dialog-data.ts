@@ -1,11 +1,18 @@
+import { TransactionTypes } from "./transaction";
+
 export class EditTransactionDialogData {
   public id: number;
-  public isNew: boolean;
-  public isExpense: boolean;
+  public dialogType: EditTransactionDialogTypes;
+  public type: TransactionTypes;
 
-  constructor(id: number, isNew: boolean, isExpense: boolean) {
+  constructor(id: number, dialogType: EditTransactionDialogTypes, type: TransactionTypes) {
     this.id = id;
-    this.isNew = isNew;
-    this.isExpense = isExpense;
+    this.dialogType = dialogType;
+    this.type = type;
   }
 }
+
+export enum EditTransactionDialogTypes {
+  New,
+  Edit,
+};

@@ -1,17 +1,23 @@
 import { ErrorType, JsonParseError } from "./json-parse-error";
 import { Frequency, Recurrence } from "./recurrence";
 
+export enum TransactionTypes {
+  Expense,
+  Income,
+};
+
 export class Transaction {
   public id: number;
   public title: string;
-  public isExpense: boolean;
+  public type: TransactionTypes;
   public amount: number;
   public recurrence: Recurrence;
 
-  constructor(title: string = '', amount: number = 0,  isExpense: boolean = true) {
+  constructor(title: string = '', amount: number = 0, type: TransactionTypes = TransactionTypes.Expense) {
     this.id = 0;
     this.title = title;
-    this.isExpense = isExpense;
+    this.type = type;
+
     this.amount = amount;
     this.recurrence = new Recurrence();
   }
@@ -35,12 +41,12 @@ export class Transaction {
       transaction.id = Number(json.id);
     }
 
-    if (json.isExpense === undefined) {
-      throw new JsonParseError('isExpense', ErrorType.Missing);
-    } else if (json.isExpense !== true && json.isExpense !== false) {
-      throw new JsonParseError('isExpense', ErrorType.Invalid);
+    if (json.type === undefined) {
+      throw new JsonParseError('type', ErrorType.Missing);
+    } else if (isNaN(Number(json.type))) {
+      throw new JsonParseError('type', ErrorType.Invalid);
     } else {
-      transaction.isExpense = json.isExpense;
+      transaction.type = Number(json.type);
     }
 
     if (json.title === undefined) {
@@ -85,7 +91,7 @@ export class Transaction {
       title: this.title,
       amount: this.amount,
       id: this.id,
-      isExpense: this.isExpense,
+      type: this.type,
       recurrence: {
         interval: this.recurrence.interval,
         frequency: this.recurrence.frequency,

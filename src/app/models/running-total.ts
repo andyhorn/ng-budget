@@ -1,4 +1,5 @@
 import { Occurrence } from "./occurrence";
+import { TransactionTypes } from "./transaction";
 
 export class RunningTotal {
   private occurrenceTransactionTotals: number[][] = [];
@@ -11,7 +12,7 @@ export class RunningTotal {
       this.occurrenceTransactionTotals.push([]);
 
       for (let tr: number = 0; tr < occurrences[oc].transactions.length; tr++) {
-        const isExpense: boolean = occurrences[oc].transactions[tr].isExpense;
+        const isExpense: boolean = occurrences[oc].transactions[tr].type == TransactionTypes.Expense;
         const amount: number = occurrences[oc].transactions[tr].amount;
 
         runningTotal = isExpense ? runningTotal - amount : runningTotal + amount;

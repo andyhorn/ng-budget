@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { Frequency } from 'src/app/models/recurrence';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
 import { FrequencyDisplayComponent } from '../frequency-display/frequency-display.component';
 
@@ -20,7 +20,7 @@ describe('TransactionComponent', () => {
   const frequency = Frequency.Daily;
   const interval = 3;
   const startDate = new Date();
-  const isExpense = true;
+  const type = TransactionTypes.Expense;
   let component: TransactionComponent;
   let fixture: ComponentFixture<TransactionComponent>;
   let transaction: Transaction;
@@ -48,7 +48,7 @@ describe('TransactionComponent', () => {
   });
 
   beforeEach(() => {
-    transaction = new Transaction(transactionTitle, amount, isExpense);
+    transaction = new Transaction(transactionTitle, amount, type);
     transaction.recurrence.frequency = frequency;
     transaction.recurrence.interval = interval;
     transaction.recurrence.startDate = startDate;

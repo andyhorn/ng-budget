@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
+import { EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
 
 import { EditTransactionDialogComponent } from './edit-transaction-dialog.component';
@@ -23,8 +24,8 @@ describe('EditTransactionDialogComponent (NEW)', () => {
         { provide: MatDialogRef, useValue: { close: function() {} }},
         { provide: MAT_DIALOG_DATA, useValue: {
           id: 0,
-          isNew: true,
-          isExpense: true,
+          dialogType: EditTransactionDialogTypes.New,
+          type: TransactionTypes.Expense,
         }},
       ],
     })
@@ -76,14 +77,14 @@ describe('EditTransactionDialogComponent (NEW)', () => {
     component.amount = 1.23;
     component.frequency = Frequency.Daily;
     component.interval = 12;
-    component.isExpense = true;
+    component.type = TransactionTypes.Expense;
     component.startDate = today;
     component.title = 'Test';
 
     spyOn(state, 'addTransaction').and.callFake((t) => {
       expect(t.amount).toEqual(1.23);
       expect(t.id).toEqual(0);
-      expect(t.isExpense).toBeTrue();
+      expect(t.type).toEqual(TransactionTypes.Expense);
       expect(t.title).toEqual('Test');
       expect(t.recurrence.frequency).toEqual(Frequency.Daily);
       expect(t.recurrence.interval).toEqual(12);
@@ -114,7 +115,7 @@ describe('EditTransactionDialogComponent (NEW)', () => {
 describe('EditTransactionDialogComponent (EDIT)', () => {
   let component: EditTransactionDialogComponent;
   let fixture: ComponentFixture<EditTransactionDialogComponent>;
-  const transaction = new Transaction('Test', 1.23);
+  const transaction = new Transaction('Test', 1.23, TransactionTypes.Expense);
   transaction.id = 1;
 
   beforeEach(async () => {
@@ -129,8 +130,8 @@ describe('EditTransactionDialogComponent (EDIT)', () => {
         { provide: MatDialogRef, useValue: { close: function() {} }},
         { provide: MAT_DIALOG_DATA, useValue: {
           id: 1,
-          isNew: false,
-          isExpense: true,
+          dialogType: EditTransactionDialogTypes.Edit,
+          type: TransactionTypes.Expense,
         }},
       ],
     })
@@ -150,7 +151,7 @@ describe('EditTransactionDialogComponent (EDIT)', () => {
     expect(component.amount).toEqual(transaction.amount);
     expect(component.frequency).toEqual(transaction.recurrence.frequency);
     expect(component.interval).toEqual(transaction.recurrence.interval);
-    expect(component.isExpense).toEqual(transaction.isExpense);
+    expect(component.type).toEqual(transaction.type);
     expect(component.startDate).toEqual(transaction.recurrence.startDate);
     expect(component.title).toEqual(transaction.title);
   });

@@ -1,18 +1,15 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
 import { Occurrence } from 'src/app/models/occurrence';
 import { RunningTotal } from 'src/app/models/running-total';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
 import { NetFlowIconComponent } from '../net-flow-icon/net-flow-icon.component';
 
 import { OccurrenceCardComponent } from './occurrence-card.component';
-
-// class MockState {}
 
 describe('OccurenceCardComponent', () => {
   let component: OccurrenceCardComponent;
@@ -57,7 +54,7 @@ describe('OccurenceCardComponent', () => {
 
   it('should have a subheader containing the total flow', () => {
     component.occurrence = new Occurrence(new Date(), [
-      new Transaction('Transaction', 100, false),
+      new Transaction('Transaction', 100, TransactionTypes.Income),
     ]);
     fixture.detectChanges();
 
@@ -101,7 +98,7 @@ describe('OccurenceCardComponent', () => {
 
   it('should highlight expenses in red', () => {
     const transactions = [
-      new Transaction('Expense', 100, true),
+      new Transaction('Expense', 100, TransactionTypes.Expense),
     ];
     component.occurrence = new Occurrence(new Date(), transactions);
     fixture.detectChanges();
@@ -116,7 +113,7 @@ describe('OccurenceCardComponent', () => {
 
   it('should highlight incomes in green', () => {
     const transactions = [
-      new Transaction('Income', 100, false),
+      new Transaction('Income', 100, TransactionTypes.Income),
     ];
     component.occurrence = new Occurrence(new Date(), transactions);
     fixture.detectChanges();

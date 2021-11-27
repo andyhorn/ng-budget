@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EditTransactionDialogData } from 'src/app/models/edit-transaction-dialog-data';
+import { EditTransactionDialogData, EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
 
 @Component({
@@ -15,8 +15,10 @@ export class EditTransactionDialogComponent {
   public amount!: number;
   public frequency!: Frequency;
   public interval!: number;
-  public isExpense!: boolean;
+  // public isExpense!: boolean;
+  public type!: TransactionTypes;
   public startDate!: Date;
+  public titleType!: string;
 
   private _transactionId: number = 0;
 
@@ -26,9 +28,11 @@ export class EditTransactionDialogComponent {
     @Inject(MAT_DIALOG_DATA) data: EditTransactionDialogData
   ) {
     this._transactionId = data.id;
-    this.isExpense = data.isExpense;
+    this.type = data.type;
+    this.titleType = this.type == TransactionTypes.Expense
+      ? 'expense' : 'income';
 
-    if (!data.isNew) {
+    if (data.dialogType == EditTransactionDialogTypes.Edit) {
       this._transactionId = data.id;
       this._fetchTransactionData();
     } else {
@@ -73,14 +77,14 @@ export class EditTransactionDialogComponent {
     this._transactionId = transaction.id;
     this.amount = transaction.amount;
     this.title = transaction.title;
-    this.isExpense = transaction.isExpense;
+    this.type = transaction.type;
     this.frequency = transaction.recurrence.frequency;
     this.interval = transaction.recurrence.interval;
     this.startDate = transaction.recurrence.startDate;
   }
 
   private _build(): Transaction {
-    const transaction: Transaction = new Transaction(this.title, this.amount, this.isExpense);
+    const transaction: Transaction = new Transaction(this.title, this.amount, this.type);
 
     transaction.id = this._transactionId;
     transaction.recurrence.frequency = this.frequency;

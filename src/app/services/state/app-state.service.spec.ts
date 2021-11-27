@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Occurrence } from 'src/app/models/occurrence';
 import { Frequency } from 'src/app/models/recurrence';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 
 import { AppStateService } from './app-state.service';
 
@@ -137,21 +137,23 @@ describe('AppStateService', () => {
     const id = 3;
     const initialTitle = 'Initial state';
     const initialAmount = 100;
-    const initialIsExpense = true;
+    // const initialIsExpense = true;
+    const initialType = TransactionTypes.Expense;
     const initialInterval = 1;
     const initialFrequency = Frequency.Daily;
     const initialStartDate = new Date();
     initialStartDate.setHours(0, 0, 0, 0);
     const updatedTitle = 'New title';
     const updatedAmount = initialAmount * 2;
-    const updatedIsExpense = !initialIsExpense;
+    const updatedType = TransactionTypes.Income;
+    // const updatedIsExpense = !initialIsExpense;
     const updatedInterval = initialInterval + 3;
     const updatedFrequency = Frequency.Weekly;
     const updatedStartDate = new Date(initialStartDate)
     updatedStartDate.setHours(0, 0, 0, 0);
     updatedStartDate.setDate(initialStartDate.getDate() + 5);
 
-    const transaction = new Transaction(initialTitle, initialAmount, initialIsExpense);
+    const transaction = new Transaction(initialTitle, initialAmount, initialType);
     transaction.id = id;
     transaction.recurrence.frequency = initialFrequency;
     transaction.recurrence.interval = initialInterval;
@@ -161,7 +163,7 @@ describe('AppStateService', () => {
 
     expect(service.transactions[0].id).toEqual(id);
     expect(service.transactions[0].amount).toEqual(initialAmount);
-    expect(service.transactions[0].isExpense).toEqual(initialIsExpense);
+    expect(service.transactions[0].type).toEqual(initialType);
     expect(service.transactions[0].title).toEqual(initialTitle);
     expect(service.transactions[0].recurrence.frequency).toEqual(initialFrequency);
     expect(service.transactions[0].recurrence.interval).toEqual(initialInterval);
@@ -169,7 +171,7 @@ describe('AppStateService', () => {
 
     transaction.title = updatedTitle;
     transaction.amount = updatedAmount;
-    transaction.isExpense = updatedIsExpense;
+    transaction.type = updatedType;
     transaction.recurrence.frequency = updatedFrequency;
     transaction.recurrence.interval = updatedInterval;
     transaction.recurrence.startDate = updatedStartDate;
@@ -179,7 +181,7 @@ describe('AppStateService', () => {
     expect(service.transactions[0].id).toEqual(id);
     expect(service.transactions[0].amount).toEqual(updatedAmount);
     expect(service.transactions[0].title).toEqual(updatedTitle);
-    expect(service.transactions[0].isExpense).toEqual(updatedIsExpense);
+    expect(service.transactions[0].type).toEqual(updatedType);
     expect(service.transactions[0].recurrence.frequency).toEqual(updatedFrequency);
     expect(service.transactions[0].recurrence.interval).toEqual(updatedInterval);
     expect(service.transactions[0].recurrence.startDate).toEqual(updatedStartDate);

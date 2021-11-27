@@ -1,6 +1,6 @@
 import { Occurrence } from './occurrence';
 import { RunningTotal } from './running-total';
-import { Transaction } from './transaction';
+import { Transaction, TransactionTypes } from './transaction';
 
 describe('RunningTotal', () => {
   it('should create an instance', () => {
@@ -47,7 +47,7 @@ describe('RunningTotal', () => {
   it('should subtract an expense from the starting amount', () => {
     const amount = 100;
     const transactionAmount = 50;
-    const transaction = new Transaction('Test', transactionAmount, true);
+    const transaction = new Transaction('Test', transactionAmount, TransactionTypes.Expense);
     const occurrence = new Occurrence(new Date(), [transaction]);
     const total = new RunningTotal([occurrence], amount);
 
@@ -58,7 +58,7 @@ describe('RunningTotal', () => {
   it('should add an income to the starting amount', () => {
     const amount = 100;
     const transactionAmount = 50;
-    const transaction = new Transaction('Test', transactionAmount, false);
+    const transaction = new Transaction('Test', transactionAmount, TransactionTypes.Income);
     const occurrence = new Occurrence(new Date(), [transaction]);
     const total = new RunningTotal([occurrence], amount);
 
@@ -70,19 +70,19 @@ describe('RunningTotal', () => {
     const startingAmount = 100;
     const transactions = [
       {
-        'transaction': new Transaction('A', 100, false),
+        'transaction': new Transaction('A', 100, TransactionTypes.Income),
         'runningTotal': 200,
       },
       {
-        'transaction': new Transaction('B', 50, true),
+        'transaction': new Transaction('B', 50, TransactionTypes.Expense),
         'runningTotal': 150,
       },
       {
-        'transaction': new Transaction('C', 25, false),
+        'transaction': new Transaction('C', 25, TransactionTypes.Income),
         'runningTotal': 175,
       },
       {
-        'transaction': new Transaction('D', 175, true),
+        'transaction': new Transaction('D', 175, TransactionTypes.Expense),
         'runningTotal': 0,
       },
     ];

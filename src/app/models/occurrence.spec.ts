@@ -1,5 +1,5 @@
 import { Occurrence } from './occurrence';
-import { Transaction } from './transaction';
+import { Transaction, TransactionTypes } from './transaction';
 
 describe('Occurrence', () => {
   it('should create an instance', () => {
@@ -22,12 +22,12 @@ describe('Occurrence', () => {
 
   it('should calculate the sum of all transactions', () => {
     const incomes = [
-      new Transaction('A', 1000, false),
-      new Transaction('B', 100, false),
+      new Transaction('A', 1000, TransactionTypes.Income),
+      new Transaction('B', 100, TransactionTypes.Income),
     ];
     const expenses = [
-      new Transaction('C', 50),
-      new Transaction('D', 100),
+      new Transaction('C', 50, TransactionTypes.Expense),
+      new Transaction('D', 100, TransactionTypes.Expense),
     ];
     const transactions = [...incomes, ...expenses];
     const expectedTotal = incomes.reduce((sum, curr) => sum + curr.amount, 0) -

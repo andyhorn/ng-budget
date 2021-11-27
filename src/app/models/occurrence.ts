@@ -1,4 +1,4 @@
-import { Transaction } from "./transaction";
+import { Transaction, TransactionTypes } from "./transaction";
 
 export class Occurrence {
   private _date: Date;
@@ -30,7 +30,9 @@ export class Occurrence {
 
   private calculateTotal(): number {
     return this._transactions.reduce((sum: number, current: Transaction) => {
-      return current.isExpense ? sum - current.amount : sum + current.amount;
+      return current.type == TransactionTypes.Expense
+        ? sum - current.amount
+        : sum + current.amount;
     }, 0);
   }
 }

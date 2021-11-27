@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Occurrence } from 'src/app/models/occurrence';
-import { Transaction } from 'src/app/models/transaction';
+import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
 
 import { FinanceDetailsComponent } from './finance-details.component';
@@ -115,7 +115,7 @@ describe('FinanceDetailsComponent', () => {
 
   it('should display the total income', () => {
     const incomes = [
-      new Transaction('Income', 100, false),
+      new Transaction('Income', 100, TransactionTypes.Income),
     ];
     const occurrences = [
       new Occurrence(new Date('January 1, 2020'), incomes),
@@ -246,7 +246,7 @@ function makeTransactions(num: number = 3, areExpenses: boolean = true): Transac
 
   for (let i = 0; i < num; i++) {
     const amount = Math.floor(Math.random() * 100);
-    transactions.push(new Transaction(`Transaction ${i + 1}`, amount, areExpenses));
+    transactions.push(new Transaction(`Transaction ${i + 1}`, amount, areExpenses ? TransactionTypes.Expense : TransactionTypes.Income));
   }
 
   return transactions;

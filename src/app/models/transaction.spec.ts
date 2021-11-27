@@ -1,11 +1,11 @@
 import { JsonParseError } from "./json-parse-error";
 import { Frequency } from "./recurrence";
-import { Transaction } from "./transaction";
+import { Transaction, TransactionTypes } from "./transaction";
 
 describe('Transaction', () => {
   const amount = 100;
   const id = 3;
-  const isExpense = true;
+  const type = TransactionTypes.Expense;
   const title = 'Test transaction';
   const frequency = Frequency.Daily;
   const interval = 1;
@@ -16,7 +16,7 @@ describe('Transaction', () => {
     json = {
       amount,
       id,
-      isExpense,
+      type,
       title,
       recurrence: {
         frequency,
@@ -35,7 +35,7 @@ describe('Transaction', () => {
 
     expect(transaction.amount).toEqual(amount);
     expect(transaction.id).toEqual(id);
-    expect(transaction.isExpense).toEqual(isExpense);
+    expect(transaction.type).toEqual(type);
     expect(transaction.title).toEqual(title);
     expect(transaction.recurrence.frequency).toEqual(Frequency.Daily);
     expect(transaction.recurrence.interval).toEqual(interval);
@@ -43,7 +43,7 @@ describe('Transaction', () => {
   });
 
   it('should export to a json object', () => {
-    const transaction = new Transaction(title, amount, isExpense);
+    const transaction = new Transaction(title, amount, type);
     transaction.id = id;
     transaction.recurrence.frequency = frequency;
     transaction.recurrence.interval = interval;
@@ -55,7 +55,7 @@ describe('Transaction', () => {
     expect(jsonObj.id).toEqual(id);
     expect(jsonObj.title).toEqual(title);
     expect(jsonObj.amount).toEqual(amount);
-    expect(jsonObj.isExpense).toEqual(isExpense);
+    expect(jsonObj.type).toEqual(type);
     expect(jsonObj.recurrence).toBeTruthy();
     expect(jsonObj.recurrence.frequency).toEqual(frequency);
     expect(jsonObj.recurrence.interval).toEqual(interval);
@@ -72,8 +72,8 @@ describe('Transaction', () => {
     expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
   });
 
-  it('should throw an error if an "isExpense" flag cannot be found in the json', () => {
-    json.isExpense = undefined;
+  it('should throw an error if a type cannot be found in the json', () => {
+    json.type = undefined;
     expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
   });
 
