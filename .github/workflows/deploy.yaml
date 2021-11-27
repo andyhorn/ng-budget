@@ -27,7 +27,7 @@ jobs:
           name: deploy_dist
           path: dist
       - name: Deploy to Github Pages
-        uses: AhsanAyaz/angular-deploy-gh-pages-actions
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
         with:
           github_access_token: ${{ secrets.ACCESS_TOKEN }}
           build_configuration: production
