@@ -1,0 +1,65 @@
+name: build, test, and deploy
+on:
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build:ci
+      - name: Archive build
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: deploy_dist
+          path: dist
+
+  test:
+    name: Test
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download build
+        uses: actions/download-artifact@v1
+        with:
+          name: deploy_dist
+      - name: Test
+        run : npm test:ci
+      - name: Archive code coverage
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: deploy_coverage
+          path: coverage
+
+  deploy:
+    name: Deploy to GH Pages
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Download build
+        uses: actions/download-artifact@v1
+        with:
+          name: deploy_dist
+      - name: Deploy to Github Pages
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: deploy_dist/ng-budget
