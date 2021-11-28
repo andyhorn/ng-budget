@@ -15,10 +15,10 @@ export class EditTransactionDialogComponent {
   public amount!: number;
   public frequency!: Frequency;
   public interval!: number;
-  // public isExpense!: boolean;
   public type!: TransactionTypes;
   public startDate!: Date;
   public titleType!: string;
+  public hideYearly: boolean = false;
 
   private _transactionId: number = 0;
 
@@ -31,6 +31,7 @@ export class EditTransactionDialogComponent {
     this.type = data.type;
     this.titleType = this.type == TransactionTypes.Expense
       ? 'expense' : 'income';
+    this.hideYearly = this.type == TransactionTypes.Income;
 
     if (data.dialogType == EditTransactionDialogTypes.Edit) {
       this._transactionId = data.id;

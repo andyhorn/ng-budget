@@ -17,6 +17,7 @@ export class TransactionFormComponent implements OnInit {
   @Output() public intervalChange = new EventEmitter<number>();
   @Input() public startDate!: Date;
   @Output() public startDateChange = new EventEmitter<Date>();
+  @Input() public omitFrequencies: string[] | undefined;
   public frequencies: FrequencyDisplay[] = [];
 
   get frequencyDisplay(): string {
@@ -44,6 +45,12 @@ export class TransactionFormComponent implements OnInit {
           value: val,
         };
       });
+
+    if (this.omitFrequencies) {
+      for (let frequencyString of this.omitFrequencies) {
+        this.frequencies = this.frequencies.filter(f => !f.name.includes(frequencyString));
+      }
+    }
   }
 }
 
