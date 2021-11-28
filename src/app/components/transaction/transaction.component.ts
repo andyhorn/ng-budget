@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTransactionDialogData, EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
@@ -20,6 +21,26 @@ export class TransactionComponent implements OnInit {
     private _dialog: MatDialog
   ) {
     this.delete = new EventEmitter<void>();
+  }
+
+  public get skipList(): string {
+    const datePipe: DatePipe = new DatePipe('en-US');
+    const dateStrings: string[] = this.transaction.skip
+      .map((s: Date) => <string>datePipe.transform(s));
+
+    if (dateStrings.length === 1) {
+      return dateStrings[0];
+    }
+
+    if (dateStrings.length === 2) {
+      return dateStrings.join(' and ');
+    }
+
+    const last: string = <string>dateStrings.splice(-1)[0];
+    let list: string = dateStrings.join(', ');
+    list += ', and ' + last;
+
+    return list;
   }
 
   public ngOnInit(): void {
