@@ -52,7 +52,7 @@
           <mat-datepicker #skipPicker></mat-datepicker>
         </mat-form-field>
         <button mat-button
-          [disabled]="!newSkipDate"
+          [disabled]="!canSaveSkipDate"
           color="primary"
           (click)="onNewSkipDateSave()">Add</button>
       </div>
