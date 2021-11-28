@@ -27,7 +27,7 @@ export class AppComponent {
       return;
     }
 
-    const json: string = JSON.stringify(this.state.transactions);
+    const json: string = JSON.stringify(this.state.transactions.map((t: Transaction) => t.toJson()));
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
       type: 'application/json',
