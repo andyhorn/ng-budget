@@ -44,12 +44,14 @@ export class PersistenceService {
     const amount: number = this.extractAndValidateValue(json, 'number', 'amount');
     const id: number = this.extractAndValidateValue(json, 'number', 'id');
     const type: TransactionTypes = this.extractAndValidateValue(json, 'number', 'type');
+    const skip: Date[] = (this.extractAndValidateValue(json, 'object', 'skip') as string[]).map((ds: string) => new Date(ds));
     const interval: number = this.extractAndValidateValue(json, 'number', 'recurrence', 'interval');
     const frequency: number = this.extractAndValidateValue(json, 'number', 'recurrence', 'frequency');
     const startDate: Date = new Date(this.extractAndValidateValue(json, 'string', 'recurrence', 'startDate'));
 
     const transaction: Transaction = new Transaction(title, amount, type);
     transaction.id = id;
+    transaction.skip = skip;
     transaction.recurrence.frequency = frequency;
     transaction.recurrence.interval = interval;
     transaction.recurrence.startDate = startDate;
@@ -63,6 +65,7 @@ export class PersistenceService {
       title: transaction.title,
       amount: transaction.amount,
       type: transaction.type,
+      skip: transaction.skip.map((d: Date) => d.toISOString()),
       recurrence: {
         interval: transaction.recurrence.interval,
         frequency: transaction.recurrence.frequency,
