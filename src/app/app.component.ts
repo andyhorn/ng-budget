@@ -73,8 +73,7 @@ export class AppComponent {
             panelClass: "bg-danger",
           });
 
-          console.error(e.message);
-          console.error(e.data);
+          console.error(e.message, e.data);
         }
       }
 

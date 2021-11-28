@@ -36,21 +36,13 @@ export class PersistenceService {
   }
 
   private parseJson(json: any): Transaction {
-    const title: string = this.extractValue<string>(json, 'title');
-    const amount: number = this.extractValue<number>(json, 'amount');
-    const id: number = this.extractValue<number>(json, 'id');
-    const type: TransactionTypes = this.extractValue<number>(json, 'type');
-    const interval: number = this.extractValue<number>(json, 'recurrence', 'interval');
-    const frequency: number = this.extractValue<number>(json, 'recurrence', 'frequency');
-    const startDate: Date = new Date(this.extractValue<string>(json, 'recurrence', 'startDate'));
-
-    this.validateValues('string', title, 'title');
-    this.validateValues('number', amount, 'amount');
-    this.validateValues('number', id, 'id');
-    this.validateValues('number', type, 'type');
-    this.validateValues('number', interval, 'recurrence.interval');
-    this.validateValues('number', frequency, 'recurrence.frequency');
-    this.validateValues('object', startDate, 'recurrence.startDate');
+    const title: string = this.extractAndValidateValue(json, 'string', 'title');
+    const amount: number = this.extractAndValidateValue(json, 'number', 'amount');
+    const id: number = this.extractAndValidateValue(json, 'number', 'id');
+    const type: TransactionTypes = this.extractAndValidateValue(json, 'number', 'type');
+    const interval: number = this.extractAndValidateValue(json, 'number', 'recurrence', 'interval');
+    const frequency: number = this.extractAndValidateValue(json, 'number', 'recurrence', 'frequency');
+    const startDate: Date = new Date(this.extractAndValidateValue(json, 'string', 'recurrence', 'startDate'));
 
     const transaction: Transaction = new Transaction(title, amount, type);
     transaction.id = id;
@@ -77,7 +69,7 @@ export class PersistenceService {
     return json;
   }
 
-  private extractValue<T>(json: any, ...args: string[]): T {
+  private extractAndValidateValue(json: any, type: string, ...args: string[]): any {
     let data: any = json;
     let path: string = args[0];
 
@@ -85,19 +77,16 @@ export class PersistenceService {
       path = args[i];
 
       if (!(path in data)) {
-        throw new JsonParseError(path, ErrorType.Missing, json);
+        throw new JsonParseError(path, type, ErrorType.Missing, json);
       }
 
       data = data[args[i]];
     }
 
-    return <T>data;
-  }
-
-  private validateValues(type: string, value: any, property: string): void {
-    const valueType: string = typeof(value);
-    if (valueType != type) {
-      throw new JsonParseError(property, ErrorType.Invalid, value);
+    if (typeof data !== type) {
+      throw new JsonParseError(path, type, ErrorType.Invalid, json);
     }
+
+    return data;
   }
 }
