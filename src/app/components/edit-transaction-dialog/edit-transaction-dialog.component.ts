@@ -36,7 +36,7 @@ export class EditTransactionDialogComponent {
 
     if (data.dialogType == EditTransactionDialogTypes.Edit) {
       this.transactionId = data.id;
-      this._fetchTransactionData();
+      this.fetchTransactionData();
     } else {
       this.title = '';
       this.amount = 0;
@@ -53,7 +53,7 @@ export class EditTransactionDialogComponent {
   }
 
   public onSaveClick(): void {
-    const transaction: Transaction = this._build();
+    const transaction: Transaction = this.build();
 
     if (transaction.id === 0) {
       this.state.addTransaction(transaction);
@@ -64,7 +64,7 @@ export class EditTransactionDialogComponent {
     this.dialogRef.close();
   }
 
-  private _fetchTransactionData(): void {
+  private fetchTransactionData(): void {
     const transaction: Transaction | undefined = this.state.transactions.find((t: Transaction) => t.id === this.transactionId);
 
     if (!transaction) {
@@ -73,10 +73,10 @@ export class EditTransactionDialogComponent {
       return;
     }
 
-    this._parse(transaction);
+    this.parse(transaction);
   }
 
-  private _parse(transaction: Transaction): void {
+  private parse(transaction: Transaction): void {
     this.transactionId = transaction.id;
     this.amount = transaction.amount;
     this.title = transaction.title;
@@ -87,7 +87,7 @@ export class EditTransactionDialogComponent {
     this.startDate = transaction.recurrence.startDate;
   }
 
-  private _build(): Transaction {
+  private build(): Transaction {
     const transaction: Transaction = new Transaction(this.title, this.amount, this.type);
 
     transaction.id = this.transactionId;
