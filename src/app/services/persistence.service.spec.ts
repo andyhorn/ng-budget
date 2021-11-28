@@ -13,6 +13,7 @@ const title = 'test';
 const frequency = Frequency.Daily;
 const interval = 3;
 const startDate = new Date('January 1, 2020');
+const skip: Date[] = [new Date('January 15, 2020')];
 startDate.setHours(0, 0, 0, 0);
 
 describe('PersistenceService', () => {
@@ -81,14 +82,14 @@ describe('PersistenceService', () => {
   });
 
   it('should parse a json string into a transaction', () => {
-    const json = `[${buildTransactionJson(id, title, amount, type, frequency, interval, startDate)}]`;
+    const json = `[${buildTransactionJson(id, title, amount, type, skip, frequency, interval, startDate)}]`;
     const parsed = service.readJson(json);
 
     expect(parsed.length).toEqual(1);
   });
 
   it('should parse all the transaction data from the json string', () => {
-    const json = `[${buildTransactionJson(id, title, amount, type, frequency, interval, startDate)}]`;
+    const json = `[${buildTransactionJson(id, title, amount, type, skip, frequency, interval, startDate)}]`;
     const parsed = service.readJson(json);
 
     expect(parsed[0].amount).toEqual(amount);
@@ -113,7 +114,7 @@ describe('PersistenceService', () => {
       'startDate',
     ];
 
-    const jsonString = buildTransactionJson(id, title, amount, type, frequency, interval, startDate);
+    const jsonString = buildTransactionJson(id, title, amount, type, skip, frequency, interval, startDate);
 
     for (let prop of properties) {
       const badObj = JSON.parse(jsonString);
@@ -134,6 +135,8 @@ describe('PersistenceService', () => {
 });
 
 
-function buildTransactionJson(id: number, title: string, amount: number, type: TransactionTypes, frequency: Frequency, interval: number, startDate: Date): string {
-  return `{"id":${id},"title":"${title}","amount":${amount},"type":${type},"recurrence":{"frequency":${frequency},"interval":${interval},"startDate":"${startDate.toISOString()}"}}`;
+function buildTransactionJson(id: number, title: string, amount: number, type: TransactionTypes, skip: Date[], frequency: Frequency, interval: number, startDate: Date): string {
+  const skipStrings: string = skip.map(d => d.toISOString()).map(s => `"${s}"`).join(',');
+  const json: string = `{"id":${id},"title":"${title}","amount":${amount},"type":${type},"skip":[${skipStrings}],"recurrence":{"frequency":${frequency},"interval":${interval},"startDate":"${startDate.toISOString()}"}}`;
+  return json;
 }

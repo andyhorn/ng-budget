@@ -77,7 +77,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.skippedDates.selectedOptions.changed.subscribe(() => {
+    this.skippedDates.selectedOptions?.changed.subscribe(() => {
       this.areSkipDateListValuesSelected = this.skippedDates.selectedOptions.hasValue();
     });
   }

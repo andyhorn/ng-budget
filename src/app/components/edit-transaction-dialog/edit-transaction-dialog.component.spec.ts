@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 import { By } from '@angular/platform-browser';
 import { EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
@@ -21,6 +22,7 @@ describe('EditTransactionDialogComponent (NEW)', () => {
       ],
       imports: [
         MatDialogModule,
+        MatListModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: function() {} }},
@@ -128,6 +130,7 @@ describe('Edit Incomes', () => {
       ],
       imports: [
         MatDialogModule,
+        MatListModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: function() {} }},
