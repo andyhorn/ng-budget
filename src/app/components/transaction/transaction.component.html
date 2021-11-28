@@ -16,9 +16,9 @@
           [interval]="transaction.recurrence.interval"
           [date]="transaction.recurrence.startDate"></app-frequency-display>
         <span *ngIf="transaction.recurrence.frequency !== 0">
-          &nbsp;beginning
+          beginning
         </span>
-        <span>&nbsp;on {{ transaction.recurrence.startDate | date }}.</span>
+        <span>on {{ transaction.recurrence.startDate | date }}.</span>
       </p>
     </mat-card-subtitle>
   </mat-card-header>
