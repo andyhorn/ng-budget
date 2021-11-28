@@ -1,4 +1,3 @@
-import { JsonParseError } from "./json-parse-error";
 import { Frequency } from "./recurrence";
 import { Transaction, TransactionTypes } from "./transaction";
 
@@ -10,96 +9,9 @@ describe('Transaction', () => {
   const frequency = Frequency.Daily;
   const interval = 1;
   const startDate = 'January 1, 2020';
-  let json: any;
-
-  beforeEach(() => {
-    json = {
-      amount,
-      id,
-      type,
-      title,
-      recurrence: {
-        frequency,
-        interval,
-        startDate,
-      },
-    };
-  })
 
   it('should create an instance', () => {
     expect(new Transaction()).toBeTruthy();
-  });
-
-  it('should parse a json object', () => {
-    const transaction = Transaction.fromJson(json);
-
-    expect(transaction.amount).toEqual(amount);
-    expect(transaction.id).toEqual(id);
-    expect(transaction.type).toEqual(type);
-    expect(transaction.title).toEqual(title);
-    expect(transaction.recurrence.frequency).toEqual(Frequency.Daily);
-    expect(transaction.recurrence.interval).toEqual(interval);
-    expect(transaction.recurrence.startDate).toEqual(new Date('January 1, 2020'));
-  });
-
-  it('should export to a json object', () => {
-    const transaction = new Transaction(title, amount, type);
-    transaction.id = id;
-    transaction.recurrence.frequency = frequency;
-    transaction.recurrence.interval = interval;
-    transaction.recurrence.startDate = new Date(startDate);
-
-    const jsonObj = transaction.toJson();
-
-    expect(jsonObj).toBeTruthy()
-    expect(jsonObj.id).toEqual(id);
-    expect(jsonObj.title).toEqual(title);
-    expect(jsonObj.amount).toEqual(amount);
-    expect(jsonObj.type).toEqual(type);
-    expect(jsonObj.recurrence).toBeTruthy();
-    expect(jsonObj.recurrence.frequency).toEqual(frequency);
-    expect(jsonObj.recurrence.interval).toEqual(interval);
-    expect(jsonObj.recurrence.startDate).toEqual(new Date(startDate));
-  });
-
-  it('should throw an error if an amount cannot be found in the json', () => {
-    json.amount = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError)
-  });
-
-  it('should throw an error if an id cannot be found in the json', () => {
-    json.id = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
-  });
-
-  it('should throw an error if a type cannot be found in the json', () => {
-    json.type = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
-  });
-
-  it('should throw an error if a title cannot be found in the json', () => {
-    json.title = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
-  });
-
-  it('should throw an error if the recurrence data cannot be found in the json', () => {
-    json.recurrence = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
-  });
-
-  it('should throw an error if a frequency cannot be found in the json', () => {
-    json.recurrence.frequency = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
-  });
-
-  it('should throw an error if an interval cannot be found in the json', () => {
-    json.recurrence.interval = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
-  });
-
-  it('should throw an error if a start date cannot be found in the json', () => {
-    json.recurrence.startDate = undefined;
-    expect(() => Transaction.fromJson(json)).toThrowError(JsonParseError);
   });
 
   it('should return true for a single occurrence on the correct date', () => {
