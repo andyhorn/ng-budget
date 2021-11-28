@@ -17,11 +17,11 @@ export class AppComponent {
 
   constructor(
     public state: AppStateService,
-    private _dialog: MatDialog
+    private dialog: MatDialog
     ) {}
 
   public async onSaveClick(): Promise<void> {
-    const filename: string = await this._getSavePath();
+    const filename: string = await this.getSavePath();
 
     if (!filename) {
       return;
@@ -76,12 +76,12 @@ export class AppComponent {
   }
 
   public openSettingsDialog(): void {
-    this._dialog.open(SettingsDialogComponent);
+    this.dialog.open(SettingsDialogComponent);
   }
 
-  private async _getSavePath(): Promise<string> {
+  private async getSavePath(): Promise<string> {
     return new Promise<string>((resolve) => {
-      const dialog: MatDialogRef<FileSaveDialogComponent> = this._dialog.open(FileSaveDialogComponent);
+      const dialog: MatDialogRef<FileSaveDialogComponent> = this.dialog.open(FileSaveDialogComponent);
       dialog.afterClosed().subscribe((path) => {
         resolve(path);
       });
