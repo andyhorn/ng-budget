@@ -17,6 +17,7 @@ export class EditTransactionDialogComponent {
   public interval!: number;
   public type!: TransactionTypes;
   public startDate!: Date;
+  public skip!: Date[];
   public titleType!: string;
   public hideYearly: boolean = false;
 
@@ -42,6 +43,7 @@ export class EditTransactionDialogComponent {
       this.frequency = Frequency.Monthly;
       this.interval = 1;
       this.startDate = new Date();
+      this.skip = [];
       this.startDate.setHours(0, 0, 0, 0);
     }
   }
@@ -79,6 +81,7 @@ export class EditTransactionDialogComponent {
     this.amount = transaction.amount;
     this.title = transaction.title;
     this.type = transaction.type;
+    this.skip = transaction.skip;
     this.frequency = transaction.recurrence.frequency;
     this.interval = transaction.recurrence.interval;
     this.startDate = transaction.recurrence.startDate;
@@ -88,6 +91,7 @@ export class EditTransactionDialogComponent {
     const transaction: Transaction = new Transaction(this.title, this.amount, this.type);
 
     transaction.id = this.transactionId;
+    transaction.skip = this.skip;
     transaction.recurrence.frequency = this.frequency;
     transaction.recurrence.interval = this.interval;
     transaction.recurrence.startDate = this.startDate;
