@@ -14,7 +14,7 @@ jobs:
       - name: Deploy to Github Pages
         uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
         with:
-          github_access_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          github_access_token: ${{ secrets.CI_ACCESS_TOKEN }}
           build_configuration: production
           base_href: /ng-budget/
           deploy_branch: gh-pages
