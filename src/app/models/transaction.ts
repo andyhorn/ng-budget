@@ -12,6 +12,7 @@ export class Transaction {
   public type: TransactionTypes;
   public amount: number;
   public recurrence: Recurrence;
+  public skip: Date[];
 
   constructor(title: string = '', amount: number = 0, type: TransactionTypes = TransactionTypes.Expense) {
     this.id = 0;
@@ -20,6 +21,7 @@ export class Transaction {
 
     this.amount = amount;
     this.recurrence = new Recurrence();
+    this.skip = [];
   }
 
   public static fromJson(json: any): Transaction {
@@ -53,6 +55,12 @@ export class Transaction {
       throw new JsonParseError('title', ErrorType.Missing);
     } else {
       transaction.title = json.title?.toString();
+    }
+
+    if (!!json.skip) {
+      for (const dateString of json.skip) {
+        transaction.skip.push(new Date(dateString));
+      }
     }
 
     if (json.recurrence === undefined || json.recurrence === null) {
@@ -92,6 +100,7 @@ export class Transaction {
       amount: this.amount,
       id: this.id,
       type: this.type,
+      skip: this.skip.map(d => d.toString()),
       recurrence: {
         interval: this.recurrence.interval,
         frequency: this.recurrence.frequency,
@@ -104,6 +113,10 @@ export class Transaction {
     date.setHours(0, 0, 0, 0);
 
     if (date < this.recurrence.startDate) {
+      return false;
+    }
+
+    if (this.skip.some(s => this.isSameDay(s, date))) {
       return false;
     }
 
