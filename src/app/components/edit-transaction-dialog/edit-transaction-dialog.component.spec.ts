@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 import { By } from '@angular/platform-browser';
-import { EditTransactionDialogData, EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
+import { EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
 import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
@@ -21,6 +22,7 @@ describe('EditTransactionDialogComponent (NEW)', () => {
       ],
       imports: [
         MatDialogModule,
+        MatListModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: function() {} }},
@@ -82,6 +84,9 @@ describe('EditTransactionDialogComponent (NEW)', () => {
     component.type = TransactionTypes.Expense;
     component.startDate = today;
     component.title = 'Test';
+    component.skip = [
+      today,
+    ]
 
     spyOn(state, 'addTransaction').and.callFake((t) => {
       expect(t.amount).toEqual(1.23);
@@ -91,6 +96,7 @@ describe('EditTransactionDialogComponent (NEW)', () => {
       expect(t.recurrence.frequency).toEqual(Frequency.Daily);
       expect(t.recurrence.interval).toEqual(12);
       expect(t.recurrence.startDate).toEqual(today);
+      expect(t.skip).toEqual([today]);
     });
 
     component.onSaveClick();
@@ -128,6 +134,7 @@ describe('Edit Incomes', () => {
       ],
       imports: [
         MatDialogModule,
+        MatListModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: { close: function() {} }},

@@ -1,4 +1,3 @@
-import { ErrorType, JsonParseError } from "./json-parse-error";
 import { Frequency, Recurrence } from "./recurrence";
 
 export enum TransactionTypes {
@@ -12,6 +11,7 @@ export class Transaction {
   public type: TransactionTypes;
   public amount: number;
   public recurrence: Recurrence;
+  public skip: Date[];
 
   constructor(title: string = '', amount: number = 0, type: TransactionTypes = TransactionTypes.Expense) {
     this.id = 0;
@@ -20,12 +20,17 @@ export class Transaction {
 
     this.amount = amount;
     this.recurrence = new Recurrence();
+    this.skip = [];
   }
 
   public occursOn(date: Date): boolean {
     date.setHours(0, 0, 0, 0);
 
     if (date < this.recurrence.startDate) {
+      return false;
+    }
+
+    if (this.skip.some(s => this.isSameDay(s, date))) {
       return false;
     }
 

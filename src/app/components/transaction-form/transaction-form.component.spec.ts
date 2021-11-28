@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatListModule } from '@angular/material/list';
 
 import { TransactionFormComponent } from './transaction-form.component';
 
@@ -8,7 +9,10 @@ describe('TransactionFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TransactionFormComponent ]
+      declarations: [ TransactionFormComponent ],
+      imports: [
+        MatListModule,
+      ]
     })
     .compileComponents();
   });

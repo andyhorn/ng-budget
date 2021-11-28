@@ -23,6 +23,7 @@ import {MatTableModule} from '@angular/material/table';
 import { NetFlowIconComponent } from './components/net-flow-icon/net-flow-icon.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatListModule} from '@angular/material/list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
@@ -65,6 +66,7 @@ import { OccurrenceCardComponent } from './components/occurrence-card/occurrence
     MatTableModule,
     MatToolbarModule,
     MatMenuModule,
+    MatListModule,
     MatSnackBarModule,
   ],
   providers: [],

@@ -17,31 +17,33 @@ export class EditTransactionDialogComponent {
   public interval!: number;
   public type!: TransactionTypes;
   public startDate!: Date;
+  public skip!: Date[];
   public titleType!: string;
   public hideYearly: boolean = false;
 
-  private _transactionId: number = 0;
+  private transactionId: number = 0;
 
   constructor(
-    private _state: AppStateService,
-    private _ref: MatDialogRef<EditTransactionDialogComponent>,
+    private state: AppStateService,
+    private dialogRef: MatDialogRef<EditTransactionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: EditTransactionDialogData
   ) {
-    this._transactionId = data.id;
+    this.transactionId = data.id;
     this.type = data.type;
     this.titleType = this.type == TransactionTypes.Expense
       ? 'expense' : 'income';
     this.hideYearly = this.type == TransactionTypes.Income;
 
     if (data.dialogType == EditTransactionDialogTypes.Edit) {
-      this._transactionId = data.id;
-      this._fetchTransactionData();
+      this.transactionId = data.id;
+      this.fetchTransactionData();
     } else {
       this.title = '';
       this.amount = 0;
       this.frequency = Frequency.Monthly;
       this.interval = 1;
       this.startDate = new Date();
+      this.skip = [];
       this.startDate.setHours(0, 0, 0, 0);
     }
   }
@@ -51,43 +53,45 @@ export class EditTransactionDialogComponent {
   }
 
   public onSaveClick(): void {
-    const transaction: Transaction = this._build();
+    const transaction: Transaction = this.build();
 
     if (transaction.id === 0) {
-      this._state.addTransaction(transaction);
+      this.state.addTransaction(transaction);
     } else {
-      this._state.updateTransaction(transaction);
+      this.state.updateTransaction(transaction);
     }
 
-    this._ref.close();
+    this.dialogRef.close();
   }
 
-  private _fetchTransactionData(): void {
-    const transaction: Transaction | undefined = this._state.transactions.find((t: Transaction) => t.id === this._transactionId);
+  private fetchTransactionData(): void {
+    const transaction: Transaction | undefined = this.state.transactions.find((t: Transaction) => t.id === this.transactionId);
 
     if (!transaction) {
       alert('An error occurred opening the transaction for edit!');
-      this._ref.close();
+      this.dialogRef.close();
       return;
     }
 
-    this._parse(transaction);
+    this.parse(transaction);
   }
 
-  private _parse(transaction: Transaction): void {
-    this._transactionId = transaction.id;
+  private parse(transaction: Transaction): void {
+    this.transactionId = transaction.id;
     this.amount = transaction.amount;
     this.title = transaction.title;
     this.type = transaction.type;
+    this.skip = transaction.skip;
     this.frequency = transaction.recurrence.frequency;
     this.interval = transaction.recurrence.interval;
     this.startDate = transaction.recurrence.startDate;
   }
 
-  private _build(): Transaction {
+  private build(): Transaction {
     const transaction: Transaction = new Transaction(this.title, this.amount, this.type);
 
-    transaction.id = this._transactionId;
+    transaction.id = this.transactionId;
+    transaction.skip = this.skip;
     transaction.recurrence.frequency = this.frequency;
     transaction.recurrence.interval = this.interval;
     transaction.recurrence.startDate = this.startDate;

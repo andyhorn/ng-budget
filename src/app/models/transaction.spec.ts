@@ -1,3 +1,4 @@
+import { DateRange } from "@angular/material/datepicker";
 import { Frequency } from "./recurrence";
 import { Transaction, TransactionTypes } from "./transaction";
 
@@ -228,6 +229,23 @@ describe('Transaction', () => {
     }
 
     expect(passed).toBeTrue();
+  });
+
+  it('should return false for all dates in the skip array', () => {
+    const skip = [
+      new Date('January 2, 2020'),
+      new Date('January 3, 2020'),
+      new Date('January 4, 2020'),
+    ];
+    const transaction = new Transaction(title, amount, type);
+    transaction.skip = skip;
+    transaction.recurrence.frequency = Frequency.Daily;
+    transaction.recurrence.interval = 1;
+    transaction.recurrence.startDate = new Date('January 1, 2020');
+
+    for (let date of skip) {
+      expect(transaction.occursOn(date)).toBeFalse();
+    }
   });
 });
 
