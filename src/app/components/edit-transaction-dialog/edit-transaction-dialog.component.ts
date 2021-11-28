@@ -20,21 +20,21 @@ export class EditTransactionDialogComponent {
   public titleType!: string;
   public hideYearly: boolean = false;
 
-  private _transactionId: number = 0;
+  private transactionId: number = 0;
 
   constructor(
-    private _state: AppStateService,
-    private _ref: MatDialogRef<EditTransactionDialogComponent>,
+    private state: AppStateService,
+    private dialogRef: MatDialogRef<EditTransactionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: EditTransactionDialogData
   ) {
-    this._transactionId = data.id;
+    this.transactionId = data.id;
     this.type = data.type;
     this.titleType = this.type == TransactionTypes.Expense
       ? 'expense' : 'income';
     this.hideYearly = this.type == TransactionTypes.Income;
 
     if (data.dialogType == EditTransactionDialogTypes.Edit) {
-      this._transactionId = data.id;
+      this.transactionId = data.id;
       this._fetchTransactionData();
     } else {
       this.title = '';
@@ -54,20 +54,20 @@ export class EditTransactionDialogComponent {
     const transaction: Transaction = this._build();
 
     if (transaction.id === 0) {
-      this._state.addTransaction(transaction);
+      this.state.addTransaction(transaction);
     } else {
-      this._state.updateTransaction(transaction);
+      this.state.updateTransaction(transaction);
     }
 
-    this._ref.close();
+    this.dialogRef.close();
   }
 
   private _fetchTransactionData(): void {
-    const transaction: Transaction | undefined = this._state.transactions.find((t: Transaction) => t.id === this._transactionId);
+    const transaction: Transaction | undefined = this.state.transactions.find((t: Transaction) => t.id === this.transactionId);
 
     if (!transaction) {
       alert('An error occurred opening the transaction for edit!');
-      this._ref.close();
+      this.dialogRef.close();
       return;
     }
 
@@ -75,7 +75,7 @@ export class EditTransactionDialogComponent {
   }
 
   private _parse(transaction: Transaction): void {
-    this._transactionId = transaction.id;
+    this.transactionId = transaction.id;
     this.amount = transaction.amount;
     this.title = transaction.title;
     this.type = transaction.type;
@@ -87,7 +87,7 @@ export class EditTransactionDialogComponent {
   private _build(): Transaction {
     const transaction: Transaction = new Transaction(this.title, this.amount, this.type);
 
-    transaction.id = this._transactionId;
+    transaction.id = this.transactionId;
     transaction.recurrence.frequency = this.frequency;
     transaction.recurrence.interval = this.interval;
     transaction.recurrence.startDate = this.startDate;
