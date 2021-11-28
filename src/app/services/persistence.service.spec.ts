@@ -106,7 +106,8 @@ describe('PersistenceService', () => {
       'id',
       'amount',
       'title',
-      'type'
+      'type',
+      'skip',
     ];
     const recurrenceProperties = [
       'frequency',

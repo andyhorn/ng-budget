@@ -84,6 +84,9 @@ describe('EditTransactionDialogComponent (NEW)', () => {
     component.type = TransactionTypes.Expense;
     component.startDate = today;
     component.title = 'Test';
+    component.skip = [
+      today,
+    ]
 
     spyOn(state, 'addTransaction').and.callFake((t) => {
       expect(t.amount).toEqual(1.23);
@@ -93,6 +96,7 @@ describe('EditTransactionDialogComponent (NEW)', () => {
       expect(t.recurrence.frequency).toEqual(Frequency.Daily);
       expect(t.recurrence.interval).toEqual(12);
       expect(t.recurrence.startDate).toEqual(today);
+      expect(t.skip).toEqual([today]);
     });
 
     component.onSaveClick();
