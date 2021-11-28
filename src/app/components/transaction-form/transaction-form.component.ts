@@ -89,6 +89,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
 
     this.newSkipDate.setHours(0, 0, 0, 0);
     const newList: Date[] = [...this.skip, <Date>this.newSkipDate];
+    newList.sort((a: Date, b: Date) => a < b ? -1 : a > b ? 1 : 0);
     this.skipChange.emit(newList);
     this.newSkipDate = undefined;
   }
