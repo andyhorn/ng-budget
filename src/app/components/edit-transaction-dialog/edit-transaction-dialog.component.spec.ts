@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
+import { EditTransactionDialogData, EditTransactionDialogTypes } from 'src/app/models/edit-transaction-dialog-data';
 import { Frequency } from 'src/app/models/recurrence';
 import { Transaction, TransactionTypes } from 'src/app/models/transaction';
 import { AppStateService } from 'src/app/services/state/app-state.service';
+import { TransactionFormComponent } from '../transaction-form/transaction-form.component';
 
 import { EditTransactionDialogComponent } from './edit-transaction-dialog.component';
 
@@ -16,6 +17,7 @@ describe('EditTransactionDialogComponent (NEW)', () => {
     await TestBed.configureTestingModule({
       declarations: [
         EditTransactionDialogComponent,
+        TransactionFormComponent
       ],
       imports: [
         MatDialogModule,
@@ -111,6 +113,55 @@ describe('EditTransactionDialogComponent (NEW)', () => {
     expect(saveButton?.nativeElement.disabled).toBeFalsy();
   });
 });
+
+describe('Edit Incomes', () => {
+  let component: EditTransactionDialogComponent;
+  let fixture: ComponentFixture<EditTransactionDialogComponent>;
+  const transaction = new Transaction('Test', 1.23, TransactionTypes.Expense);
+  transaction.id = 1;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [
+        EditTransactionDialogComponent,
+        TransactionFormComponent,
+      ],
+      imports: [
+        MatDialogModule,
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue: { close: function() {} }},
+        { provide: MAT_DIALOG_DATA, useValue: {
+          id: 0,
+          dialogType: EditTransactionDialogTypes.New,
+          type: TransactionTypes.Income,
+        }},
+      ],
+    })
+    .compileComponents();
+
+    let state = TestBed.inject(AppStateService);
+    spyOnProperty(state, 'transactions').and.returnValue([transaction]);
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditTransactionDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should hide the yearly frequency for incomes', () => {
+    const frequencySelect = fixture.debugElement.query(By.css('mat-select'));
+    const availableOptions = frequencySelect.children
+      .filter(c => c.name == 'mat-option')
+      .map(e => e.nativeElement.innerText.trim());
+    const expectedOptions = Object.keys(Frequency)
+      .filter(k => isNaN(Number(k)))
+      .filter(k => k !== 'Yearly');
+
+    expect(availableOptions).toEqual(expectedOptions);
+  });
+})
 
 describe('EditTransactionDialogComponent (EDIT)', () => {
   let component: EditTransactionDialogComponent;
