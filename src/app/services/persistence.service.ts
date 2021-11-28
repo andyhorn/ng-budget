@@ -36,6 +36,10 @@ export class PersistenceService {
   }
 
   private parseJson(json: any): Transaction {
+    if (typeof json === 'string') {
+      json = JSON.parse(json);
+    }
+
     const title: string = this.extractAndValidateValue(json, 'string', 'title');
     const amount: number = this.extractAndValidateValue(json, 'number', 'amount');
     const id: number = this.extractAndValidateValue(json, 'number', 'id');
