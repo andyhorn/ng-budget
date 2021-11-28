@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
+import { JsonParseError } from './models/json-parse-error';
 import { Transaction } from './models/transaction';
+import { PersistenceService } from './services/persistence.service';
 import { AppStateService } from './services/state/app-state.service';
 
 @Component({
@@ -17,17 +20,19 @@ export class AppComponent {
 
   constructor(
     public state: AppStateService,
-    private _dialog: MatDialog
+    private dialog: MatDialog,
+    private persistenceService: PersistenceService,
+    private snackbar: MatSnackBar
     ) {}
 
   public async onSaveClick(): Promise<void> {
-    const filename: string = await this._getSavePath();
+    const filename: string = await this.getSavePath();
 
     if (!filename) {
       return;
     }
 
-    const json: string = JSON.stringify(this.state.transactions);
+    const json: string = this.persistenceService.getJson();
     const anchor: HTMLAnchorElement = document.createElement('a');
     const blob: Blob = new Blob([json], {
       type: 'application/json',
@@ -52,21 +57,24 @@ export class AppComponent {
 
       reader.onload = (e) => {
         const contents: string = e.target?.result?.toString() ?? '';
-        const data: any[] = JSON.parse(contents);
-        const transactions: Transaction[] = [];
 
-        for (const json of data) {
-          try {
-            const transaction: Transaction = Transaction.fromJson(json);
+        try {
+          const transactions: Transaction[] = this.persistenceService.readJson(contents);
 
-            transactions.push(transaction);
-          } catch (e) {
-            console.error(e);
+          this.state.clearTransactions();
+          this.state.addTransactions(transactions);
+        } catch (e) {
+          if (!(e instanceof JsonParseError)) {
+            throw e;
           }
-        }
 
-        this.state.clearTransactions();
-        this.state.addTransactions(transactions);
+          this.snackbar.open('Error loading file', 'Okay', {
+            duration: 3000,
+            panelClass: "bg-danger",
+          });
+
+          console.error(e.message, e.data);
+        }
       }
 
       reader.readAsText(input.files[0]);
@@ -76,12 +84,12 @@ export class AppComponent {
   }
 
   public openSettingsDialog(): void {
-    this._dialog.open(SettingsDialogComponent);
+    this.dialog.open(SettingsDialogComponent);
   }
 
-  private async _getSavePath(): Promise<string> {
+  private async getSavePath(): Promise<string> {
     return new Promise<string>((resolve) => {
-      const dialog: MatDialogRef<FileSaveDialogComponent> = this._dialog.open(FileSaveDialogComponent);
+      const dialog: MatDialogRef<FileSaveDialogComponent> = this.dialog.open(FileSaveDialogComponent);
       dialog.afterClosed().subscribe((path) => {
         resolve(path);
       });
