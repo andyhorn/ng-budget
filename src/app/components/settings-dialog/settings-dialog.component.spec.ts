@@ -49,16 +49,17 @@ describe('SettingsDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
   it('should save data to the state', () => {
     const startDate = new Date('January 1, 2020');
     const endDate = new Date('January 15, 2020');
     const startingAmount = 1000;
+    const runningTotalThreshold = 100;
     const state = fixture.debugElement.injector.get(AppStateService);
 
     component.endDate = endDate;
     component.startDate = startDate;
     component.startingAmount = startingAmount;
+    component.runningTotalThreshold = runningTotalThreshold;
     fixture.detectChanges();
 
     component.onSaveClick();
@@ -66,6 +67,7 @@ describe('SettingsDialogComponent', () => {
     expect(state.startDate).toEqual(startDate);
     expect(state.endDate).toEqual(endDate);
     expect(state.startingAmount).toEqual(startingAmount);
+    expect(state.runningTotalThreshold).toEqual(runningTotalThreshold);
   });
 });
 
@@ -75,6 +77,7 @@ describe('SettingsDialogComponent', () => {
   const startDate: Date = new Date('January 1, 2020');
   const endDate: Date = new Date('January 15, 2020');
   const startingAmount: number = 1000;
+  const runningTotalThreshold: number = 100;
   let matDialogRef: any = {
     close: function () {}
   };
@@ -98,6 +101,7 @@ describe('SettingsDialogComponent', () => {
           startDate,
           endDate,
           startingAmount,
+          runningTotalThreshold,
         }},
       ]
     })
@@ -114,6 +118,7 @@ describe('SettingsDialogComponent', () => {
     expect(component.startDate).toEqual(startDate);
     expect(component.endDate).toEqual(endDate);
     expect(component.startingAmount).toEqual(startingAmount);
+    expect(component.runningTotalThreshold).toEqual(runningTotalThreshold);
   });
 
   it('should set the date range inputs', async () => {
@@ -145,15 +150,29 @@ describe('SettingsDialogComponent', () => {
 
   it('should update the state with a new starting amount', async () => {
     const state = fixture.debugElement.injector.get(AppStateService);
-    const startingAmountInput = fixture.debugElement.query(By.css('input.mat-input-element[type="number"]'));
+    const input = fixture.nativeElement.querySelector('input#startingAmount');
 
-    startingAmountInput.nativeElement.value = 123;
-    startingAmountInput.nativeElement.dispatchEvent(new Event('Input'));
+    input.value = 123;
+    input.dispatchEvent(new Event('input'));
 
     fixture.detectChanges();
+    component.onSaveClick();
     await fixture.whenStable().then(() => {
-      component.onSaveClick();
-      expect(state.startingAmount).toEqual(startingAmount);
+      expect(state.startingAmount).toEqual(123);
+    });
+  });
+
+  it('should update the state with a new threshold amount', async () => {
+    const state = fixture.debugElement.injector.get(AppStateService);
+    const thresholdInput = fixture.debugElement.query(By.css('input#threshold'));
+
+    thresholdInput.nativeElement.value = 123;
+    thresholdInput.nativeElement.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    component.onSaveClick();
+    await fixture.whenStable().then(() => {
+      expect(state.runningTotalThreshold).toEqual(123);
     });
   });
 

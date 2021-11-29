@@ -84,7 +84,9 @@ export class AppComponent {
   }
 
   public openSettingsDialog(): void {
-    this.dialog.open(SettingsDialogComponent);
+    this.dialog.open(SettingsDialogComponent, {
+      width: '60%',
+    });
   }
 
   private async getSavePath(): Promise<string> {
