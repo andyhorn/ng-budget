@@ -35,7 +35,7 @@
       <ng-container matColumnDef="running-total">
         <th mat-header-cell *matHeaderCellDef class="w-25">Running total</th>
         <td mat-cell *matCellDef="let transaction; let j = index">
-          <span [class]="getRunningTotal(occurrenceIndex, j) < 0 ? 'text-danger': 'text-success'">
+          <span [class]="getRunningTotalClass(occurrenceIndex, j)">
             {{ getRunningTotal(occurrenceIndex, j) | currency }}
           </span>
         </td>

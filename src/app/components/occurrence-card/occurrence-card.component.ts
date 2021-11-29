@@ -20,6 +20,13 @@ export class OccurrenceCardComponent {
     return this.state.runningTotal.getTotal(oi, ti);
   }
 
+  public getRunningTotalClass(occurrenceIndex: number, transactionIndex: number): string {
+    const runningTotal: number = this.state.runningTotal.getTotal(occurrenceIndex, transactionIndex);
+
+    return runningTotal < this.state.runningTotalThreshold
+      ? 'text-danger text-bold' : 'text-success';
+  }
+
   constructor(
     public state: AppStateService
   ) { }
