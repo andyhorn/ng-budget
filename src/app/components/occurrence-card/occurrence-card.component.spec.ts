@@ -145,12 +145,13 @@ describe('OccurenceCardComponent', () => {
     expect(runningTotal.nativeElement.innerText).toEqual('-' + expectedText);
   });
 
-  it('should highlight negative running totals in red', () => {
+  it('should highlight running totals below the threshold in red', () => {
     component.occurrence = new Occurrence(new Date(), [<Transaction>{}]);
     const runningTotalClass = jasmine.createSpyObj('RunningTotal', ['getTotal']);
     runningTotalClass.getTotal.and.returnValue(-100);
     const state = fixture.debugElement.injector.get(AppStateService);
     spyOnProperty(state, 'runningTotal').and.returnValue(runningTotalClass);
+    state.runningTotalThreshold = 100;
 
     fixture.detectChanges();
 
