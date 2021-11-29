@@ -16,7 +16,6 @@ export class AppStateService {
   private _startingAmount: number = 0;
 
   public runningTotalThreshold: number = 0;
-  public trackRunningTotalThreshold: boolean = false;
 
   constructor() {
     const today: Date = new Date();

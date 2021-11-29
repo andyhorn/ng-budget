@@ -11,7 +11,6 @@ export class SettingsDialogComponent implements OnInit {
   public startDate!: Date;
   public endDate!: Date;
   public startingAmount!: number;
-  public trackThreshold: boolean = false;
   public runningTotalThreshold!: number;
 
   constructor(
@@ -24,14 +23,12 @@ export class SettingsDialogComponent implements OnInit {
     this.endDate = this.state.endDate;
     this.startingAmount = this.state.startingAmount;
     this.runningTotalThreshold = this.state.runningTotalThreshold;
-    this.trackThreshold = this.state.trackRunningTotalThreshold;
   }
 
   public onSaveClick(): void {
     this.state.startDate = this.startDate;
     this.state.endDate = this.endDate;
     this.state.startingAmount = this.startingAmount;
-    this.state.trackRunningTotalThreshold = this.trackThreshold;
     this.state.runningTotalThreshold = this.runningTotalThreshold;
 
     this.dialogRef.close();
