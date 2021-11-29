@@ -15,6 +15,9 @@ export class AppStateService {
   private _endDate: Date;
   private _startingAmount: number = 0;
 
+  public runningTotalThreshold: number = 0;
+  public trackRunningTotalThreshold: boolean = false;
+
   constructor() {
     const today: Date = new Date();
     this._startDate = new Date(

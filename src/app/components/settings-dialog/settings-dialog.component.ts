@@ -11,23 +11,29 @@ export class SettingsDialogComponent implements OnInit {
   public startDate!: Date;
   public endDate!: Date;
   public startingAmount!: number;
+  public trackThreshold: boolean = false;
+  public runningTotalThreshold!: number;
 
   constructor(
-    private _dialogReference: MatDialogRef<SettingsDialogComponent>,
-    private _state: AppStateService
+    private dialogRef: MatDialogRef<SettingsDialogComponent>,
+    private state: AppStateService
   ) { }
 
   ngOnInit(): void {
-    this.startDate = this._state.startDate;
-    this.endDate = this._state.endDate;
-    this.startingAmount = this._state.startingAmount;
+    this.startDate = this.state.startDate;
+    this.endDate = this.state.endDate;
+    this.startingAmount = this.state.startingAmount;
+    this.runningTotalThreshold = this.state.runningTotalThreshold;
+    this.trackThreshold = this.state.trackRunningTotalThreshold;
   }
 
   public onSaveClick(): void {
-    this._state.startDate = this.startDate;
-    this._state.endDate = this.endDate;
-    this._state.startingAmount = this.startingAmount;
+    this.state.startDate = this.startDate;
+    this.state.endDate = this.endDate;
+    this.state.startingAmount = this.startingAmount;
+    this.state.trackRunningTotalThreshold = this.trackThreshold;
+    this.state.runningTotalThreshold = this.runningTotalThreshold;
 
-    this._dialogReference.close();
+    this.dialogRef.close();
   }
 }

@@ -25,6 +25,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { FileSaveDialogComponent } from './components/file-save-dialog/file-save-dialog.component';
 import { SettingsDialogComponent } from './components/settings-dialog/settings-dialog.component';
 import { FrequencyDisplayComponent } from './components/frequency-display/frequency-display.component';
@@ -68,6 +69,7 @@ import { OccurrenceCardComponent } from './components/occurrence-card/occurrence
     MatMenuModule,
     MatListModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
