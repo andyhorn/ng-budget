@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Settings</h2>
 
 <mat-dialog-content>
-  <mat-form-field appearance="standard" class="w-100">
+  <mat-form-field appearance="fill" class="w-100 pb-3">
     <mat-label>View date range</mat-label>
     <mat-date-range-input class="text-dark" [rangePicker]="dateRangePicker">
       <input matStartDate [(ngModel)]="startDate" id="startDateInput">
@@ -9,28 +9,27 @@
     </mat-date-range-input>
     <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
     <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+    <mat-hint>Show me my budget between these dates.</mat-hint>
   </mat-form-field>
 
   <mat-divider></mat-divider>
 
-  <mat-form-field appearance="standard" class="w-100">
+  <mat-form-field appearance="fill" class="w-100 py-3">
     <mat-label>Starting amount</mat-label>
-    <input matInput type="number" [(ngModel)]="startingAmount" id="startingAmountInput">
+    <input matInput type="number" [(ngModel)]="startingAmount" id="startingAmount">
     <span matPrefix>$&nbsp;</span>
+    <mat-hint>Start with this amount on the first day.</mat-hint>
   </mat-form-field>
 
   <mat-divider></mat-divider>
 
-  <div class="d-flex flex-column mt-3">
-    <mat-slide-toggle matInput [(ngModel)]="trackThreshold" color="primary">
-      Alert me when my running total gets too low
-    </mat-slide-toggle>
-    <mat-form-field appearance="standard" *ngIf="trackThreshold">
-      <mat-label>Alert threshold</mat-label>
-      <input matInput type="number" [(ngModel)]="runningTotalThreshold">
-      <span matPrefix>$&nbsp;</span>
-    </mat-form-field>
-  </div>
+  <mat-form-field appearance="fill" class="w-100 py-3">
+    <mat-label>Alert threshold</mat-label>
+    <input matInput type="number" [(ngModel)]="runningTotalThreshold" id="threshold">
+    <span matPrefix>$&nbsp;</span>
+    <mat-hint>Alert me when my running total falls below this value.</mat-hint>
+  </mat-form-field>
+
 </mat-dialog-content>
 
 <mat-dialog-actions class="d-flex justify-content-end">
