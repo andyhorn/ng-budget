@@ -22,6 +22,28 @@ export class FileSaveDialogComponent {
   }
 
   public onSaveClick(): void {
+    if (!this.canSave) {
+      return;
+    }
+
+    this.submitFilename();
+  }
+
+  public onKeyUp(key: KeyboardEvent): void {
+    const isNotEnter: boolean = key.code.toLowerCase() !== 'enter' ||
+      key.shiftKey ||
+      key.ctrlKey ||
+      key.altKey ||
+      key.metaKey;
+
+    if (isNotEnter || !this.canSave) {
+      return;
+    }
+
+    this.submitFilename();
+  }
+
+  private submitFilename(): void {
     this.dialogReference.close(this.filename);
   }
 }

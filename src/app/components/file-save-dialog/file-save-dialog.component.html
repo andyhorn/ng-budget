@@ -2,7 +2,7 @@
 
 <mat-dialog-content>
   <mat-form-field appearance="outline">
-    <input matInput required [(ngModel)]="filename">
+    <input matInput required [(ngModel)]="filename" (keyup)="onKeyUp($event)">
     <span matSuffix>.json</span>
   </mat-form-field>
 </mat-dialog-content>
